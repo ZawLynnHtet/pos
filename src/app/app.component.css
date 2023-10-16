@@ -1,0 +1,32 @@
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.content {
+  background-color: var(--secondary-color);
+  min-height: 91.4vh;
+}
+
+.active-link {
+  color: var(--main-color);
+}
+
+.date {
+  margin-left: 20px;
+}
+
+mat-drawer {
+  position: relative;
+}
+
+.logout {
+  position: absolute;
+  bottom: 30px;
+}
+
+mat-drawer {
+  position: fixed;
+  top: 65px;
+}

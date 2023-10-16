@@ -1,0 +1,58 @@
+<section class="constrains">
+  <div class="wrapper">
+    <div class="flex-box">
+      <div class="menu-box">
+        <div class="categories">
+          <ng-container *ngFor="let category of categories; let i = index">
+            <div class="category">
+              <div>{{ category.item }}</div>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="menu"></div>
+      </div>
+
+      <div class="order-page">
+        <div class="table-box">
+          <h6>Table no: 1</h6>
+          <h6>Date</h6>
+        </div>
+
+        <div class="card bg-secondary text-white mt-2">
+          <div class="tag d-flex justify-content-between">
+            <h6>Item</h6>
+            <h6>Qty</h6>
+          </div>
+          <div class="item">
+            <div class="d-flex justify-content-between">
+              <h6>Burger (Beef)</h6>
+              <input type="number" placeholder="0" class="form-control" />
+              <h6>1</h6>
+            </div>
+            <h6>Remove: Salad</h6>
+            <h6>Extra: Beef(x2)</h6>
+            <input type="text" placeholder="Notes" class="form-control" />
+          </div>
+        </div>
+
+        <div class="card bg-secondary text-white mt-2">
+          <div class="tag d-flex justify-content-between">
+            <h6>Item</h6>
+            <h6>Qty</h6>
+          </div>
+          <div class="item">
+            <div class="d-flex justify-content-between">
+              <h6>Burger (Beef)</h6>
+              <input type="number" placeholder="0" class="form-control" />
+              <h6>1</h6>
+            </div>
+            <h6>Remove: Salad</h6>
+            <h6>Extra: Beef(x2)</h6>
+            <input type="text" placeholder="Notes" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+<div class="constrains">
+  <div class="tables-section">
+    <div class="table-infos flex">
+      <div>Total: {{ tables.length }}</div>
+      <div>Available: {{ tables.length }}</div>
+    </div>
+    <div class="tables flex">
+      <ng-container *ngFor="let table of tables; let i = index">
+        <div
+          routerLink="/menus"
+          class="table"
+          [ngStyle]="{
+            background:
+              table.status == 'Unavailable' ? 'orangered' : 'transparent'
+          }"
+          (click)="goTo(i)"
+        >
+          <div>Table {{ table.id }}</div>
+          <div>Status: {{ table.status }}</div>
+          <div>Capacity: {{ table.capacity }}</div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

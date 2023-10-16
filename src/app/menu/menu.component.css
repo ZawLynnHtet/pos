@@ -1,0 +1,134 @@
+.wrapper {
+  padding: 0 0 0 15px;
+}
+
+.flex-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.menu-box {
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+}
+
+.categories {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: nowrap;
+  align-items: center;
+  height: 100px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 10px;
+}
+
+.menu {
+  width: 100%;
+  height: 75vh;
+  margin-top: 10px;
+  background-color: aqua;
+}
+
+.category {
+  width: 18%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 0 30px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  margin-right: 15px;
+}
+
+.category div:first-child {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.category:hover {
+  cursor: pointer;
+}
+
+.order-page {
+  width: 600px;
+  height: 91vh;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: var(--secondary-color);
+  margin-left: 10px;
+  padding: 5px 8px;
+}
+
+.card {
+  padding: 3px 5px;
+}
+
+.d-flex input {
+  width: 40px;
+}
+
+input {
+  width: 100%;
+  padding: 0 5px;
+}
+
+.table-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: center;
+  padding: 6px 10px 0;
+  height: 30px;
+}
+
+@media screen and (max-width: 1285px) {
+  .menu-box {
+    width: 700px;
+  }
+}
+
+@media screen and (max-width: 1230px) {
+  .menu-box {
+    width: 650px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .menu-box {
+    width: 600px;
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .menu-box {
+    width: 550px;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .category div:first-child {
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width: 910px) {
+  .category div:first-child {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .categories {
+    flex-wrap: wrap;
+  }
+}

@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@font-face {
+  font-family: Itim;
+  src: url("./assets/fonts/Itim-Regular.ttf");
+}
+
+:root {
+  --main-color: orangered;
+  --secondary-color: #caf0ca;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+body {
+  background: var(--secondary-color);
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.table-infos {
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

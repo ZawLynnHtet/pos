@@ -12,6 +12,8 @@ export class TablesComponent {
 
   ) { }
 
+  role: string = '';
+
   tables = [
     {
       id: 1,
@@ -114,7 +116,15 @@ export class TablesComponent {
       capacity: "4"
     },
   ];
+
   goTo(i: number) {
-    // this.router.navigateByUrl['tables'];
+    this.role = localStorage.getItem('role') == null ? 'supervisor' : localStorage.getItem('role')!;
+
+    if (this.role == 'waiter') {
+      this.router.navigateByUrl('menus');
+    } else if (this.role == 'supervisor') {
+      this.router.navigateByUrl(`tables/${i}`);
+    };
+
   }
 }

@@ -1,0 +1,75 @@
+.box {
+    width: 100%;
+}
+
+.grid-container {
+    width: 55%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    box-shadow: 3px 2px 5px rgba(0,0,0,0.23);
+
+    /* border: solid gray; */
+    margin-bottom: 5px;
+    border-radius: 3px;
+    padding-left: 10px;
+}
+
+.box .grid-container:first-child {
+    margin-bottom: 10px;
+    background: rgba(200, 200, 200, 0.23);
+    box-shadow: 3px 2px 5px  rgba(0,0,0,0.23);
+}
+
+.g-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.g-item {
+    padding: 10px 0;
+}
+
+.grid-container:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.box .grid-container:first-child:hover {
+    cursor: auto;
+    transform: none;
+}
+
+.total {
+    width: 50%;
+    margin: auto;
+    margin-top: 10px;
+    flex-flow: column nowrap;
+    align-items: end;
+}
+
+.total hr {
+    width: 30%;
+    border: 1px dashed black;
+}
+
+.total div {
+    text-align: end;
+}
+
+.total div:first-child + div +div {
+    width: 100%;
+    border-bottom: dashed gray;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.payall {
+    width: 20%;
+    padding: 5px 0;
+    background: var(--main-color);
+    border: transparent;
+    border-radius: 3px;
+
+    margin-top: 10px;
+}

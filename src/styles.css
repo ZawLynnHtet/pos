@@ -2,8 +2,8 @@
 
 @import "~bootstrap/dist/css/bootstrap.css";
 @font-face {
-  font-family: Itim;
-  src: url("./assets/fonts/Itim-Regular.ttf");
+  font-family: NotoSans-Regular;
+  src: url("./assets/fonts/NotoSans-Regular.ttf");
 }
 
 :root {
@@ -14,7 +14,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: NotoSans-Regular, sans-serif;
 }
 
 body {

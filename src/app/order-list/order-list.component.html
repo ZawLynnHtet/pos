@@ -1,0 +1,28 @@
+<div class="box">
+  <div class="grid-container" [ngStyle]="{ border: 'none' }">
+    <div class="g-item g-title">No.</div>
+    <div class="g-item g-title">Total Price</div>
+    <div class="g-item g-title">Payment Status</div>
+    <div class="g-item g-title">Order ID</div>
+  </div>
+  <div
+    class="grid-container"
+    *ngFor="let order of orders; let i = index"
+    (click)="goTo(order.id)"
+  >
+    <ng-container>
+      <div class="g-item">{{ i + 1 }}.</div>
+      <div class="g-item">{{ order.total }} Ks</div>
+      <div class="g-item">{{ order.status }}</div>
+      <div class="g-item">{{ order.id }}</div>
+    </ng-container>
+  </div>
+  <div class="total flex">
+    <div>Total: 20000 Ks</div>
+    <div>Discount: 0 Ks</div>
+    <div>Tax: 2000 Ks</div>
+    <div>Paid: 5000 Ks</div>
+    <div>Pending: 17000 Ks</div>
+    <button class="payall">Pay All</button>
+  </div>
+</div>

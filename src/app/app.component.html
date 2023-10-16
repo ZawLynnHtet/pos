@@ -62,15 +62,14 @@
       <mat-list-item>
         <a
           (click)="drawer.toggle()"
+          routerLink="reservations"
           class="nav-link active"
           routerLinkActive="active-link"
-          >Reservation</a
+          >Reservations</a
         >
       </mat-list-item>
-      <mat-list-item class="logout">
-        <button (click)="drawer.toggle()" mat-raised-button color="warn">
-          Logout
-        </button>
+      <mat-list-item class="logout" (click)="drawer.toggle()">
+        <span>Logout</span>
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>

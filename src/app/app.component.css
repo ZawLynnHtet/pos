@@ -23,7 +23,12 @@ mat-drawer {
 
 .logout {
   position: absolute;
-  bottom: 30px;
+  bottom: 0;
+}
+
+.logout span {
+  color: var(--main-color) !important;
+
 }
 
 mat-drawer {

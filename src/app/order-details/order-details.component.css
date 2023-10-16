@@ -1,10 +1,24 @@
+.box {
+  justify-content: start;
+  flex-flow: row nowrap;
+  align-items: start;
+  width: 100%;
+}
+
 .orders-section {
-  padding: 15px 20px 0 26px;
+  width: 100%;
+  padding: 10px 8px;
+}
+
+.back-icon {
+  font-size: 18px;
+  color: black;
 }
 
 .order-details-container {
-  width: 60%;
+  width: 50%;
   margin: auto;
+  margin-bottom: 30px;
 }
 
 .order-header {
@@ -20,7 +34,28 @@
   justify-content: space-between;
 }
 
-.order-details {
+.grid-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40% 50% 10%;
+}
+
+.g-head {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 10px 0;
+}
+
+.g-item {
+  border-bottom: dashed gray;
+  padding-bottom: 10px; margin-bottom: 10px;
+}
+
+.align-right{
+  text-align: end;
+}
+
+/* .order-details {
   flex-flow: column nowrap;
 }
 
@@ -28,6 +63,9 @@
   width: 100%;
   justify-content: space-between;
   padding-bottom: 10px;
+}
+
+.details-header h2 {
 }
 
 .details-header h3 {
@@ -42,21 +80,45 @@ ol {
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: dashed grey;
-  justify-content: space-between;
+  /* justify-content: space-between; *
   align-items: start;
 }
 
-.order div:first-child {
-  flex-flow: row nowrap;
-  justify-content: space-between;
+.order h4 {
+  width: 40%;
+  font-weight: 400;
 }
 
-.kitchen-slip {
-  width: 100px;
+.order .modifiers {
+  width: 55%;
+}
+
+.order .qty {
+  width: 5%;
+  text-align: end;
+}
+
+.total-dishes {
+  width: 100%;
+  text-align: end;
+  font-size: 18px;
+  font-weight: 500;
+} */
+
+.bottom-section {
+  text-align: end;
+}
+
+.print-btn {
+  width: 20%;
   padding: 5px 0;
-  margin-top: 20px;
-  background-color: var(--main-color);
-  border: none;
+  background: var(--main-color);
+  border: transparent;
   border-radius: 3px;
-  color: white;
+  margin-top: 15px;
+}
+
+.print-btn:hover {
+  cursor: pointer;
+  transform: scale(1.03);
 }

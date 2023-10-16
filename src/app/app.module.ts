@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { TablesComponent } from './tables/tables.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { MenuComponent } from './menu/menu.component';
+import { OrderListComponent } from './order-list/order-list.component';
+import { PaymentDetailsComponent } from './payment-details/payment-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,6 +20,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { OrderReportComponent } from './order-report/order-report.component';
 import { MatTableModule } from '@angular/material/table';
+import { AuthComponent } from './auth/auth.component';
+import { FormsModule } from '@angular/forms';
+import { ReservationsComponent } from './reservations/reservations.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +32,11 @@ import { MatTableModule } from '@angular/material/table';
     OrderDetailsComponent,
     MenuComponent,
     OrderReportComponent,
+    AuthComponent,
+    OrderListComponent,
+    PaymentDetailsComponent,
+    ReservationsComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +52,7 @@ import { MatTableModule } from '@angular/material/table';
     MatListModule,
     MatToolbarModule,
     MatTableModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

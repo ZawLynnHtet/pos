@@ -7,8 +7,12 @@
 }
 
 :root {
-  --main-color: orangered;
-  --secondary-color: #caf0ca;
+  --main-color: #fe6601;
+  --secondary-color: #e9e9ea;
+  --icon-color: #fff;
+  --sidenav-bg-color: #263238;
+  --order-bg-color: #263238;
+  --menu-bg-color: aqua;
 }
 
 * {
@@ -19,6 +23,13 @@
 
 body {
   background: var(--secondary-color);
+  min-height: 100vh;
+  height: 100%;
+}
+
+.constrains {
+  max-width: 1400px;
+  margin: auto;
 }
 
 .flex {

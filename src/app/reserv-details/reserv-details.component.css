@@ -1,0 +1,35 @@
+.box {
+  padding: 15px 20px 0 0;
+  margin-left: 100px;
+}
+
+.details {
+  width: 100%;
+}
+
+.g-container {
+  width: 50%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 50% auto;
+  box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.23);
+  padding: 15px 0 15px 10px;
+  border-radius: 3px;
+}
+
+.g-item {
+}
+
+.cancel-btn {
+  width: auto;
+  padding: 8px 15px;
+  margin-top: 20px;
+  box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.23);
+  background: var(--main-color);
+  border: transparent;
+  border-radius: 3px;
+}
+
+.cancel-btn:hover {
+  transform: scale(1.03);
+}

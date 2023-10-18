@@ -1,1 +1,53 @@
-<p>reservations works!</p>
+<app-sidenav></app-sidenav>
+<div class="box">
+  <div class="reserv-head flex">
+    <div>Reservations</div>
+
+    <div class="dropdown" (click)="openDropdown()">
+      <button class="dropdown-toggle">{{ sortedBy }}</button>
+      <div class="dropdown-menu" [ngClass]="{ show: showDropdown }">
+        <button
+          class="dropdown-item"
+          *ngFor="let item of sortedByList; let i = index"
+          (click)="sort(i)"
+        >
+          {{ item }}
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn my-btn" (click)="createReservation()">
+        <i class="fa fa-plus" aria-hidden="true"></i> New
+      </button>
+    </div>
+  </div>
+  <div class="g-row text-center">
+    <div class="g-head">Date</div>
+    <div class="g-head">Time</div>
+    <div class="g-head">Table No.</div>
+    <div class="g-head">Number of People</div>
+    <div class="g-head">Reserved by</div>
+  </div>
+  <div
+    class="g-row text-center"
+    *ngFor="let reserv of reservations; let i = index"
+    (click)="goTo(reserv.id)"
+  >
+    <div class="g-item">
+      {{ reserv.date }}
+    </div>
+    <div class="g-item">
+      {{ reserv.time }}
+    </div>
+    <div class="g-item">
+      {{ reserv.tableno }}
+    </div>
+    <div class="g-item">
+      {{ reserv.people }}
+    </div>
+    <div class="g-item">
+      {{ reserv.reservedBy }}
+    </div>
+  </div>
+</div>

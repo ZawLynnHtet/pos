@@ -1,0 +1,6 @@
+.header {
+  width: 100%;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: dashed black;
+}

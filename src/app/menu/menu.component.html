@@ -1,5 +1,7 @@
 <section class="constrains">
+  <app-sidenav></app-sidenav>
   <div class="wrapper">
+    <app-table-header></app-table-header>
     <div class="flex-box">
       <div class="menu-box">
         <div class="categories">
@@ -10,7 +12,28 @@
           </ng-container>
         </div>
 
-        <div class="menu"></div>
+        <div class="menus-box">
+          <div class="menus">
+            <ng-container *ngFor="let menu of menus; let i = index">
+              <div class="row">
+                <div class="col-sm">
+                  <div class="card">
+                    <div>
+                      <img [src]="menu.url" alt="burger" />
+                    </div>
+                    <div>{{ menu.name }}</div>
+                    <div class="icons">
+                      <i class="fa-solid fa-minus"></i>
+                      <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <button class="btn btn-primary">Choice</button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="choice"></div>
+        </div>
       </div>
 
       <div class="order-page">

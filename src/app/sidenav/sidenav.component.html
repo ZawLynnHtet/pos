@@ -1,0 +1,30 @@
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+  <div class="logo-container">
+    <img
+      src="..//../assets/images/msi logo.png"
+      alt="msi"
+      class="logo"
+      (click)="toggleCollapse()"
+    />
+    <div class="logo-text" *ngIf="collapsed" @fadeInOut>Pos</div>
+
+    <div class="close-btn" *ngIf="collapsed" (click)="closeSidenav()" @rotate>
+      <i class="fa-solid fa-xmark close"></i>
+    </div>
+  </div>
+  <ul class="sidenav-nav">
+    <li class="sidenav-nav-item" *ngFor="let data of navData">
+      <a
+        class="sidenav-nav-link"
+        [routerLink]="[data.routeLink]"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="sidenav-link-icon" [class]="data.icon"></i>
+        <span class="sidenav-link-text" *ngIf="collapsed" @fadeInOut>{{
+          data.label
+        }}</span>
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,5 +1,6 @@
 .wrapper {
-  padding: 0 0 0 15px;
+  padding: 15px 0 0 0;
+  margin-left: 100px;
 }
 
 .flex-box {
@@ -27,11 +28,56 @@
   margin-top: 10px;
 }
 
-.menu {
+.menus-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.menus {
   width: 100%;
   height: 75vh;
   margin-top: 10px;
-  background-color: aqua;
+  background-color: var(--menu-bg-color);
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: start; */
+  overflow: auto;
+  padding: 10px;
+}
+
+.menus img {
+  width: 100px;
+  height: 100px;
+}
+
+/* .choice {
+  width: 100%;
+  height: 200px;
+  z-index: 2;
+  background: blue;
+  position: fixed;
+  bottom: 0;
+}
+
+.menu:hover .choice {
+  height: 0;
+} */
+
+.menus .card {
+  margin: 0 1rem 1rem 0;
+  padding: 20px !important;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 24px;
 }
 
 .category {

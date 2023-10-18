@@ -1,0 +1,94 @@
+<app-sidenav></app-sidenav>
+<div class="box">
+  <h2 class="text-center">New Reservation</h2>
+  <form class="details" [formGroup]="reservationForm" (ngSubmit)="reserve()">
+    <div class="g-row">
+      <label for="supervisor" class="g-item">Supervisor: </label>
+      <input
+        type="text"
+        required
+        class="g-item"
+        id="supervisor"
+        formControlName="supervisor"
+      />
+
+      <label for="table-no">Table No.</label>
+      <select
+        class=""
+        id="table-no"
+        class="table"
+        required
+        formControlName="tableNo"
+      >
+        <option selected>Choose...</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+
+      <label for="date">Date:</label>
+      <input
+        type="date"
+        id="date"
+        class="date"
+        [required]="true"
+        formControlName="date"
+      />
+
+      <label for="time">Time:</label>
+      <input type="time" id="time" class="time" formControlName="time" />
+
+      <label for="no-people">Number of People:</label>
+      <select class="people" id="no-people" formControlName="numOfPeople">
+        <option selected>Choose...</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+
+      <label for="customer" class="g-item">Reserved By: </label>
+      <input
+        type="text"
+        class="g-item"
+        id="customer"
+        formControlName="reservedBy"
+      />
+
+      <label for="phone" class="g-item">Phone Number: </label>
+      <input type="tel" class="g-item" id="phone" formControlName="phone" />
+
+      <label for="prepared">Prepared in Advanced:</label>
+      <textarea
+        name="prepared"
+        id="prepared"
+        formControlName="prepared"
+      ></textarea>
+
+      <label for="note">Additional Notes:</label>
+      <textarea
+        name="note"
+        id="note"
+        rows="3"
+        formControlName="notes"
+      ></textarea>
+
+      <label for="deposit" class="g-item">Deposit: </label>
+      <input
+        type="text"
+        class="g-item"
+        id="deposit"
+        formControlName="deposit"
+      />
+    </div>
+    <div class="btns text-center">
+      <button class="btn cancel-btn mx-3" type="reset">Cancel</button>
+      <button
+        class="btn submit-btn mx-3"
+        type="submit"
+        [disabled]="!reservationForm.valid"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

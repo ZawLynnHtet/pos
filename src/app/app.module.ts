@@ -23,7 +23,11 @@ import { MatTableModule } from '@angular/material/table';
 import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
 import { ReservationsComponent } from './reservations/reservations.component';
-import { RegisterComponent } from './register/register.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { TableHeaderComponent } from './table-header/table-header/table-header.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
+import { NewReservationComponent } from './new-reservation/new-reservation.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,10 @@ import { RegisterComponent } from './register/register.component';
     OrderListComponent,
     PaymentDetailsComponent,
     ReservationsComponent,
-    RegisterComponent,
+    SidenavComponent,
+    TableHeaderComponent,
+    NewReservationComponent,
+    ReservDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +60,7 @@ import { RegisterComponent } from './register/register.component';
     MatToolbarModule,
     MatTableModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

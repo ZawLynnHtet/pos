@@ -5,7 +5,9 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
+import { Waiter } from '../models/waiter.model';
 
 @Component({
   selector: 'app-sidenav',
@@ -35,42 +37,31 @@ import { Component } from '@angular/core';
     ]),
   ],
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit {
   collapsed = false;
+  waiters: Waiter[] = [];
+
+  constructor(private api: ApiService) {}
   navData = [
     {
       routeLink: '/tables',
       icon: 'fa-solid fa-table-cells',
       label: 'Tables',
     },
-    {
-      routeLink: '/menus',
-      icon: 'fa fa-cutlery',
-      label: 'Menus',
-    },
+    // {
+    //   routeLink: '/menus',
+    //   icon: 'fa fa-cutlery',
+    //   label: 'Menus',
+    // },
     {
       routeLink: '/reservations',
       icon: 'fa fa-calendar-o',
       label: 'Reservations',
     },
     {
-      routeLink: '/settings',
+      routeLink: '/settings/add-menus',
       icon: 'fa-solid fa-gear',
       label: 'Settings',
-      items: [
-        {
-          routeLink: '/',
-          label: 'Manage employees',
-        },
-        {
-          routeLink: '/',
-          label: 'Manage menus',
-        },
-        {
-          routeLink: '/',
-          label: 'Manage tables',
-        },
-      ],
     },
     {
       routeLink: '/auth',
@@ -78,6 +69,15 @@ export class SidenavComponent {
       label: 'Logout',
     },
   ];
+
+  ngOnInit(): void {
+    this.getWaiteDatas();
+  }
+
+  async getWaiteDatas() {
+    this.waiters = await this.api.getWaiter();
+    console.log(this.waiters);
+  }
 
   toggleCollapse() {
     this.collapsed = !this.collapsed;

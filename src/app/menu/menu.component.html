@@ -1,80 +1,187 @@
 <section class="constrains">
   <app-sidenav></app-sidenav>
-  <div class="wrapper">
-    <app-table-header></app-table-header>
-    <div class="flex-box">
-      <div class="menu-box">
-        <div class="categories">
-          <ng-container *ngFor="let category of categories; let i = index">
-            <div class="category">
-              <div>{{ category.item }}</div>
-            </div>
-          </ng-container>
-        </div>
+  <div class="flex-box">
+    <div class="menu-page">
+      <div class="categories">
+        <ng-container *ngFor="let category of categories; let i = index">
+          <div class="category">
+            <div>{{ category.category_name }}</div>
+          </div>
+        </ng-container>
+      </div>
 
+      <div class="food-box">
         <div class="menus-box">
-          <div class="menus">
-            <ng-container *ngFor="let menu of menus; let i = index">
-              <div class="row">
-                <div class="col-sm">
-                  <div class="card">
-                    <div>
-                      <img [src]="menu.url" alt="burger" />
-                    </div>
-                    <div>{{ menu.name }}</div>
-                    <div class="icons">
-                      <i class="fa-solid fa-minus"></i>
-                      <i class="fa-solid fa-plus"></i>
-                    </div>
-                    <button class="btn btn-primary">Choice</button>
-                  </div>
+          <div class="menus" *ngIf="topping === false; else none">
+            <ng-container *ngFor="let food of foods; let i = index">
+              <div class="item-card">
+                <div class="image">
+                  <img [src]="food.img" alt="food" />
                 </div>
+                <div class="item-name">{{ food.name }}</div>
+                <div class="icons">
+                  <i
+                    class="fa-solid fa-minus"
+                    (click)="reduceCount()"
+                    (click)="del(i)"
+                  ></i>
+                  <div>{{ count }}</div>
+                  <i
+                    class="fa-solid fa-plus"
+                    (click)="addCount()"
+                    (click)="addOrder()"
+                  ></i>
+                </div>
+                <button class="choice" (click)="showTopping(i)">Select</button>
               </div>
             </ng-container>
           </div>
-          <div class="choice"></div>
+        </div>
+
+        <ng-template #none>
+          <div class="topping-card">
+            <mat-tab-group class="group">
+              <form [formGroup]="selectedForm">
+                <div class="mytab">
+                  <mat-tab label="Choice of meat">
+                    <div class="grid-container">
+                      <ng-container
+                        *ngFor="
+                          let meats of foods[selectedIndex].meat;
+                          let i = index
+                        "
+                      >
+                        <label>
+                          <input
+                            class="select"
+                            type="radio"
+                            [value]="meats"
+                            formControlName="meat"
+                          />
+                          <div class="grid-item">
+                            {{ meats }}
+                          </div>
+                        </label>
+                      </ng-container>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Ingredients" class="grid">
+                    <div class="grid-container">
+                      <ng-container
+                        *ngFor="let topping of foods[selectedIndex].toppings"
+                      >
+                        <label>
+                          <input
+                            class="select"
+                            type="checkbox"
+                            [value]="topping"
+                            formControlName="topping"
+                          />
+                          <div class="grid-item">
+                            {{ topping }}
+                          </div>
+                        </label>
+                      </ng-container>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Extra food" class="grid">
+                    <div class="grid-container">
+                      <ng-container
+                        *ngFor="let extraFood of foods[selectedIndex].extra"
+                      >
+                        <label>
+                          <input
+                            class="select"
+                            type="radio"
+                            [value]="extraFood"
+                            formControlName="extra"
+                          />
+                          <div class="grid-item">
+                            {{ extraFood }}
+                          </div>
+                        </label>
+                      </ng-container>
+                    </div>
+                  </mat-tab>
+                </div>
+              </form>
+            </mat-tab-group>
+            <div class="topping-bottom">
+              <button class="btn" (click)="closeTopping()">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <button class="btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="order-page">
+      <div class="order-header">
+        <div class="order-title">
+          <ng-container *ngFor="let table of tables; let i = index">
+            <ng-container *ngIf="table.table_id == tableId"
+              ><div>Table no: {{ table.table_no }}</div></ng-container
+            >
+          </ng-container>
+          <div>Order ID: 11</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="order-title">
+          <div>Item</div>
+          <div>Qty</div>
         </div>
       </div>
-
-      <div class="order-page">
-        <div class="table-box">
-          <h6>Table no: 1</h6>
-          <h6>Date</h6>
-        </div>
-
-        <div class="card bg-secondary text-white mt-2">
-          <div class="tag d-flex justify-content-between">
-            <h6>Item</h6>
-            <h6>Qty</h6>
-          </div>
-          <div class="item">
-            <div class="d-flex justify-content-between">
-              <h6>Burger (Beef)</h6>
-              <input type="number" placeholder="0" class="form-control" />
-              <h6>1</h6>
+      <div class="order-box" *ngIf="orders.length > 0; else blank">
+        <div class="order-card">
+          <ng-container *ngFor="let order of orders; let i = index">
+            <div class="food-name">
+              <div>{{ order.name }}({{ order.meat }})</div>
+              <div>{{ orders.length }}</div>
             </div>
-            <h6>Remove: Salad</h6>
-            <h6>Extra: Beef(x2)</h6>
-            <input type="text" placeholder="Notes" class="form-control" />
-          </div>
-        </div>
-
-        <div class="card bg-secondary text-white mt-2">
-          <div class="tag d-flex justify-content-between">
-            <h6>Item</h6>
-            <h6>Qty</h6>
-          </div>
-          <div class="item">
-            <div class="d-flex justify-content-between">
-              <h6>Burger (Beef)</h6>
-              <input type="number" placeholder="0" class="form-control" />
-              <h6>1</h6>
+            <div>{{ order.extra }}</div>
+            <!-- <ol>
+              <li></li>
+            </ol> -->
+            <div>{{ order.remove }}</div>
+            <!-- <ol>
+              <li></li>
+            </ol> -->
+            <div class="order-type">
+              <div>Order Type</div>
+              <div class="dropdown" (click)="openDropdown()">
+                <button class="dropdown-toggle">{{ orderType }}</button>
+                <div class="dropdown-menu" [ngClass]="{ show: showDropdown }">
+                  <button
+                    class="dropdown-item"
+                    *ngFor="let type of orderTypes; let i = index"
+                    (click)="sort(i)"
+                  >
+                    {{ type }}
+                  </button>
+                </div>
+              </div>
             </div>
-            <h6>Remove: Salad</h6>
-            <h6>Extra: Beef(x2)</h6>
-            <input type="text" placeholder="Notes" class="form-control" />
-          </div>
+            <div class="option">
+              <input type="text" placeholder="Order notes" />
+              <button class="delete" (click)="del(i)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+            <div class="diver"></div>
+          </ng-container>
         </div>
+      </div>
+      <ng-template #blank>
+        <div class="content">
+          Add Orders <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+      </ng-template>
+      <div class="order-bottom">
+        <button class="submit" (click)="submitOrder()">Submit Order</button>
       </div>
     </div>
   </div>

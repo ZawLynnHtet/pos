@@ -24,10 +24,14 @@ import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { TableHeaderComponent } from './table-header/table-header/table-header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
+import { ToppingComponent } from './topping/topping.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { HttpClientModule } from '@angular/common/http';
+import { AddMenusComponent } from './settings/add-menus/add-menus.component';
+import { AddEmployeesComponent } from './settings/add-employees/add-employees.component';
 
 @NgModule({
   declarations: [
@@ -41,9 +45,11 @@ import { NewReservationComponent } from './new-reservation/new-reservation.compo
     PaymentDetailsComponent,
     ReservationsComponent,
     SidenavComponent,
-    TableHeaderComponent,
     NewReservationComponent,
     ReservDetailsComponent,
+    ToppingComponent,
+    AddMenusComponent,
+    AddEmployeesComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +67,8 @@ import { NewReservationComponent } from './new-reservation/new-reservation.compo
     MatTableModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTabsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

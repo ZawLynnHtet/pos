@@ -1,8 +1,8 @@
 .sidenav {
-  background: var(--sidenav-bg-color);
+  background: var(--primary-color);
   transition: all 0.5s ease;
   position: fixed;
-  z-index: 1;
+  z-index: 10;
   top: 0;
   width: 5rem;
   height: 100vh;
@@ -10,21 +10,29 @@
   overflow: hidden;
 }
 
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 0.938rem;
+  width: 100%;
+}
+
 .logo-container {
   display: flex;
   align-items: center;
-  padding: 0.938rem;
   width: 100%;
 }
 
 .logo {
   cursor: pointer;
-  width: 55px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
 }
 
 .logo-text {
-  margin-left: 1.5rem;
+  margin-left: 1.3rem;
   font-size: 23px;
   font-weight: 700;
   color: #fff;
@@ -40,6 +48,28 @@
 .close {
   color: white;
   font-size: 25px;
+}
+
+.employee-name {
+  width: 100%;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 18px;
+  font-size: 500;
+  margin-left: 8px;
+}
+
+.fa-user {
+  margin-right: 3px;
+}
+
+.diver {
+  height: 2px;
+  width: 100%;
+  background: #8f8e8e;
+  margin-top: 18px;
 }
 
 .sidenav-collapsed {
@@ -73,7 +103,7 @@
 }
 
 .sidenav-link-icon {
-  font-size: 22px;
+  font-size: 20px;
   width: 2rem;
   min-width: 2rem;
   margin: 0 0.5rem;
@@ -82,7 +112,8 @@
 
 .sidenav-link-text {
   margin-left: 1.5rem;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .sidenav-nav-item:last-child {
@@ -96,7 +127,51 @@
   color: #000;
 }
 
-.active-link {
+.sidenav-nav-item .active-link {
   background-color: #fff;
   color: #000;
+}
+
+.dropdown-icon {
+  margin-left: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  width: 3rem;
+  min-width: 3rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+}
+
+.hide {
+  height: 0px !important;
+}
+
+.dropdown-nav {
+  height: 100%;
+  list-style: none;
+  margin-top: 10px;
+  overflow: hidden;
+  margin-left: 40px;
+}
+
+.dropdown-nav-item {
+  width: 100%;
+  margin-bottom: 0.625rem;
+}
+
+.dropdown-nav-item:hover .dropdown-nav-link {
+  color: #fff !important;
+}
+
+.dropdown-active-link {
+  color: #fff !important;
+}
+
+.dropdown-nav-link {
+  color: #9e9d9d;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }

@@ -10,6 +10,9 @@ import { ReservationsComponent } from './reservations/reservations.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
 import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
+import { ToppingComponent } from './topping/topping.component';
+import { AddMenusComponent } from './settings/add-menus/add-menus.component';
+import { AddEmployeesComponent } from './settings/add-employees/add-employees.component';
 
 const routes: Routes = [
   {
@@ -31,6 +34,10 @@ const routes: Routes = [
   },
   {
     path: 'menus',
+    component: MenuComponent,
+  },
+  {
+    path: 'tables/:id/menus',
     component: MenuComponent,
   },
   {
@@ -60,6 +67,14 @@ const routes: Routes = [
   {
     path: 'reservations/:reservId',
     component: ReservDetailsComponent,
+  },
+  {
+    path: 'settings/add-menus',
+    component: AddMenusComponent,
+  },
+  {
+    path: 'settings/add-employees',
+    component: AddEmployeesComponent,
   },
 ];
 

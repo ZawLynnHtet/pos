@@ -1,25 +1,28 @@
 <div class="constrains">
   <app-sidenav></app-sidenav>
   <div class="tables-section">
-    <app-table-header></app-table-header>
     <div class="table-infos flex">
-      <div>Total: {{ tables.length }}</div>
-      <div>Available: {{ tables.length }}</div>
+      <div class="table-data">Total: {{ tables.length }}</div>
+      <div class="table-data">Available: {{ tables.length }}</div>
     </div>
-    <div class="tables flex">
+    <div class="tables">
       <ng-container *ngFor="let table of tables; let i = index">
-        <div
+        <button
           class="table"
           [ngStyle]="{
-            background:
-              table.status == 'Unavailable' ? 'orangered' : 'transparent'
+            background: table.is_available
+              ? 'transparent'
+              : 'var(--main-color)',
+            color: table.is_available ? 'black' : 'var(--secondary-color)',
           }"
-          (click)="goTo(i)"
+          (click)="goTo(table.table_id)"
         >
-          <div>Table {{ table.id }}</div>
-          <div>Status: {{ table.status }}</div>
+          <div>Table {{ table.table_no }}</div>
+          <div class="available">
+            {{ table.is_available ? "Available" : "Unavailable" }}
+          </div>
           <div>Capacity: {{ table.capacity }}</div>
-        </div>
+        </button>
       </ng-container>
     </div>
   </div>

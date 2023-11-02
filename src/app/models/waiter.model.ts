@@ -1,18 +1,19 @@
 // To parse this data:
 //
-//   import { Convert, Waiter } from "./file";
+//   import { Convert, Employees } from "./file";
 //
-//   const waiter = Convert.toWaiter(json);
+//   const employees = Convert.toEmployees(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Waiter {
-  waitstaff_id: number;
+export interface Employees {
+  employee_id: number;
   name: string;
   email: string;
   phone: string;
   gender: string;
+  role: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
@@ -21,12 +22,12 @@ export interface Waiter {
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-  public static toWaiter(json: string): Waiter {
-    return cast(JSON.parse(json), r('Waiter'));
+  public static toEmployees(json: string): Employees {
+    return cast(JSON.parse(json), r('Employees'));
   }
 
-  public static waiterToJson(value: Waiter): string {
-    return JSON.stringify(uncast(value, r('Waiter')), null, 2);
+  public static employeesToJson(value: Employees): string {
+    return JSON.stringify(uncast(value, r('Employees')), null, 2);
   }
 }
 
@@ -213,7 +214,7 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-  Waiter: o(
+  Employees: o(
     [
       { json: 'status', js: 'status', typ: '' },
       { json: 'data', js: 'data', typ: a(r('Datum')) },
@@ -222,11 +223,12 @@ const typeMap: any = {
   ),
   Datum: o(
     [
-      { json: 'waitstaff_id', js: 'waitstaff_id', typ: 0 },
+      { json: 'employee_id', js: 'employee_id', typ: 0 },
       { json: 'name', js: 'name', typ: '' },
       { json: 'email', js: 'email', typ: '' },
       { json: 'phone', js: 'phone', typ: '' },
       { json: 'gender', js: 'gender', typ: '' },
+      { json: 'role', js: 'role', typ: '' },
       { json: 'password', js: 'password', typ: '' },
       { json: 'createdAt', js: 'createdAt', typ: Date },
       { json: 'updatedAt', js: 'updatedAt', typ: Date },

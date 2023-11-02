@@ -7,7 +7,7 @@ import {
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
-import { Waiter } from '../models/waiter.model';
+import { Employees } from '../models/waiter.model';
 
 @Component({
   selector: 'app-sidenav',
@@ -39,7 +39,7 @@ import { Waiter } from '../models/waiter.model';
 })
 export class SidenavComponent implements OnInit {
   collapsed = false;
-  waiters: Waiter[] = [];
+  employees: Employees[] = [];
 
   constructor(private api: ApiService) {}
   navData = [
@@ -75,8 +75,8 @@ export class SidenavComponent implements OnInit {
   }
 
   async getWaiteDatas() {
-    this.waiters = await this.api.getWaiter();
-    console.log(this.waiters);
+    this.employees = await this.api.getEmployee();
+    console.log(this.employees);
   }
 
   toggleCollapse() {

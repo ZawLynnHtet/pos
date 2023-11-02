@@ -50,19 +50,19 @@
   font-size: 25px;
 }
 
-.employee-name {
+.employee {
   width: 100%;
   color: #fff;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
   font-size: 18px;
   font-size: 500;
-  margin-left: 8px;
 }
 
-.fa-user {
-  margin-right: 3px;
+.employee .name {
+  margin-left: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .diver {

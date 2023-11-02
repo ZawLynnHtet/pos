@@ -32,6 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { AddMenusComponent } from './settings/add-menus/add-menus.component';
 import { AddEmployeesComponent } from './settings/add-employees/add-employees.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { AddEmployeesComponent } from './settings/add-employees/add-employees.co
     ReactiveFormsModule,
     MatTabsModule,
     HttpClientModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

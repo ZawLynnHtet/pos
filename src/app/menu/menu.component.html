@@ -4,8 +4,18 @@
     <div class="menu-page">
       <div class="categories">
         <ng-container *ngFor="let category of categories; let i = index">
-          <div class="category">
-            <div>{{ category.category_name }}</div>
+          <div (click)="showMenus(category.category_id)">
+            <div
+              class="category"
+              [ngStyle]="{
+              background: categoryId === category.category_id
+                ? 'var(--main-color)'
+                : '#fff',
+              color: categoryId === category.category_id ? 'var(--secondary-color)' : 'black',
+            }"
+            >
+              {{ category.category_name }}
+            </div>
           </div>
         </ng-container>
       </div>
@@ -13,26 +23,26 @@
       <div class="food-box">
         <div class="menus-box">
           <div class="menus" *ngIf="topping === false; else none">
-            <ng-container *ngFor="let food of foods; let i = index">
+            <ng-container *ngFor="let menu of menus; let menuIndex = index">
               <div class="item-card">
                 <div class="image">
-                  <img [src]="food.img" alt="food" />
+                  <img [src]="menu.img" alt="food" />
                 </div>
-                <div class="item-name">{{ food.name }}</div>
+                <div class="item-name">{{ menu.food_name }}</div>
                 <div class="icons">
                   <i
                     class="fa-solid fa-minus"
-                    (click)="reduceCount()"
-                    (click)="del(i)"
+                    (click)="reduce(menuIndex, menu)"
                   ></i>
-                  <div>{{ count }}</div>
+                  <div>{{ menu.quantity }}</div>
                   <i
                     class="fa-solid fa-plus"
-                    (click)="addCount()"
-                    (click)="addOrder()"
+                    (click)="addOrder(menu.menu_id, menu)"
                   ></i>
                 </div>
-                <button class="choice" (click)="showTopping(i)">Select</button>
+                <button class="choice" (click)="showTopping(menuIndex)">
+                  Select
+                </button>
               </div>
             </ng-container>
           </div>
@@ -45,9 +55,9 @@
                 <div class="mytab">
                   <mat-tab label="Choice of meat">
                     <div class="grid-container">
-                      <ng-container
+                      <!-- <ng-container
                         *ngFor="
-                          let meats of foods[selectedIndex].meat;
+                          let extraFood of menus[selectedIndex].extraFood_id;
                           let i = index
                         "
                       >
@@ -55,19 +65,19 @@
                           <input
                             class="select"
                             type="radio"
-                            [value]="meats"
+                            [value]="extraFood"
                             formControlName="meat"
                           />
                           <div class="grid-item">
-                            {{ meats }}
+                            {{ extraFood }}
                           </div>
                         </label>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                   </mat-tab>
                   <mat-tab label="Ingredients" class="grid">
                     <div class="grid-container">
-                      <ng-container
+                      <!-- <ng-container
                         *ngFor="let topping of foods[selectedIndex].toppings"
                       >
                         <label>
@@ -81,12 +91,12 @@
                             {{ topping }}
                           </div>
                         </label>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                   </mat-tab>
                   <mat-tab label="Extra food" class="grid">
                     <div class="grid-container">
-                      <ng-container
+                      <!-- <ng-container
                         *ngFor="let extraFood of foods[selectedIndex].extra"
                       >
                         <label>
@@ -100,7 +110,7 @@
                             {{ extraFood }}
                           </div>
                         </label>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                   </mat-tab>
                 </div>
@@ -137,28 +147,34 @@
       </div>
       <div class="order-box" *ngIf="orders.length > 0; else blank">
         <div class="order-card">
-          <ng-container *ngFor="let order of orders; let i = index">
+          <ng-container *ngFor="let order of orders; let orderIndex = index">
             <div class="food-name">
-              <div>{{ order.name }}({{ order.meat }})</div>
-              <div>{{ orders.length }}</div>
+              <div>{{ order.food_name }}</div>
+              <div>{{ order.quantity }}</div>
             </div>
-            <div>{{ order.extra }}</div>
-            <!-- <ol>
+            <!-- <div>{{ order.extra }}</div>
+            <ol>
               <li></li>
-            </ol> -->
+            </ol>
             <div>{{ order.remove }}</div>
-            <!-- <ol>
+            <ol>
               <li></li>
             </ol> -->
             <div class="order-type">
               <div>Order Type</div>
-              <div class="dropdown" (click)="openDropdown()">
-                <button class="dropdown-toggle">{{ orderType }}</button>
-                <div class="dropdown-menu" [ngClass]="{ show: showDropdown }">
+              <div class="dropdown" (click)="openDropdown(orderIndex)">
+                <button class="dropdown-toggle">
+                  {{ orderType }}
+                </button>
+                <div
+                  class="dropdown-menu"
+                  [ngClass]="{ show: showDropdown }"
+                  *ngIf="orderTypeIndex === orderIndex"
+                >
                   <button
                     class="dropdown-item"
-                    *ngFor="let type of orderTypes; let i = index"
-                    (click)="sort(i)"
+                    *ngFor="let type of orderTypes; let typeIndex = index"
+                    (click)="sort(typeIndex)"
                   >
                     {{ type }}
                   </button>
@@ -167,7 +183,7 @@
             </div>
             <div class="option">
               <input type="text" placeholder="Order notes" />
-              <button class="delete" (click)="del(i)">
+              <button class="delete" (click)="del(orderIndex)">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>

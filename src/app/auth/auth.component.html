@@ -1,6 +1,9 @@
 <!-- Main Content -->
 <div class="wrapper">
-  <div class="row main-content bg-success">
+  <div
+    class="row main-content bg-success"
+    *ngIf="loader === false; else loading"
+  >
     <div class="col-md-4 text-center company__info">
       <span class="company__logo"
         ><h2><span class="fa fa-android"></span></h2
@@ -151,4 +154,7 @@
       </ng-template>
     </div>
   </div>
+  <ng-template #loading>
+    <span class="loader"></span>
+  </ng-template>
 </div>

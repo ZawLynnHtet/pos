@@ -1,13 +1,13 @@
 // To parse this data:
 //
-//   import { Convert, Categories } from "./file";
+//   import { Convert, Category } from "./file";
 //
-//   const categories = Convert.toCategories(json);
+//   const Category = Convert.toCategory(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Categories {
+export interface Category {
   category_id: number;
   category_name: string;
   updatedAt: Date;
@@ -17,12 +17,12 @@ export interface Categories {
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-  public static toCategories(json: string): Categories {
-    return cast(JSON.parse(json), r('Categories'));
+  public static toCategory(json: string): Category {
+    return cast(JSON.parse(json), r('Category'));
   }
 
-  public static categoriesToJson(value: Categories): string {
-    return JSON.stringify(uncast(value, r('Categories')), null, 2);
+  public static CategoryToJson(value: Category): string {
+    return JSON.stringify(uncast(value, r('Category')), null, 2);
   }
 }
 
@@ -209,7 +209,7 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-  Categories: o(
+  Category: o(
     [
       { json: 'status', js: 'status', typ: '' },
       { json: 'data', js: 'data', typ: r('Data') },

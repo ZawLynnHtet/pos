@@ -1,33 +1,26 @@
 // To parse this data:
 //
-//   import { Convert, Employees } from "./file";
+//   import { Convert, Ingredient } from "./file";
 //
-//   const employees = Convert.toEmployees(json);
+//   const ingredient = Convert.toIngredient(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Employees {
-  employee_id: number;
-  name: string;
-  email: string;
-  phone: string;
-  gender: string;
-  role: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface Ingredient {
+  ingredient_id: number;
+  ingredient_name: string;
 }
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-  public static toEmployees(json: string): Employees {
-    return cast(JSON.parse(json), r('Employees'));
+  public static toIngredient(json: string): Ingredient {
+    return cast(JSON.parse(json), r('Ingredient'));
   }
 
-  public static employeesToJson(value: Employees): string {
-    return JSON.stringify(uncast(value, r('Employees')), null, 2);
+  public static ingredientToJson(value: Ingredient): string {
+    return JSON.stringify(uncast(value, r('Ingredient')), null, 2);
   }
 }
 
@@ -214,7 +207,7 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-  Employees: o(
+  Ingredient: o(
     [
       { json: 'status', js: 'status', typ: '' },
       { json: 'data', js: 'data', typ: a(r('Datum')) },
@@ -223,15 +216,8 @@ const typeMap: any = {
   ),
   Datum: o(
     [
-      { json: 'employee_id', js: 'employee_id', typ: 0 },
-      { json: 'name', js: 'name', typ: '' },
-      { json: 'email', js: 'email', typ: '' },
-      { json: 'phone', js: 'phone', typ: '' },
-      { json: 'gender', js: 'gender', typ: '' },
-      { json: 'role', js: 'role', typ: '' },
-      { json: 'password', js: 'password', typ: '' },
-      { json: 'createdAt', js: 'createdAt', typ: Date },
-      { json: 'updatedAt', js: 'updatedAt', typ: Date },
+      { json: 'ingredient_id', js: 'ingredient_id', typ: 0 },
+      { json: 'ingredient_name', js: 'ingredient_name', typ: '' },
     ],
     false
   ),

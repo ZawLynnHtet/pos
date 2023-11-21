@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { Employees } from '../models/waiter.model';
+import { Employee } from '../models/employee.model';
+import { Category } from '../models/category.model';
+import { ExtraFood } from '../models/extrafood.model';
+import { Menu } from '../models/menu.model';
 
 @Component({
   selector: 'app-auth',
@@ -16,7 +19,8 @@ export class AuthComponent implements OnInit {
     private api: ApiService
   ) {}
   sign_in: boolean = false;
-  employees: Employees[] = [];
+  employees: Employee[] = [];
+  loader: boolean = false;
 
   registerForm = this.builder.group({
     email: this.builder.control('', [Validators.required, Validators.email]),
@@ -44,19 +48,20 @@ export class AuthComponent implements OnInit {
   genders = ['male', 'female'];
 
   ngOnInit(): void {
-    this.getEmployeeData();
+    // this.getEmployeeData();
   }
 
   registration() {
     if (this.registerForm.valid) {
+      this.loader = true;
       this.api.registerEmployee(this.registerForm.value).subscribe((res) => {
         this.router.navigateByUrl('tables');
-        console.log(res);
       });
-      for (let i = 0; i < this.employees.length; i++) {
-        localStorage.setItem('role', this.employees[i].role);
-        console.log(this.employees[i].role);
-      }
+      let data = {
+        role: this.registerForm.value.role,
+        name: this.registerForm.value.name,
+      };
+      localStorage.setItem('data', JSON.stringify(data));
     } else {
       console.warn('Please enter the required!');
     }
@@ -64,25 +69,51 @@ export class AuthComponent implements OnInit {
 
   login() {
     if (this.loginForm.valid) {
+      this.loader = true;
       this.api.loginEmployee(this.loginForm.value).subscribe((res) => {
         this.router.navigateByUrl('tables');
-        console.log(res);
       });
       for (let i = 0; i < this.employees.length; i++) {
-        localStorage.setItem('role', this.employees[i].role);
-        console.log(this.employees[i].role);
+        if (this.loginForm.value.email == this.employees[i].email) {
+          let data = {
+            role: this.employees[i].role,
+            name: this.employees[i].name,
+          };
+          localStorage.setItem('data', JSON.stringify(data));
+          console.log(this.employees[i].role);
+          break;
+        }
       }
+      this.getCategoriesAndExtraFoodsAndMenusAndStoreInLocalStorage();
     } else {
       console.warn('Please enter the required!');
     }
   }
 
-  async getEmployeeData() {
-    this.employees = await this.api.getEmployee();
-    console.log(this.employees);
-  }
+  // async getEmployeeData() {
+  //   this.employees = await this.api.getEmployee();
+  // }
 
   signInOrUp() {
     this.sign_in = !this.sign_in;
+  }
+
+  async getCategoriesAndExtraFoodsAndMenusAndStoreInLocalStorage() {
+    const categories: Category[] = await this.api.getAllCategories();
+    localStorage.setItem('categories', JSON.stringify(categories));
+    const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();
+    localStorage.setItem('extraFoods', JSON.stringify(extraFoods));
+    const menuNames: Menu[] = await this.api.getAllFoodNames();
+    localStorage.setItem('menuNames', JSON.stringify(menuNames));
+
+    const waitstaffs: Employee[] = await this.api.getEmployeesWithRole(
+      'waiter'
+    );
+    localStorage.setItem('waitstaffs', JSON.stringify(waitstaffs));
+
+    const supervisors: Employee[] = await this.api.getEmployeesWithRole(
+      'supervisor'
+    );
+    localStorage.setItem('supervisors', JSON.stringify(supervisors));
   }
 }

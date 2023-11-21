@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TablesComponent } from './tables/tables.component';
@@ -18,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { OrderReportComponent } from './order-report/order-report.component';
 import { MatTableModule } from '@angular/material/table';
 import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
@@ -33,6 +31,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AddMenusComponent } from './settings/add-menus/add-menus.component';
 import { AddEmployeesComponent } from './settings/add-employees/add-employees.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { FilterPipeModule } from 'ngx-filter-pipe';
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,6 @@ import { MatRadioModule } from '@angular/material/radio';
     TablesComponent,
     OrderDetailsComponent,
     MenuComponent,
-    OrderReportComponent,
     AuthComponent,
     OrderListComponent,
     PaymentDetailsComponent,
@@ -71,6 +70,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatTabsModule,
     HttpClientModule,
     MatRadioModule,
+    FilterPipeModule,
+    OrderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

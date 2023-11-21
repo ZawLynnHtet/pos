@@ -34,13 +34,17 @@
 
 .category {
   border-radius: 10px;
-  padding: 30px;
+  width: 180px !important;
+  height: 85px !important;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
   text-align: center;
+  justify-content: center;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
   margin-right: 15px;
   font-size: 20px;
   font-weight: 500;
-  background: #fff;
   cursor: pointer;
 }
 

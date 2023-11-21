@@ -3,7 +3,7 @@
   <div class="tables-section">
     <div class="table-infos flex">
       <div class="table-data">Total: {{ tables.length }}</div>
-      <div class="table-data">Available: {{ tables.length }}</div>
+      <div class="table-data">Available: {{ available_table_count }}</div>
     </div>
     <div class="tables">
       <ng-container *ngFor="let table of tables; let i = index">
@@ -15,7 +15,7 @@
               : 'var(--main-color)',
             color: table.is_available ? 'black' : 'var(--secondary-color)',
           }"
-          (click)="goTo(table.table_id)"
+          (click)="goTo(table.table_id, i)"
         >
           <div>Table {{ table.table_no }}</div>
           <div class="available">

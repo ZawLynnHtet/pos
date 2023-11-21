@@ -13,10 +13,8 @@
         <i class="fa-solid fa-xmark close"></i>
       </div>
     </div>
-    <div class="employee">
-      <ng-container *ngFor="let employee of employees">
-        <div class="name">{{ employee.name }}</div>
-      </ng-container>
+    <div class="employee" *ngIf="employeesData">
+      <div class="name">{{ employeesData.name }}</div>
     </div>
     <div class="diver"></div>
   </div>

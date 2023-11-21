@@ -39,7 +39,7 @@
 .order-grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: 50% 15% 35%;
+  grid-template-columns: 50% 17% 15% 18%;
 }
 
 .order-grid-container .g-item:first-child + div {

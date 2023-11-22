@@ -10,8 +10,8 @@
 export interface Menu {
   menu_id: number;
   category_ids: number[] | null;
-  ingredient_ids: number[] | null;
-  extraFood_ids: number[] | null;
+  ingredient_ids: number[];
+  extraFood_ids: number[];
   food_name: string;
   price: number;
   img: string;

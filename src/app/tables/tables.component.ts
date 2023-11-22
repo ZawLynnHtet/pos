@@ -13,9 +13,8 @@ export class TablesComponent implements OnInit {
 
   employeesData: any;
   available_table_count: number = 0;
-  orderId: number = 0;
-
   tables: Table[] = [];
+
   ngOnInit() {
     this.getTableData();
     let data: any = localStorage.getItem('data');
@@ -39,8 +38,6 @@ export class TablesComponent implements OnInit {
       this.employeesData.role === 'waiter' &&
       this.tables[index].is_available === true
     ) {
-      this.orderId++;
-      localStorage.setItem('orderId', `${this.orderId}`);
       this.router.navigateByUrl('tables/' + id + '/menus');
     } else if (
       this.employeesData.role === 'supervisor' ||
@@ -49,4 +46,11 @@ export class TablesComponent implements OnInit {
       this.router.navigateByUrl(`tables/${id}`);
     }
   }
+
+  // createOrder(){
+  //   this.api.addOrder().subscribe((res)=> {
+  //     console.log(res);
+
+  //   })
+  // }
 }

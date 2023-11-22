@@ -28,6 +28,17 @@ export interface OrderDetails {
   note?: null;
 }
 
+export interface DetailsBody {
+  menu_id: number;
+  quantity: number;
+  choice_of_meat?: null;
+  removed_ingredients: any[];
+  extra_ingredients: any[];
+  extra_quantity: any[];
+  takeaway: boolean;
+  note?: null;
+}
+
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {

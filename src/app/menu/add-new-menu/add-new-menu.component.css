@@ -1,0 +1,42 @@
+.new-staff-container {
+    display: flex;
+    min-height: 100vh;
+    
+}
+.container {
+    font-size: 1rem;
+}
+h3 {
+    font-size: 1.5rem;
+    color: var(--main-color)
+}
+
+
+label {
+    margin-right: 30px;
+}
+
+.categories, .ingredients, .meat, .extra {
+    margin-bottom: 20px;
+}
+.add-btn {
+    padding: 10px 15px;
+    background-color: var(--main-color);
+    color: #000;
+    outline: none;
+    border: none;
+    width: 100px;
+    border-radius: 10px;
+    margin-left: 40%;
+    margin-top: 20px;
+    font-weight: bold;
+    
+}
+.add-btn:hover {
+    background-color: #000;
+    color: var(--main-color)
+}
+input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-right: 7px;
+}

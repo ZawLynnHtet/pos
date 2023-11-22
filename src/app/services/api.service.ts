@@ -103,6 +103,10 @@ export class ApiService {
     return this.http.post(`${apiUrl}/employees/login`, data);
   }
 
+  addOrder(data: any) {
+    return this.http.post(`${apiUrl}/orders`, data);
+  }
+
   getAllOrdersWithTableId(
     id: number,
     submitted: boolean

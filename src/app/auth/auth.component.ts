@@ -6,6 +6,8 @@ import { Employee } from '../models/employee.model';
 import { Category } from '../models/category.model';
 import { ExtraFood } from '../models/extrafood.model';
 import { Menu } from '../models/menu.model';
+import { UtilsService } from '../services/utils.service';
+import { Ingredient } from '../models/ingredient.model';
 
 @Component({
   selector: 'app-auth',
@@ -16,7 +18,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private router: Router,
     private builder: FormBuilder,
-    private api: ApiService
+    private api: ApiService,
+    private utils: UtilsService
   ) {}
   sign_in: boolean = false;
   employees: Employee[] = [];
@@ -54,14 +57,17 @@ export class AuthComponent implements OnInit {
   registration() {
     if (this.registerForm.valid) {
       this.loader = true;
-      this.api.registerEmployee(this.registerForm.value).subscribe((res) => {
-        this.router.navigateByUrl('tables');
-      });
-      let data = {
-        role: this.registerForm.value.role,
-        name: this.registerForm.value.name,
-      };
-      localStorage.setItem('data', JSON.stringify(data));
+      this.api
+        .registerEmployee(this.registerForm.value)
+        .subscribe((res: any) => {
+          let data = {
+            id: res.user.employee_id,
+            role: res.user.role,
+            name: res.user.name,
+          };
+          localStorage.setItem('data', JSON.stringify(data));
+          this.router.navigateByUrl('tables');
+        });
     } else {
       console.warn('Please enter the required!');
     }
@@ -70,21 +76,17 @@ export class AuthComponent implements OnInit {
   login() {
     if (this.loginForm.valid) {
       this.loader = true;
-      this.api.loginEmployee(this.loginForm.value).subscribe((res) => {
+      this.api.loginEmployee(this.loginForm.value).subscribe((res: any) => {
+        let data = {
+          id: res.user.employee_id,
+          role: res.user.role,
+          name: res.user.name,
+        };
+        localStorage.setItem('data', JSON.stringify(data));
+
         this.router.navigateByUrl('tables');
       });
-      for (let i = 0; i < this.employees.length; i++) {
-        if (this.loginForm.value.email == this.employees[i].email) {
-          let data = {
-            role: this.employees[i].role,
-            name: this.employees[i].name,
-          };
-          localStorage.setItem('data', JSON.stringify(data));
-          console.log(this.employees[i].role);
-          break;
-        }
-      }
-      this.getCategoriesAndExtraFoodsAndMenusAndStoreInLocalStorage();
+      this.callApiAndStoreResponseInLocalStorage();
     } else {
       console.warn('Please enter the required!');
     }
@@ -98,22 +100,25 @@ export class AuthComponent implements OnInit {
     this.sign_in = !this.sign_in;
   }
 
-  async getCategoriesAndExtraFoodsAndMenusAndStoreInLocalStorage() {
+  async callApiAndStoreResponseInLocalStorage() {
     const categories: Category[] = await this.api.getAllCategories();
     localStorage.setItem('categories', JSON.stringify(categories));
     const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();
     localStorage.setItem('extraFoods', JSON.stringify(extraFoods));
     const menuNames: Menu[] = await this.api.getAllFoodNames();
     localStorage.setItem('menuNames', JSON.stringify(menuNames));
-
+    const ingredients: Ingredient[] = await this.api.getAllIngredient();
+    localStorage.setItem('ingredients', JSON.stringify(ingredients));
     const waitstaffs: Employee[] = await this.api.getEmployeesWithRole(
       'waiter'
     );
     localStorage.setItem('waitstaffs', JSON.stringify(waitstaffs));
-
     const supervisors: Employee[] = await this.api.getEmployeesWithRole(
       'supervisor'
     );
     localStorage.setItem('supervisors', JSON.stringify(supervisors));
+  }
+  ngOnDestroy() {
+    this.api.unsubscribe();
   }
 }

@@ -72,13 +72,8 @@ export class SidenavComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.getWaiteDatas();
     let data: any = localStorage.getItem('data');
     this.employeesData = JSON.parse(data);
-  }
-
-  async getWaiteDatas() {
-    // this.employees = await this.api.getEmployee();
   }
 
   toggleCollapse() {

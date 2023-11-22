@@ -1,0 +1,41 @@
+
+
+
+<div class="new-staff-container">
+    <app-sidebar></app-sidebar>
+    <div class="container">
+        <div class="form-container">
+            <form (submit)="register()" enctype="multipart/form-data">
+                <label for="profilePicture">Add Profile Image:</label>
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" (change)="onFileSelected($event)">
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required [(ngModel)]="staffData.name"><br><br>
+
+                <label for="role">Position:</label>
+                <select id="role" name="role" required [(ngModel)]="staffData.role">
+                    <option value="manager">Manager</option>
+                    <option value="supervisor">Supervisor</option>
+                    <option value="waitstaff">Wait-staff</option>
+                </select><br><br>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required [(ngModel)]="staffData.phone"><br><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required [(ngModel)]="staffData.email"><br><br>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required [(ngModel)]="staffData.address"><br><br>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required [(ngModel)]="staffData.username"><br><br>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required [(ngModel)]="staffData.password"><br><br>
+
+                <button type="submit">Add New Staff</button>
+            </form>
+        </div>
+    </div>
+</div>

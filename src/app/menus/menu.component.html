@@ -30,10 +30,7 @@
                 </div>
                 <div class="item-name">{{ menu.food_name }}</div>
                 <div class="icons">
-                  <i
-                    class="fa-solid fa-minus"
-                    (click)="reduce(menuIndex, menu)"
-                  ></i>
+                  <i class="fa-solid fa-minus" (click)="reduce(menu)"></i>
                   <div>{{ menu.quantity }}</div>
                   <i
                     class="fa-solid fa-plus"
@@ -77,21 +74,19 @@
                   </mat-tab>
                   <mat-tab label="Ingredients" class="grid">
                     <div class="grid-container">
-                      <!-- <ng-container
-                        *ngFor="let topping of foods[selectedIndex].toppings"
-                      >
+                      <ng-container *ngFor="let ingredient of detailIngredient">
                         <label>
                           <input
                             class="select"
                             type="checkbox"
-                            [value]="topping"
+                            [value]="ingredient"
                             formControlName="topping"
                           />
                           <div class="grid-item">
-                            {{ topping }}
+                            {{ ingredient.ingredient_name }}
                           </div>
                         </label>
-                      </ng-container> -->
+                      </ng-container>
                     </div>
                   </mat-tab>
                   <mat-tab label="Extra food" class="grid">
@@ -149,7 +144,7 @@
         <div class="order-card">
           <ng-container *ngFor="let order of orders; let orderIndex = index">
             <div class="food-name">
-              <div>{{ order.food_name }}</div>
+              <div>{{ menuNames[order.menu_id - 1].food_name }}</div>
               <div>{{ order.quantity }}</div>
             </div>
             <!-- <div>{{ order.extra }}</div>
@@ -164,7 +159,7 @@
               <div>Order Type</div>
               <div class="dropdown" (click)="openDropdown(orderIndex)">
                 <button class="dropdown-toggle">
-                  {{ orderType }}
+                  {{ order.takeaway ? "Take away" : "Dine in" }}
                 </button>
                 <div
                   class="dropdown-menu"
@@ -174,7 +169,7 @@
                   <button
                     class="dropdown-item"
                     *ngFor="let type of orderTypes; let typeIndex = index"
-                    (click)="sort(typeIndex)"
+                    (click)="changeOrderType(orderIndex)"
                   >
                     {{ type }}
                   </button>

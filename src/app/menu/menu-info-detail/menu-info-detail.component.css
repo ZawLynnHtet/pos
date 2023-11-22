@@ -1,0 +1,64 @@
+/* Styles for the menu-detail container */
+.menu-detail {
+    display: flex;
+    justify-content: space-between;
+    
+  }
+  
+  .container {
+    min-height: 100vh;
+    flex-grow: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for the Edit and Delete buttons */
+  button {
+    background-color: var(--main-color);
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    position: relative;
+    left: 30%
+  }
+  
+  button:hover {
+    background-color: #000;
+    color: var(--main-color)
+  }
+  
+  /* Styles for the figure and image */
+  figure {
+    text-align: center;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  
+  figcaption {
+    font-style: italic;
+  }
+  
+  /* Styles for the sections (Categories, Price, Ingredients) */
+  div > h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--main-color)
+  }
+  
+  div > p {
+    font-size: 16px;
+  }
+  
+  

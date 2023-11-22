@@ -1,0 +1,125 @@
+<div class="new-menu-container">
+  <app-sidebar></app-sidebar>
+  <div class="container">
+    <figure>
+      <img src="" alt="" />
+      <figcaption></figcaption>
+    </figure>
+    <div class="categories">
+      <h3>Categories</h3>
+      <form>
+        <label class="choice-label">
+          <input type="checkbox" name="meal" value="breakfast" />
+          Breakfast
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="meal" value="lunch" />
+          Lunch
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="meal" value="dinner" />
+          Dinner
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="meal" value="snacks" />
+          Snacks
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="meal" value="drinks" />
+          Drinks
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="meal" value="traditional" />
+          Traditional
+        </label>
+      </form>
+    </div>
+    <hr />
+    <div class="ingredients">
+      <h3>Ingredients/ Toppings</h3>
+      <form>
+        <label class="choice-label">
+          <input type="checkbox" name="ingredient" value="chili" />
+          Chili
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="ingredient" value="pepper" />
+          Pepper
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="ingredient" value="cheese" />
+          Cheese
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="ingredient" value="onion" />
+          Onion
+        </label>
+
+        <label class="choice-label">
+          <input type="checkbox" name="ingredient" value="ice" />
+          Ice
+        </label>
+      </form>
+    </div>
+    <hr />
+    <div class="meat">
+      <h3>Meat Choice</h3>
+      <form>
+        <label class="checkbox-label">
+          <input type="checkbox" name="meat" value="chicken" />
+          Chicken
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="meat" value="pork" />
+          Pork
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="meat" value="beef" />
+          Beef
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="ingredient" value="fried-egg" />
+          Fried Egg
+        </label>
+      </form>
+    </div>
+    <hr />
+    <div class="extra">
+      <h3>Extra</h3>
+      <form>
+        <label class="checkbox-label">
+          <input type="checkbox" name="ingredient" value="fried-egg" />
+          Fried Egg
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="ingredient" value="cheese" />
+          Cheese
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="ingredient" value="pal-kyaw" />
+          Pal Kyaw
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" name="ingredient" value="nga-phal" />
+          Nga Phal
+        </label>
+      </form>
+    </div>
+    <hr />
+    <button class="add-btn" [routerLink]="['/all-menus']">Add</button>
+  </div>
+</div>

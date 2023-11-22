@@ -7,6 +7,8 @@ import { Table } from '../models/table.model';
 import { Order } from '../models/order.model';
 import { Menu } from '../models/menu.model';
 import { Ingredient } from '../models/ingredient.model';
+import { DetailsBody } from '../models/orderdetails.model';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-menu',
@@ -27,7 +29,9 @@ export class MenuComponent {
   categoryId?: number;
   orderType: string = 'Dine In';
   orderTypes = ['Dine In', 'Take Away'];
-  ingredient: Ingredient[] = [];
+  ingredients: Ingredient[] = [];
+  detailIngredient: any = [];
+  menuNames: Menu[] = [];
 
   selectedForm = new FormGroup({
     meat: new FormControl(''),
@@ -41,7 +45,8 @@ export class MenuComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private api: ApiService
+    private api: ApiService,
+    private utils: UtilsService
   ) {}
 
   async ngOnInit() {
@@ -59,8 +64,15 @@ export class MenuComponent {
   }
 
   async getIngredient() {
-    this.ingredient = await this.api.getAllIngredient();
-    localStorage.setItem('ingredient', JSON.stringify(this.ingredient));
+    // this.ingredients = await this.api.getAllIngredient();
+    this.ingredients = this.utils.getSortedLocalStorageArray(
+      'ingredients',
+      'ingredients_id'
+    );
+    this.menuNames = this.utils.getSortedLocalStorageArray(
+      'menuNames',
+      'menu_id'
+    );
   }
 
   async getTableData() {
@@ -68,13 +80,18 @@ export class MenuComponent {
   }
 
   showTopping(index: number) {
+    this.detailIngredient = [];
     this.topping = true;
     this.selectedIndex = index;
-    for (let i = 0; i < this.menus.length; i++) {
-      if (this.menus[i].ingredient_ids?.includes(3)) {
-        console.log('hello');
-      } else {
-        console.log('HI');
+    for (let i = 0; i < this.ingredients.length; i++) {
+      if (
+        this.menus[index].ingredient_ids.includes(
+          this.ingredients[i].ingredient_id
+        )
+      ) {
+        this.detailIngredient.push({
+          ingredient_name: this.ingredients[i].ingredient_name,
+        });
       }
     }
   }
@@ -92,34 +109,57 @@ export class MenuComponent {
     this.showDropdown = !this.showDropdown;
   }
 
+  reduce(menu: Menu) {
+    const i = this.orders.findIndex((order) => {
+      return order.menu_id == menu.menu_id;
+    });
+
+    if (i > -1) {
+      if (this.orders[i].quantity > 1) {
+        this.orders[i].quantity--;
+      } else {
+        this.orders.splice(i, 1);
+      }
+    }
+  }
+
   addOrder(id: number, menu: any) {
+    const order: DetailsBody = {
+      quantity: 0,
+      menu_id: menu.menu_id,
+      choice_of_meat: null,
+      removed_ingredients: [],
+      extra_ingredients: [],
+      extra_quantity: [],
+      takeaway: false,
+      note: null,
+    };
     if (this.orders.length == 0) {
-      menu.quantity++;
-      this.orders.push(menu);
+      // menu.quantity++;
+      // this.orders.push(menu);
+      order.quantity++;
+      this.orders.push(order);
     } else {
       const i = this.orders.findIndex((order) => {
-        return order.food_name == menu.food_name;
+        return order.menu_id == menu.menu_id;
       });
       if (i == -1) {
-        menu.quantity++;
-        this.orders.push(menu);
+        order.quantity++;
+        this.orders.push(order);
+        // menu.quantity++;
+        // this.orders.push(menu);
       } else {
         this.orders[i].quantity++;
       }
     }
   }
 
-  del(index: number) {
-    this.orders.splice(index, 1);
+  changeOrderType(i: number) {
+    this.orders[i].takeaway = !this.orders[i].takeaway;
   }
 
-  reduce(index: number, qty: any) {
-    if (qty.quantity != 0) {
-      qty.quantity--;
-      if (qty.quantity === 0) {
-        this.orders.splice(index, 1);
-      }
-    }
+  del(index: number) {
+    this.orders.splice(index, 1);
   }
 
   submitOrder() {

@@ -1,0 +1,11 @@
+.card-wrapper {
+    max-height: 300px;
+    border: 1px solid #ddd;
+    display: flex;
+    overflow-x: auto;
+    /* scrollbar-width: none; Firefox */
+  /* -ms-overflow-style: none; Internet Explorer and Microsoft Edge */
+  margin-bottom: 20px;
+    
+
+}

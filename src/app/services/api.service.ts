@@ -103,10 +103,9 @@ export class ApiService {
     return this.http.post(`${apiUrl}/employees/login`, data);
   }
 
-  addOrder(data: any) {
+  addOrders(data: any) {
     return this.http.post(`${apiUrl}/orders`, data);
   }
-
   getAllOrdersWithTableId(
     id: number,
     submitted: boolean
@@ -153,11 +152,6 @@ export class ApiService {
     });
   }
 
-  addOrders(data: Order): Promise<Order[]> {
-    return new Promise((resolve, reject) => {
-      this.http.post(`${apiUrl}/orders`, data);
-    });
-  }
   updateOrder(body: Order, oid: number): Promise<Order> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http

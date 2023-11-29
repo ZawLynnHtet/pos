@@ -48,8 +48,6 @@ export class AuthComponent implements OnInit {
     password: this.builder.control('', [Validators.required]),
   });
 
-  genders = ['male', 'female'];
-
   ngOnInit(): void {
     // this.getEmployeeData();
   }

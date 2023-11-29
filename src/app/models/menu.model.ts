@@ -12,6 +12,7 @@ export interface Menu {
   category_ids: number[] | null;
   ingredient_ids: number[];
   extraFood_ids: number[];
+  meat_choice: string[];
   food_name: string;
   price: number;
   img: string;
@@ -229,6 +230,7 @@ const typeMap: any = {
       { json: 'category_ids', js: 'category_ids', typ: u(a(0), null) },
       { json: 'ingredient_ids', js: 'ingredient_ids', typ: u(a(0), null) },
       { json: 'extraFood_ids', js: 'extraFood_ids', typ: null },
+      { json: 'meat_choice', js: 'meat_choice', typ: [] },
       { json: 'food_name', js: 'food_name', typ: '' },
       { json: 'price', js: 'price', typ: 0 },
       { json: 'img', js: 'img', typ: '' },

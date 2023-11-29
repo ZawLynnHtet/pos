@@ -31,7 +31,7 @@ export interface OrderDetails {
 export interface DetailsBody {
   menu_id: number;
   quantity: number;
-  choice_of_meat?: null;
+  choice_of_meat?: string | null;
   removed_ingredients: any[];
   extra_ingredients: any[];
   extra_quantity: any[];

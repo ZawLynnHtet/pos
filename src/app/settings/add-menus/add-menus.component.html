@@ -1,2 +1,12 @@
 <app-sidenav></app-sidenav>
-<section></section>
+<section>
+  <img [src]="selectedFile!.src" alt="" *ngIf="selectedFile" />
+  <label class="image-upload-container btn btn-bwm">
+    <input
+      #imageInput
+      type="file"
+      accept="image/*"
+      (change)="processFile(imageInput)"
+    />
+  </label>
+</section>

@@ -31,14 +31,13 @@
                 <div class="item-name">{{ menu.food_name }}</div>
                 <div class="icons">
                   <i class="fa-solid fa-minus" (click)="reduce(menu)"></i>
-                  <div>{{ menu.quantity }}</div>
                   <i
                     class="fa-solid fa-plus"
                     (click)="addOrder(menu.menu_id, menu)"
                   ></i>
                 </div>
-                <button class="choice" (click)="showTopping(menuIndex)">
-                  Select
+                <button class="choice" (click)="showTopping(menuIndex, menu)">
+                  Choice
                 </button>
               </div>
             </ng-container>
@@ -50,11 +49,14 @@
             <mat-tab-group class="group">
               <form [formGroup]="selectedForm">
                 <div class="mytab">
-                  <mat-tab label="Choice of meat">
+                  <mat-tab
+                    label="Choice of meat"
+                    *ngIf="selectedMenu.meat_choice != null"
+                  >
                     <div class="grid-container">
-                      <!-- <ng-container
+                      <ng-container
                         *ngFor="
-                          let extraFood of menus[selectedIndex].extraFood_id;
+                          let meat of selectedMenu.meat_choice;
                           let i = index
                         "
                       >
@@ -62,28 +64,41 @@
                           <input
                             class="select"
                             type="radio"
-                            [value]="extraFood"
+                            [value]="meat"
                             formControlName="meat"
+                            (change)="onRadioBtnChange($event)"
                           />
-                          <div class="grid-item">
-                            {{ extraFood }}
-                          </div>
+                          <div class="grid-item">{{ meat }}</div>
                         </label>
-                      </ng-container> -->
+                      </ng-container>
+                      <label>
+                        <input
+                          class="select"
+                          type="radio"
+                          [value]="null"
+                          formControlName="meat"
+                          (change)="onRadioBtnChange($event)"
+                        />
+                        <div class="grid-item">None</div>
+                      </label>
                     </div>
                   </mat-tab>
                   <mat-tab label="Ingredients" class="grid">
                     <div class="grid-container">
-                      <ng-container *ngFor="let ingredient of detailIngredient">
+                      <ng-container
+                        *ngFor="let ingred_id of selectedMenu.ingredient_ids"
+                      >
                         <label>
                           <input
                             class="select"
                             type="checkbox"
-                            [value]="ingredient"
-                            formControlName="topping"
+                            [value]="ingred_id"
+                            formArrayName="toppings"
+                            (change)="onCheckboxChange($event, 'toppings')"
                           />
                           <div class="grid-item">
-                            {{ ingredient.ingredient_name }}
+                            {{ ingredients[ingred_id - 1].ingredient_name }}
+                            <!-- {{ ingredient.ingredient_name }} -->
                           </div>
                         </label>
                       </ng-container>
@@ -91,21 +106,22 @@
                   </mat-tab>
                   <mat-tab label="Extra food" class="grid">
                     <div class="grid-container">
-                      <!-- <ng-container
-                        *ngFor="let extraFood of foods[selectedIndex].extra"
+                      <ng-container
+                        *ngFor="let id of selectedMenu.extraFood_ids"
                       >
                         <label>
                           <input
                             class="select"
-                            type="radio"
-                            [value]="extraFood"
-                            formControlName="extra"
+                            type="checkbox"
+                            [value]="id"
+                            formArrayName="extras"
+                            (change)="onCheckboxChange($event, 'extras')"
                           />
                           <div class="grid-item">
-                            {{ extraFood }}
+                            {{ extraFoods[id - 1].food_name }}
                           </div>
                         </label>
-                      </ng-container> -->
+                      </ng-container>
                     </div>
                   </mat-tab>
                 </div>
@@ -115,9 +131,14 @@
               <button class="btn" (click)="closeTopping()">
                 <i class="fa-solid fa-xmark"></i>
               </button>
-              <button class="btn">
-                <i class="fa-solid fa-cart-shopping"></i>
-              </button>
+              <div>
+                <button class="btn" (click)="remove()">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <button class="btn plus" (click)="addOrdersWithChoice()">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
         </ng-template>
@@ -132,7 +153,7 @@
               ><div>Table no: {{ table.table_no }}</div></ng-container
             >
           </ng-container>
-          <div>Order ID: 11</div>
+          <div *ngIf="newOrders">Order ID: {{ newOrders.order_id }}</div>
         </div>
         <div class="spacer"></div>
         <div class="order-title">
@@ -144,17 +165,30 @@
         <div class="order-card">
           <ng-container *ngFor="let order of orders; let orderIndex = index">
             <div class="food-name">
-              <div>{{ menuNames[order.menu_id - 1].food_name }}</div>
+              <div>
+                {{ menuNames[order.menu_id - 1].food_name }}
+                <ng-container *ngIf="order.choice_of_meat != null"
+                  >({{ order.choice_of_meat }})</ng-container
+                >
+              </div>
               <div>{{ order.quantity }}</div>
             </div>
-            <!-- <div>{{ order.extra }}</div>
             <ol>
-              <li></li>
+              <!-- <li>{{ order.choice_of_meat }}</li> -->
+              <li *ngIf="order.removed_ingredients.length != 0">
+                Remove:
+                <ng-container
+                  *ngFor="let ingred_id of order.removed_ingredients"
+                  >{{ ingredients[ingred_id - 1].ingredient_name }},
+                </ng-container>
+              </li>
+              <li *ngIf="order.extra_ingredients.length != 0">
+                Extras:
+                <ng-container *ngFor="let extra_id of order.extra_ingredients"
+                  >{{ extraFoods[extra_id - 1].food_name }},
+                </ng-container>
+              </li>
             </ol>
-            <div>{{ order.remove }}</div>
-            <ol>
-              <li></li>
-            </ol> -->
             <div class="order-type">
               <div>Order Type</div>
               <div class="dropdown" (click)="openDropdown(orderIndex)">
@@ -187,8 +221,8 @@
         </div>
       </div>
       <ng-template #blank>
-        <div class="content">
-          Add Orders <i class="fa-solid fa-cart-shopping"></i>
+        <div class="content" (click)="createOrder()">
+          Create Order <i class="fa-solid fa-cart-shopping"></i>
         </div>
       </ng-template>
       <div class="order-bottom">

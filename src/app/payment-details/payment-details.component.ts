@@ -7,14 +7,14 @@ import { Menu } from '../models/menu.model';
 @Component({
   selector: 'app-payment-details',
   templateUrl: './payment-details.component.html',
-  styleUrls: ['./payment-details.component.css']
+  styleUrls: ['./payment-details.component.css'],
 })
 export class PaymentDetailsComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private api: ApiService,
-  ) { };
+    private api: ApiService
+  ) {}
 
   tableId!: number;
   orderId!: number;
@@ -48,7 +48,9 @@ export class PaymentDetailsComponent {
 
     if (names != null) {
       this.menuNames = JSON.parse(names);
-      this.menuNames.sort((a, b) => { return a.menu_id - b.menu_id });
+      this.menuNames.sort((a, b) => {
+        return a.menu_id - b.menu_id;
+      });
 
       console.log(this.menuNames);
     }
@@ -70,7 +72,7 @@ export class PaymentDetailsComponent {
     let discount = 0;
     let tax = 1000;
 
-    this.bills.forEach(bill => {
+    this.bills.forEach((bill) => {
       total += bill.total_price;
     });
 

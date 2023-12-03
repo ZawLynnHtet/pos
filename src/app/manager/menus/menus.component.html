@@ -1,0 +1,36 @@
+<app-sidenav></app-sidenav>
+<section>
+  <div class="button">
+    <button class="add-menus" routerLink="/menus/add-menus">Add Menus</button>
+  </div>
+  <div class="categories">
+    <ng-container *ngFor="let category of categories; let i = index">
+      <div (click)="showMenus(category.category_id)">
+        <div
+          class="category"
+          [ngStyle]="{
+          background: categoryId === category.category_id
+            ? 'var(--main-color)'
+            : '#fff',
+          color: categoryId === category.category_id ? 'var(--secondary-color)' : 'black',
+        }"
+        >
+          {{ category.category_name }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="menu-box mt-3">
+    <div class="menus">
+      <ng-container *ngFor="let menu of menus; let menuIndex = index">
+        <div class="item-card">
+          <div class="image">
+            <img [src]="menu.img" alt="food" />
+          </div>
+          <div class="item-name">{{ menu.food_name }}</div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>

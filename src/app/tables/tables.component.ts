@@ -38,7 +38,7 @@ export class TablesComponent implements OnInit {
       this.employeesData.role === 'waiter' &&
       this.tables[index].is_available === true
     ) {
-      this.router.navigateByUrl('tables/' + id + '/menus');
+      this.router.navigateByUrl('tables/' + id + '/menu');
     } else if (
       this.employeesData.role === 'supervisor' ||
       this.tables[index].is_available === false

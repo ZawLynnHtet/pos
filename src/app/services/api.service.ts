@@ -4,7 +4,7 @@ import { apiUrl } from 'src/utils/constants';
 import { OverallResponse, Table } from '../models/table.model';
 import { SubSink } from 'subsink/dist/subsink';
 import { Order } from '../models/order.model';
-import { OrderDetails } from '../models/orderdetails.model';
+import { DetailsBody, OrderDetails } from '../models/orderdetails.model';
 import { Category } from '../models/category.model';
 import { Menu } from '../models/menu.model';
 import { Reservation } from '../models/reservation.model';
@@ -47,6 +47,10 @@ export class ApiService {
           },
         });
     });
+  }
+
+  postMenu(data: any) {
+    return this.http.post(`${apiUrl}/menus`, data);
   }
 
   getAllIngredient(): Promise<Ingredient[]> {
@@ -273,6 +277,21 @@ export class ApiService {
           reject(error);
         },
       });
+    });
+  }
+
+  createOrderDetails(body: DetailsBody): Promise<OrderDetails> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .post(`${apiUrl}/orderdetails`, body)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (err: any) => {
+            reject(err);
+          },
+        });
     });
   }
 

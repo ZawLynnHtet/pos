@@ -11,16 +11,16 @@ import { OrderListComponent } from '../order-list/order-list.component';
 @Component({
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.css']
+  styleUrls: ['./order-details.component.css'],
 })
 export class OrderDetailsComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
-    private api: ApiService,
-  ) { }
+    private api: ApiService
+  ) {}
 
   tableId!: number;
-  allOrders: OrderDetails[][] = [];  // going to be [[{}, {}], [{}]]
+  allOrders: OrderDetails[][] = []; // going to be [[{}, {}], [{}]]
   headers: any[] = [];
   @ViewChild(OrderListComponent) orderListComp: any;
 
@@ -34,7 +34,7 @@ export class OrderDetailsComponent {
     const orders = await this.getAllUnsubmittedOrdersFromOneTable();
     orders.sort((a, b) => {
       return a.order_id - b.order_id;
-    })
+    });
     this.allOrders = this.separateOrdersByOrderId(orders);
 
     this.headers = this.separateOrderHeaderInfos(this.allOrders);
@@ -43,12 +43,15 @@ export class OrderDetailsComponent {
   getItemsFromLocalStorage() {
     var menus = localStorage.getItem('menuNames');
     this.menuNames = JSON.parse(menus!);
-    this.menuNames.sort((a, b) => { return a.menu_id - b.menu_id });
+    this.menuNames.sort((a, b) => {
+      return a.menu_id - b.menu_id;
+    });
 
     var extras = localStorage.getItem('extraFoods');
     this.extraFoods = JSON.parse(extras!);
-    this.extraFoods.sort((a, b) => { return a.extraFood_id - b.extraFood_id });
-
+    this.extraFoods.sort((a, b) => {
+      return a.extraFood_id - b.extraFood_id;
+    });
   }
 
   async getAllUnsubmittedOrdersFromOneTable(): Promise<OrderDetails[]> {
@@ -69,14 +72,12 @@ export class OrderDetailsComponent {
       if (oid == 0) {
         oid = order.order_id;
         orderDetailsFromOneOrder.push(order);
-      }
-      else if (oid != order.order_id) {
+      } else if (oid != order.order_id) {
         oid = order.order_id;
         separatedOrders.push(orderDetailsFromOneOrder);
         orderDetailsFromOneOrder = [];
         orderDetailsFromOneOrder.push(order);
-      }
-      else {
+      } else {
         orderDetailsFromOneOrder.push(order);
       }
       // if order is the last item in orderSet
@@ -99,7 +100,7 @@ export class OrderDetailsComponent {
         id: orderDetailsFromOneOrder[0].order_id,
         waitstaff_id: orderDetailsFromOneOrder[0].waitstaff_id,
         date: new Date(orderDetailsFromOneOrder[0].orderDate).toLocaleString(),
-        total_qty: qty
+        total_qty: qty,
       };
       infos.push(header);
     });
@@ -126,8 +127,12 @@ export class OrderDetailsComponent {
     orders.reduce((prevOrder, currOrder, i) => {
       if (prevOrder.menu_id == currOrder.menu_id) {
         prevOrder.quantity += currOrder.quantity;
-        prevOrder.extra_ingredients = prevOrder.extra_ingredients.concat(currOrder.extra_ingredients);
-        prevOrder.extra_quantity = prevOrder.extra_quantity.concat(currOrder.extra_quantity);
+        prevOrder.extra_ingredients = prevOrder.extra_ingredients.concat(
+          currOrder.extra_ingredients
+        );
+        prevOrder.extra_quantity = prevOrder.extra_quantity.concat(
+          currOrder.extra_quantity
+        );
         // console.log(`same food i - ${i} so added qty`);
         // console.log(prevOrder);
       } else {
@@ -161,14 +166,14 @@ export class OrderDetailsComponent {
       const bill: Bill = {
         menu_id: order.menu_id,
         qty: order.quantity,
-        total_price: total
-      }
+        total_price: total,
+      };
       await this.api.createOneBill(bill, order.order_id);
     });
 
     const body: Order = {
       total_price: subTotal,
-      order_submitted: true
+      order_submitted: true,
     };
     this.allOrders.splice(oindex, 1);
     await this.api.updateOrder(body, orders[0].order_id);

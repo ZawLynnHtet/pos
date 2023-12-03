@@ -1,0 +1,84 @@
+<app-sidenav></app-sidenav>
+<section>
+  <div class="set-menu">
+    <div class="images">
+      <div>
+        <img
+          src="..//..//../assets/images/placeholder.png"
+          alt=""
+          *ngIf="selectedFile == null; else img"
+        />
+        <ng-template #img>
+          <img
+            [src]="selectedFile!.src"
+            [alt]="selectedFile!.file"
+            *ngIf="selectedFile"
+          />
+        </ng-template>
+      </div>
+      <div>
+        <input
+          id="file-input"
+          #imageInput
+          type="file"
+          accept="image/*"
+          (change)="processFile(imageInput)"
+        />
+        <label id="file-input-label" for="file-input"> Upload Photo </label>
+      </div>
+    </div>
+    <form [formGroup]="registerForm" class="form">
+      <input
+        type="text"
+        placeholder="Name"
+        class="form__input"
+        id="name"
+        formControlName="name"
+      />
+      <label for="name" class="form__label">Name</label>
+
+      <input
+        type="email"
+        placeholder="Email"
+        class="form__input"
+        id="email"
+        formControlName="email"
+      />
+      <label for="email" class="form__label">Email</label>
+      <input
+        type="tel"
+        placeholder="Phone"
+        class="form__input"
+        id="phone"
+        formControlName="phone"
+      />
+      <label for="phone" class="form__label">Phone</label>
+      <input
+        type="text"
+        placeholder="Role"
+        class="form__input"
+        id="role"
+        formControlName="role"
+      />
+      <label for="role" class="form__label">Role</label>
+
+      <input
+        type="password"
+        placeholder="Password"
+        class="form__input"
+        id="password"
+        formControlName="password"
+      />
+      <label for="password" class="form__label">Password</label>
+      <div class="mb-3 row">
+        <mat-radio-group aria-label="Select an option" formControlName="gender">
+          <mat-radio-button value="male" class="radio">Male</mat-radio-button>
+          <mat-radio-button value="female" class="radio"
+            >Female</mat-radio-button
+          >
+        </mat-radio-group>
+      </div>
+      <button class="submit">Submit</button>
+    </form>
+  </div>
+</section>

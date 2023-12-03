@@ -8,14 +8,14 @@ import { Reservation } from '../models/reservation.model';
 @Component({
   selector: 'app-reserv-details',
   templateUrl: './reserv-details.component.html',
-  styleUrls: ['./reserv-details.component.css']
+  styleUrls: ['./reserv-details.component.css'],
 })
 export class ReservDetailsComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private api: ApiService,
-  ) { }
+    private api: ApiService
+  ) {}
 
   // reservDetails: any = [{
   //   id: 1,
@@ -72,7 +72,6 @@ export class ReservDetailsComponent {
   reservDetails!: Reservation;
   reservId!: number;
   date!: any;
-
 
   async ngOnInit() {
     this.reservId = this.activatedRoute.snapshot.params['reservId'];

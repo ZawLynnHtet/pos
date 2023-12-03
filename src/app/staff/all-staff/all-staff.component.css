@@ -1,8 +1,0 @@
-hr {
-    border: none;
-    height: 2px;
-    background-color: var(--sidenav-bg-color);
-}
-.all-staff-container {
-    display: flex;
-}

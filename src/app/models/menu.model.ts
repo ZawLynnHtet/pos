@@ -9,7 +9,7 @@
 
 export interface Menu {
   menu_id: number;
-  category_ids: number[] | null;
+  category_id: number;
   ingredient_ids: number[];
   extraFood_ids: number[];
   meat_choice: string[];
@@ -20,6 +20,17 @@ export interface Menu {
   quantity: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface MenuItem {
+  category_id: number;
+  ingredient_ids: number[];
+  extraFood_ids: number[];
+  meat_choice: string[];
+  food_name: string;
+  price: number;
+  img: string;
+  is_available: boolean;
 }
 
 // Converts JSON strings to/from your types

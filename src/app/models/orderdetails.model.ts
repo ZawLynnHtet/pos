@@ -29,6 +29,7 @@ export interface OrderDetails {
 }
 
 export interface DetailsBody {
+  order_id: number;
   menu_id: number;
   quantity: number;
   choice_of_meat?: string | null;

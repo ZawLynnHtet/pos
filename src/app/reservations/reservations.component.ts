@@ -6,14 +6,14 @@ import { Reservation } from '../models/reservation.model';
 @Component({
   selector: 'app-reservations',
   templateUrl: './reservations.component.html',
-  styleUrls: ['./reservations.component.css']
+  styleUrls: ['./reservations.component.css'],
 })
 export class ReservationsComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private api: ApiService,
-  ) { }
+    private api: ApiService
+  ) {}
 
   sortedBy: string = 'latest';
   showDropdown: boolean = false;
@@ -87,6 +87,4 @@ export class ReservationsComponent {
   openDropdown() {
     this.showDropdown = !this.showDropdown;
   }
-
-
 }

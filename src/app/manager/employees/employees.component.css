@@ -1,0 +1,21 @@
+section {
+  margin-left: 100px;
+  padding: 20px 0;
+}
+
+.button {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.add-menus {
+  background: var(--main-color);
+  padding: 10px 20px;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  color: aliceblue;
+  border-radius: 8px;
+  margin-right: 20px;
+}

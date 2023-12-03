@@ -49,20 +49,20 @@ export class SidenavComponent implements OnInit {
       icon: 'fa-solid fa-table-cells',
       label: 'Tables',
     },
-    // {
-    //   routeLink: '/menus',
-    //   icon: 'fa fa-cutlery',
-    //   label: 'Menus',
-    // },
+    {
+      routeLink: '/menus',
+      icon: 'fa fa-cutlery',
+      label: 'Menus',
+    },
     {
       routeLink: '/reservations',
       icon: 'fa fa-calendar-o',
       label: 'Reservations',
     },
     {
-      routeLink: '/settings/add-menus',
-      icon: 'fa-solid fa-gear',
-      label: 'Settings',
+      routeLink: '/employees',
+      icon: 'fa-solid fa-users',
+      label: 'Employees',
     },
     {
       routeLink: '/auth',

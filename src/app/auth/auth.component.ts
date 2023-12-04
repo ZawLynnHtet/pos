@@ -90,10 +90,6 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  // async getEmployeeData() {
-  //   this.employees = await this.api.getEmployee();
-  // }
-
   signInOrUp() {
     this.sign_in = !this.sign_in;
   }

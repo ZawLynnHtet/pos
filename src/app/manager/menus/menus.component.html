@@ -1,8 +1,6 @@
 <app-sidenav></app-sidenav>
 <section>
-  <div class="button">
-    <button class="add-menus" routerLink="/menus/add-menus">Add Menus</button>
-  </div>
+  <button class="add-menus" routerLink="/menus/add-menus">Add Menus</button>
   <div class="categories">
     <ng-container *ngFor="let category of categories; let i = index">
       <div (click)="showMenus(category.category_id)">

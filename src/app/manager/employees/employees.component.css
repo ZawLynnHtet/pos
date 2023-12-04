@@ -1,15 +1,11 @@
 section {
   margin-left: 100px;
-  padding: 20px 0;
+  min-height: 100vh;
+  height: auto;
 }
 
-.button {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-}
-
-.add-menus {
+.add-employees {
+  margin-top: 20px;
   background: var(--main-color);
   padding: 10px 20px;
   border: none;
@@ -19,3 +15,64 @@ section {
   border-radius: 8px;
   margin-right: 20px;
 }
+
+.taps {
+  margin-top: 20px;
+  height: 89vh;
+  overflow: auto;
+}
+
+.employee-rows {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.employees {
+  width: 350px;
+  display: flex;
+  align-items: center;
+  border: 1px solid blue;
+}
+
+.data {
+  margin-left: 20px;
+}
+
+.image {
+  width: 40%;
+  height: 100%;
+}
+
+.image img {
+  width: 100%;
+  /* width: 150px;
+  height: 200px; */
+}
+
+/* @media screen and (max-width: 1300px) {
+  .employee-rows {
+    display: grid;
+    justify-content: space-between;
+    justify-self: center;
+    grid-template-columns: 30% 30% 30%;
+    column-gap: 3.3%;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .employee-rows {
+    display: grid;
+    grid-template-columns: 45% 45%;
+    column-gap: 5%;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .employee-rows {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+} */

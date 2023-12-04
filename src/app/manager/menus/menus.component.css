@@ -3,12 +3,6 @@ section {
   padding: 20px 0;
 }
 
-.button {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-}
-
 .add-menus {
   background: var(--main-color);
   padding: 10px 20px;

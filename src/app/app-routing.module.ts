@@ -8,11 +8,11 @@ import { ReservationsComponent } from './reservations/reservations.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
 import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
-import { AddMenusComponent } from './manager/add-menus/add-menus.component';
 import { AddEmployeesComponent } from './manager/add-employees/add-employees.component';
 import { MenuComponent } from './order-menus/menu.component';
 import { MenusComponent } from './manager/menus/menus.component';
 import { EmployeesComponent } from './manager/employees/employees.component';
+import { AddMenusComponent } from './manager/add-menus/add-menus/add-menus.component';
 
 const routes: Routes = [
   {

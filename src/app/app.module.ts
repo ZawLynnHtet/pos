@@ -27,7 +27,6 @@ import { ReservDetailsComponent } from './reserv-details/reserv-details.componen
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClientModule } from '@angular/common/http';
-import { AddMenusComponent } from './manager/add-menus/add-menus.component';
 import { AddEmployeesComponent } from './manager/add-employees/add-employees.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { FilterPipeModule } from 'ngx-filter-pipe';
@@ -35,6 +34,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { MenuComponent } from './order-menus/menu.component';
 import { MenusComponent } from './manager/menus/menus.component';
 import { EmployeesComponent } from './manager/employees/employees.component';
+import { AddMenusComponent } from './manager/add-menus/add-menus/add-menus.component';
 
 @NgModule({
   declarations: [

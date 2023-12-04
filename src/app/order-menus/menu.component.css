@@ -165,7 +165,7 @@ input:checked + .grid-item {
   margin-left: 10px;
 }
 
-.group {
+.taps {
   height: 87%;
   overflow: auto;
 }

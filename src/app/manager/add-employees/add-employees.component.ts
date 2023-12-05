@@ -1,20 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from 'src/app/models/employee.model';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from 'src/app/app.module';
 
 class ImageSnippet {
-  constructor(public src: string, public file: File) { }
+  constructor(public src: string, public file: File) {}
 }
 @Component({
   selector: 'app-add-employees',
   templateUrl: './add-employees.component.html',
   styleUrls: ['./add-employees.component.css'],
 })
-export class AddEmployeesComponent {
+export class AddEmployeesComponent implements OnInit {
   selectedFile?: ImageSnippet;
   genders: any[] = ['Male', 'Female'];
 
-  constructor(private builder: FormBuilder) { }
+  constructor(private builder: FormBuilder) {}
 
   registerForm: FormGroup = this.builder.group({
     email: this.builder.control('', [Validators.required, Validators.email]),
@@ -31,8 +33,20 @@ export class AddEmployeesComponent {
     //     ),
     //   ])
     // ),
-    password: this.builder.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+    password: this.builder.control('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(16),
+    ]),
   });
+
+  ngOnInit(): void {
+    // async uploadAndGetDownloadUrl(name: string): Promise<string> {
+    //   const reference = ref(storage, `menus/${this.menuForm.value.foodName}`);
+    //   await uploadBytes(reference, this.selectedFile?.file!);
+    //   return await getDownloadURL(ref(storage, `menus/${name}`));
+    // }
+  }
 
   processFile(imageInput: any) {
     const file: File = imageInput.files[0];
@@ -55,9 +69,8 @@ export class AddEmployeesComponent {
       gender: this.registerForm.controls['gender'].value,
       role: this.registerForm.controls['role'].value!,
       password: this.registerForm.controls['password'].value!,
-    }
+    };
 
     console.log(employee);
-
   }
 }

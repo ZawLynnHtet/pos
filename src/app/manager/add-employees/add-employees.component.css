@@ -105,6 +105,11 @@ section {
   color: #fff;
 }
 
+.submit:disabled {
+  color: #aaa;
+  background: #fff;
+}
+
 .radio {
   margin-right: 5px !important;
 }

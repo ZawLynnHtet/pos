@@ -66,6 +66,19 @@ export class ApiService {
     });
   }
 
+  getOneEmployee(id: number): Promise<Employee[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/employees/${id}`).subscribe({
+        next: (res: any) => {
+          resolve(res.user);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
   getEmployeesWithRole(role?: string): Promise<Employee[]> {
     return new Promise((resolve, reject) => {
       let url;

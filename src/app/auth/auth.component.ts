@@ -22,7 +22,6 @@ export class AuthComponent implements OnInit {
     private utils: UtilsService
   ) {}
   sign_in: boolean = false;
-  employees: Employee[] = [];
   loader: boolean = false;
 
   registerForm = this.builder.group({

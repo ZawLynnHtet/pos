@@ -5,37 +5,31 @@
   </button>
   <mat-tab-group class="taps">
     <mat-tab label="Waitstaff">
-      <div class="employee-rows">
-        <ng-container *ngFor="let waitstaff of waitstaffs">
-          <div class="employees">
-            <div class="image">
-              <img src="..//..//../assets/images/placeholder.png" alt="" />
-            </div>
-            <div class="data">
-              <p>ID: {{ waitstaff.employee_id }}</p>
-              <p>Name: {{ waitstaff.name }}</p>
-              <p>Email: {{ waitstaff.email }}</p>
-              <p>Role: {{ waitstaff.role }}</p>
-            </div>
+      <div class="g-container">
+        <div
+          class="g-item"
+          *ngFor="let waitstaff of waitstaffs"
+          (click)="goDetails(waitstaff.employee_id)"
+        >
+          <img src="..//..//../assets/images/placeholder.png" alt="employee" />
+          <div class="employee-name">
+            <div>{{ waitstaff.name }}</div>
           </div>
-        </ng-container>
+        </div>
       </div>
     </mat-tab>
     <mat-tab label="Supervisor">
-      <div class="employee-rows">
-        <ng-container *ngFor="let supervisor of supervisors">
-          <div class="employees">
-            <div class="image">
-              <img src="..//..//../assets/images/placeholder.png" alt="" />
-            </div>
-            <div class="data">
-              <p>ID: {{ supervisor.employee_id }}</p>
-              <p>Name: {{ supervisor.name }}</p>
-              <p>Email: {{ supervisor.email }}</p>
-              <p>Role: {{ supervisor.role }}</p>
-            </div>
+      <div class="g-container">
+        <div
+          class="g-item"
+          *ngFor="let supervisor of supervisors"
+          (click)="goDetails(supervisor.employee_id)"
+        >
+          <img src="..//..//../assets/images/placeholder.png" alt="" />
+          <div class="employee-name">
+            <div>{{ supervisor.name }}</div>
           </div>
-        </ng-container>
+        </div>
       </div>
     </mat-tab>
   </mat-tab-group>

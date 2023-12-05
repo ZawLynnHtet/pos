@@ -34,7 +34,14 @@ import { OrderModule } from 'ngx-order-pipe';
 import { MenuComponent } from './order-menus/menu.component';
 import { MenusComponent } from './manager/menus/menus.component';
 import { EmployeesComponent } from './manager/employees/employees.component';
-import { AddMenusComponent } from './manager/add-menus/add-menus/add-menus.component';
+import { EmployeesDetailsComponent } from './manager/employees-details/employees-details.component';
+import { AddMenusComponent } from './manager/add-menus/add-menus.component';
+import { initializeApp } from 'firebase/app';
+import { getStorage } from 'firebase/storage';
+import { firebaseConfig } from 'src/config/firebase.config';
+
+const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
 
 @NgModule({
   declarations: [
@@ -54,6 +61,7 @@ import { AddMenusComponent } from './manager/add-menus/add-menus/add-menus.compo
     AppComponent,
     MenusComponent,
     EmployeesComponent,
+    EmployeesDetailsComponent,
   ],
   imports: [
     BrowserModule,

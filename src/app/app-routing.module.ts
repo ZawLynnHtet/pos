@@ -12,7 +12,8 @@ import { AddEmployeesComponent } from './manager/add-employees/add-employees.com
 import { MenuComponent } from './order-menus/menu.component';
 import { MenusComponent } from './manager/menus/menus.component';
 import { EmployeesComponent } from './manager/employees/employees.component';
-import { AddMenusComponent } from './manager/add-menus/add-menus/add-menus.component';
+import { EmployeesDetailsComponent } from './manager/employees-details/employees-details.component';
+import { AddMenusComponent } from './manager/add-menus/add-menus.component';
 
 const routes: Routes = [
   {
@@ -79,6 +80,10 @@ const routes: Routes = [
   {
     path: 'employees/add-employees',
     component: AddEmployeesComponent,
+  },
+  {
+    path: 'employees/:id',
+    component: EmployeesDetailsComponent,
   },
 ];
 

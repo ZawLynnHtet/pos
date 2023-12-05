@@ -5,13 +5,14 @@
 //   const employee = Convert.toEmployee(json);
 
 export interface Employee {
-  employee_id: number;
+  employee_id?: number;
+  gender: string;
   name: string;
   email: string;
   phone: string;
-  gender: null;
   role: string;
   password: string;
+  // img: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

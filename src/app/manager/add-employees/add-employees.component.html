@@ -72,13 +72,21 @@
       <label for="password" class="form__label">Password</label>
       <div class="mb-3 row">
         <mat-radio-group aria-label="Select an option" formControlName="gender">
-          <mat-radio-button value="male" class="radio">Male</mat-radio-button>
-          <mat-radio-button value="female" class="radio"
-            >Female</mat-radio-button
+          <mat-radio-button
+            *ngFor="let gender of genders"
+            [value]="gender"
+            class="radio"
+            >{{ gender }}</mat-radio-button
           >
         </mat-radio-group>
       </div>
-      <button class="submit">Submit</button>
+      <button
+        class="submit"
+        (click)="createEmployee()"
+        [disabled]="!registerForm.valid"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </section>

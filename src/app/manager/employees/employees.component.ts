@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employees',
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class EmployeesComponent implements OnInit {
   waitstaffs: any = [];
   supervisors: any = [];
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     let waiter: any = localStorage.getItem('waitstaffs');
@@ -15,5 +17,9 @@ export class EmployeesComponent implements OnInit {
 
     let supervisor: any = localStorage.getItem('supervisors');
     this.supervisors = JSON.parse(supervisor);
+  }
+
+  goDetails(id: number) {
+    this.router.navigateByUrl('employees/' + id);
   }
 }

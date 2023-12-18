@@ -12,7 +12,7 @@ export interface Employee {
   phone: string;
   role: string;
   password: string;
-  // img: string;
+  img: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

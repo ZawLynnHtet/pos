@@ -7,15 +7,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../services/api.service';
-import { Category } from '../models/category.model';
-import { Table } from '../models/table.model';
-import { Order } from '../models/order.model';
-import { Menu } from '../models/menu.model';
-import { Ingredient } from '../models/ingredient.model';
-import { DetailsBody, OrderDetails } from '../models/orderdetails.model';
-import { UtilsService } from '../services/utils.service';
-import { ExtraFood } from '../models/extrafood.model';
+import { ApiService } from '../../services/api.service';
+import { Category } from '../../models/category.model';
+import { Table } from '../../models/table.model';
+import { Order } from '../../models/order.model';
+import { Menu } from '../../models/menu.model';
+import { Ingredient } from '../../models/ingredient.model';
+import { DetailsBody, OrderDetails } from '../../models/orderdetails.model';
+import { UtilsService } from '../../services/utils.service';
+import { ExtraFood } from '../../models/extrafood.model';
 
 @Component({
   selector: 'app-menu',
@@ -28,8 +28,8 @@ export class MenuComponent {
   showDropdown: boolean = false;
   selectedIndex: number = 0;
   orders: any[] = [];
-  tableIndex?: number;
-  tableId?: number;
+  tableIndex!: number;
+  tableId!: number;
   newOrders: any = [];
   menus: Menu[] = [];
   orderTypeIndex?: number;
@@ -40,6 +40,7 @@ export class MenuComponent {
   menuNames: Menu[] = [];
   employeesData: any;
   categories: any = [];
+  table: Table[] = [];
   tables: Table[] = [];
   property: any;
   extraFoods: ExtraFood[] = [];
@@ -62,23 +63,26 @@ export class MenuComponent {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     let data: any = localStorage.getItem('data');
     this.employeesData = JSON.parse(data);
     let category: any = localStorage.getItem('categories');
     this.categories = JSON.parse(category);
     this.showMenus(this.categories[0].category_id);
-    this.getTableData();
     this.tableId = this.activatedRoute.snapshot.params['id'];
     this.tableIndex = this.activatedRoute.snapshot.params['tableIndex'];
+    console.log(this.tableId + '/' + this.tableIndex);
     this.getIngredient();
+    this.table = await this.api.getOneTable(this.tableId);
+    let tableData: any = localStorage.getItem('tables');
+    this.tables = JSON.parse(tableData);
   }
 
   createOrder() {
     this.api
       .addOrders({
         table_id: this.tableId,
-        waitstaff_id: this.employeesData.employee_id,
+        waitstaff_id: this.employeesData.id,
         order_type: 'Dine In',
       })
       .subscribe((res: any) => {
@@ -112,10 +116,6 @@ export class MenuComponent {
       'extraFoods',
       'extraFood_id'
     );
-  }
-
-  async getTableData() {
-    this.tables = await this.api.getAllTables();
   }
 
   showTopping(index: number, menu: Menu) {
@@ -190,34 +190,6 @@ export class MenuComponent {
     this.showDropdown = !this.showDropdown;
   }
 
-  reduce(menu: Menu) {
-    const i = this.orders.findIndex((order) => {
-      return order.menu_id == menu.menu_id;
-    });
-
-    if (i > -1) {
-      if (this.orders[i].quantity > 1) {
-        this.orders[i].quantity--;
-      } else {
-        this.orders.splice(i, 1);
-      }
-    }
-  }
-
-  remove() {
-    const i = this.orders.findIndex((order) => {
-      return order.menu_id == this.selectedMenu.menu_id;
-    });
-
-    if (i > -1) {
-      if (this.orders[i].quantity > 1) {
-        this.orders[i].quantity--;
-      } else {
-        this.orders.splice(i, 1);
-      }
-    }
-  }
-
   addOrder(id: number, menu: any) {
     this.checkOrderIdAndCreateOrder();
     const order: DetailsBody = {
@@ -280,6 +252,8 @@ export class MenuComponent {
     });
     this.orderId = 0;
     this.orders = [];
+    this.tables[this.tableIndex].is_available = false;
+    localStorage.setItem('tables', JSON.stringify(this.tables));
   }
 
   onRadioBtnChange(evt: any) {

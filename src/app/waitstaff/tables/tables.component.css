@@ -25,6 +25,7 @@
   cursor: pointer;
   outline: none;
   border: none;
+  color: var(--secondary-color);
 }
 
 .table div:first-child {

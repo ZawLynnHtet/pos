@@ -1,5 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { EditEmployeeComponent } from '../edit-employee/edit-employee.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { Employee } from 'src/app/models/employee.model';
+import { UtilsService } from 'src/app/services/utils.service';
+
+class ImageSnippet {
+  constructor(public src: string, public file: File) {}
+}
+
+// export interface DialogData {
+//   id: number;
+//   gender: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   role: string;
+//   password: string;
+//   img: string;
+// }
 
 @Component({
   selector: 'app-employees',
@@ -7,19 +32,83 @@ import { Router } from '@angular/router';
   styleUrls: ['./employees.component.css'],
 })
 export class EmployeesComponent implements OnInit {
-  waitstaffs: any = [];
-  supervisors: any = [];
-  constructor(private router: Router) {}
+  displayedColumns: string[] = [
+    'img',
+    'id',
+    'name',
+    'email',
+    'phone',
+    'role',
+    'action',
+  ];
+  name: string[] = [];
+  role: string[] = [];
+  employees: Employee[] = [];
+  dataSource!: MatTableDataSource<any>;
+  selectedFile?: ImageSnippet;
 
-  ngOnInit(): void {
-    let waiter: any = localStorage.getItem('waitstaffs');
-    this.waitstaffs = JSON.parse(waiter);
+  constructor(
+    private builder: FormBuilder,
+    private api: ApiService,
+    private router: Router,
+    public dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private snackBar: UtilsService
+  ) {}
 
-    let supervisor: any = localStorage.getItem('supervisors');
-    this.supervisors = JSON.parse(supervisor);
+  ngOnInit() {
+    this.getAllEmployeeData();
   }
 
-  goDetails(id: number) {
-    this.router.navigateByUrl('employees/' + id);
+  async getAllEmployeeData() {
+    this.employees = await this.api.getAllEmployees();
+    this.dataSource = new MatTableDataSource(this.employees);
+
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+  @ViewChild(MatSort)
+  sort!: MatSort;
+
+  ngAfterViewInit() {}
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  async deleteEmployee(id: number) {
+    await this.api.deleteOneEmployee(id);
+    this.snackBar.openSnackBar('Employee deleted successful', 'done!');
+    this.getAllEmployeeData();
+  }
+
+  openRegisterFormDialog() {
+    const dialogRef = this.dialog.open(EditEmployeeComponent);
+
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.getAllEmployeeData();
+      }
+    });
+  }
+
+  async openEditFormDialog(data: any) {
+    const dialogRef = this.dialog.open(EditEmployeeComponent, {
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.getAllEmployeeData();
+      }
+    });
   }
 }

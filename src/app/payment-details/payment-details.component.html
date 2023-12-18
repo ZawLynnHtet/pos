@@ -1,16 +1,18 @@
 <div class="box flex constrains">
   <app-sidenav></app-sidenav>
   <div class="payment-section">
-    <div class="table-infos flex">
-      <div>
-        <a routerLink="/orders" class="back-icon" (click)="goBack()"
-          ><i class="fa fa-chevron-left" aria-hidden="true"></i
-        ></a>
-        <span>Table No. {{ tableId }}</span>
-      </div>
-
-      <div>Capacity: 4</div>
-    </div>
+    <p class="header">
+      <mat-toolbar>
+        <button mat-icon-button class="example-icon" (click)="goBack()">
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <span>Table ID: {{ tableId }}</span>
+        <span class="example-spacer"></span>
+        <button mat-raised-button color="primary" (click)="addOrder()">
+          Add Order
+        </button>
+      </mat-toolbar>
+    </p>
 
     <div class="payment-container">
       <div class="payment-header flex">

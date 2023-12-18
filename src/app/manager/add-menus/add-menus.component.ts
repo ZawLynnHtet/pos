@@ -120,9 +120,7 @@ export class AddMenusComponent implements OnInit {
       is_available: true,
     };
 
-    this.api.postMenu(menu).subscribe((res: any) => {
-      console.log(res.data);
-      this.router.navigateByUrl('/menus');
-    });
+    this.api.postMenu(menu);
+    this.router.navigateByUrl('/menus');
   }
 }

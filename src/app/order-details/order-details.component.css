@@ -1,19 +1,31 @@
 .box {
-  justify-content: start;
-  flex-flow: row nowrap;
-  align-items: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  padding-bottom: 20px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .orders-section {
   width: 100%;
   padding: 15px 20px 0 0;
   margin-left: 100px;
-}
-
-.back-icon {
-  font-size: 18px;
-  color: black;
 }
 
 .order-details-container {
@@ -112,11 +124,6 @@ ol {
 }
 
 .print-btn {
-  width: 20%;
-  padding: 5px 0;
-  background: var(--main-color);
-  border: transparent;
-  border-radius: 3px;
   margin-top: 15px;
 }
 

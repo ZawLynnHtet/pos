@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { OrderDetails } from '../models/orderdetails.model';
+import { Table } from '../models/table.model';
 
 @Component({
   selector: 'app-order-list',
@@ -22,6 +23,7 @@ export class OrderListComponent {
 
   ngOnInit() {
     this.tableId = this.activatedRoute.snapshot.params['id'];
+
     this.getAllOrders();
     console.log('order list started');
   }

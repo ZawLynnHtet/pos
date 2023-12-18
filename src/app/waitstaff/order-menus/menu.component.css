@@ -216,6 +216,12 @@ input:checked + .grid-item {
   margin-bottom: 10px;
 }
 
+.quantity {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
 .order-type {
   width: 100%;
   display: flex;

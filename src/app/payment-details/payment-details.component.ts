@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { Bill } from '../models/bill.model';
 import { Menu } from '../models/menu.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-payment-details',
@@ -13,7 +14,8 @@ export class PaymentDetailsComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private api: ApiService
+    private api: ApiService,
+    private location: Location
   ) {}
 
   tableId!: number;
@@ -59,7 +61,11 @@ export class PaymentDetailsComponent {
   }
 
   goBack() {
-    // this.router.navigateByUrl(`tables/${this.tableId}`);
+    this.location.back();
+  }
+
+  addOrder() {
+    this.router.navigateByUrl('tables/' + this.tableId + '/menu');
   }
 
   async getAllBillsFromOneOrder() {

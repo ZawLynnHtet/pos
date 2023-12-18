@@ -108,7 +108,9 @@
         <button class="grid-item">Add New</button>
       </div>
 
-      <button class="submit" (click)="addMenu()">Submit</button>
+      <button class="submit" (click)="addMenu()" [disabled]="!menuForm.valid">
+        Submit
+      </button>
     </form>
   </div>
 </section>

@@ -8,7 +8,6 @@
         (click)="toggleCollapse()"
       />
       <div class="logo-text" *ngIf="collapsed" @fadeInOut>Angular</div>
-
       <div class="close-btn" *ngIf="collapsed" (click)="closeSidenav()" @rotate>
         <i class="fa-solid fa-xmark close"></i>
       </div>
@@ -19,7 +18,7 @@
     <div class="diver"></div>
   </div>
   <ul class="sidenav-nav">
-    <li class="sidenav-nav-item" *ngFor="let data of navData">
+    <li class="sidenav-nav-item" *ngFor="let data of sideNav; let i = index">
       <a
         class="sidenav-nav-link"
         [routerLink]="[data.routeLink]"

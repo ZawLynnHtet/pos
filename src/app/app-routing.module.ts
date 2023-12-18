@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OrderDetailsComponent } from './order-details/order-details.component';
-import { TablesComponent } from './tables/tables.component';
 import { AuthComponent } from './auth/auth.component';
 import { PaymentDetailsComponent } from './payment-details/payment-details.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
 import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
-import { AddEmployeesComponent } from './manager/add-employees/add-employees.component';
-import { MenuComponent } from './order-menus/menu.component';
+import { MenuComponent } from './waitstaff/order-menus/menu.component';
 import { MenusComponent } from './manager/menus/menus.component';
 import { EmployeesComponent } from './manager/employees/employees.component';
-import { EmployeesDetailsComponent } from './manager/employees-details/employees-details.component';
 import { AddMenusComponent } from './manager/add-menus/add-menus.component';
+import { DashboardComponent } from './manager/dashboard/dashboard.component';
+import { TablesComponent } from './waitstaff/tables/tables.component';
+import { AdminComponent } from './manager/admin/admin.component';
 
 const routes: Routes = [
   {
@@ -38,6 +38,10 @@ const routes: Routes = [
     component: MenuComponent,
   },
   {
+    path: 'tables/:id/:tableIndex/menu',
+    component: MenuComponent,
+  },
+  {
     path: 'tables/:id/menu',
     component: MenuComponent,
   },
@@ -50,11 +54,11 @@ const routes: Routes = [
     component: OrderDetailsComponent,
   },
   {
-    path: 'tables/:id',
+    path: 'tables/:id/:index/order-infos',
     component: OrderDetailsComponent,
   },
   {
-    path: 'tables/:id/payments/:oid',
+    path: 'tables/:id/:index/order-infos/payments/:oid',
     component: PaymentDetailsComponent,
   },
   {
@@ -78,12 +82,12 @@ const routes: Routes = [
     component: EmployeesComponent,
   },
   {
-    path: 'employees/add-employees',
-    component: AddEmployeesComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
   },
   {
-    path: 'employees/:id',
-    component: EmployeesDetailsComponent,
+    path: 'admin',
+    component: AdminComponent,
   },
 ];
 

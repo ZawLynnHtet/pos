@@ -14,53 +14,62 @@
       </mat-toolbar>
     </p>
 
-    <div class="payment-container">
-      <div class="payment-header flex">
-        <h2>MSI</h2>
-        <div>73rd x 74th Street, 32B Street, Chanmyatharsi, Mandalay</div>
-        <div>09-87654321, 09-12345678</div>
-        <div class="infos flex">
-          <div>Order No. {{ orderId }}</div>
-          <div>10-10-2023 18:00</div>
-          <div>Htun Ko</div>
+    <div class="payment">
+      <div class="payment-container" id="print-section">
+        <div class="payment-header flex">
+          <h2>MSI</h2>
+          <div>73rd x 74th Street, 32B Street, Chanmyatharsi, Mandalay</div>
+          <div>09-87654321, 09-12345678</div>
+          <div class="infos flex">
+            <div>Order No. {{ orderId }}</div>
+            <div>10-10-2023 18:00</div>
+            <div>Htun Ko</div>
+          </div>
         </div>
-      </div>
-      <div class="details b-top">
-        <div class="order-grid-container">
-          <div class="g-item g-head">Name</div>
-          <div class="g-item g-head">Price</div>
-          <div class="g-item g-head text-center">Qty</div>
-          <div class="g-item g-head">Total</div>
-        </div>
-        <div
-          class="order-grid-container"
-          *ngFor="let bill of bills; let i = index"
-        >
-          <div class="g-item">{{ menuNames[bill.menu_id - 1].food_name }}</div>
-          <div class="g-item">{{ menuNames[bill.menu_id - 1].price }}</div>
-          <div class="g-item text-center">{{ bill.qty }}</div>
-          <div class="g-item">{{ bill.total_price }}</div>
-        </div>
-        <div class="amount-grid-container b-top">
-          <div class="g-item">Total:</div>
-          <div class="g-item align-right">{{ totalAmounts.total }}</div>
-          <div class="g-item">Discount:</div>
-          <div class="g-item align-right">{{ totalAmounts.discount }}</div>
-          <div class="g-item">Tax:</div>
-          <div class="g-item align-right">{{ totalAmounts.tax }}</div>
-        </div>
+        <div class="details b-top">
+          <div class="order-grid-container">
+            <div class="g-item g-head">Name</div>
+            <div class="g-item g-head">Price</div>
+            <div class="g-item g-head text-center">Qty</div>
+            <div class="g-item g-head">Total</div>
+          </div>
+          <div
+            class="order-grid-container"
+            *ngFor="let bill of bills; let i = index"
+          >
+            <div class="g-item">
+              {{ menuNames[bill.menu_id - 1].food_name }}
+            </div>
+            <div class="g-item">{{ menuNames[bill.menu_id - 1].price }}</div>
+            <div class="g-item text-center">{{ bill.qty }}</div>
+            <div class="g-item">{{ bill.total_price }}</div>
+          </div>
+          <div class="amount-grid-container b-top">
+            <div class="g-item">Total:</div>
+            <div class="g-item align-right">{{ totalAmounts.total }}</div>
+            <div class="g-item">Discount:</div>
+            <div class="g-item align-right">{{ totalAmounts.discount }}</div>
+            <div class="g-item">Tax:</div>
+            <div class="g-item align-right">{{ totalAmounts.tax }}</div>
+          </div>
 
-        <div class="amount-grid-container b-top">
-          <div class="g-item">Sub Total:</div>
-          <div class="g-item amount">{{ totalAmounts.subTotal }}</div>
+          <div class="amount-grid-container b-top">
+            <div class="g-item">Sub Total:</div>
+            <div class="g-item amount">{{ totalAmounts.subTotal }}</div>
+          </div>
+          <div class="b-top">Thank you for dining with us!</div>
         </div>
-        <div class="b-top">Thank you for dining with us!</div>
       </div>
-      <div
-        class="printbtn"
-        (click)="updateOrderPaymentStatus(bills[0].order_id!)"
-      >
-        <button>Print</button>
+      <div class="print-btn">
+        <button
+          mat-raised-button
+          color="accent"
+          printSectionId="print-section"
+          ngxPrint
+          (click)="updateOrderPaymentStatus(bills[0].order_id!)"
+        >
+          Print
+        </button>
       </div>
     </div>
   </div>

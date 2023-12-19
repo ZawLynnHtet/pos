@@ -16,7 +16,7 @@
     </p>
     <ng-container *ngFor="let oneOrderSet of allOrders; let index = index">
       <div class="order-details-container">
-        <div class="order-header flex" id="print-section">
+        <div class="order-header flex">
           <div>Order No. {{ headers[index].id }}</div>
           <div>
             Date & Time: {{ headers[index].date | date : "MMM d, y, h:mm a" }}
@@ -78,8 +78,7 @@
             mat-raised-button
             color="accent"
             class="print-btn"
-            printSectionId="print-section"
-            ngxPrint
+            (click)="generateBills(oneOrderSet, index)"
           >
             Print
           </button>

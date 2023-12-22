@@ -39,7 +39,7 @@ export class TablesComponent implements OnInit {
       this.employeesData.role === 'supervisor' ||
       this.tables[index].is_available === false
     ) {
-      this.router.navigateByUrl(`tables/${id}/${index}/order-infos`);
+      this.router.navigateByUrl(`tables/${id}/order-details`);
     }
   }
 

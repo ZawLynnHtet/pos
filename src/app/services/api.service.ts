@@ -75,6 +75,32 @@ export class ApiService {
     });
   }
 
+  getAllMenus(): Promise<Menu[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/menus`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  postMenu(data: MenuItem): Promise<MenuItem[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.post(`${apiUrl}/menus`, data).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
   postEmployee(data: Employee): Promise<Employee[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
@@ -102,19 +128,6 @@ export class ApiService {
             reject(error);
           },
         });
-    });
-  }
-
-  postMenu(data: MenuItem): Promise<MenuItem[]> {
-    return new Promise((resolve, reject) => {
-      this.subs.sink = this.http.post(`${apiUrl}/menus`, data).subscribe({
-        next: (res: any) => {
-          resolve(res.data);
-        },
-        error: (error: any) => {
-          reject(error);
-        },
-      });
     });
   }
 
@@ -214,6 +227,20 @@ export class ApiService {
   addOrders(data: any) {
     return this.http.post(`${apiUrl}/orders`, data);
   }
+
+  getAllOrders(): Promise<Order[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/orders`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
   getAllOrdersWithTableId(
     id: number,
     submitted: boolean

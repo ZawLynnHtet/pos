@@ -16,6 +16,7 @@ import { Ingredient } from '../../models/ingredient.model';
 import { DetailsBody, OrderDetails } from '../../models/orderdetails.model';
 import { UtilsService } from '../../services/utils.service';
 import { ExtraFood } from '../../models/extrafood.model';
+import { Bill } from 'src/app/models/bill.model';
 
 @Component({
   selector: 'app-menu',
@@ -32,6 +33,7 @@ export class MenuComponent {
   tableId!: number;
   newOrders: any = [];
   menus: Menu[] = [];
+  allMenus: Menu[] = [];
   orderTypeIndex?: number;
   categoryId?: number;
   orderType: string = 'Dine In';
@@ -47,6 +49,7 @@ export class MenuComponent {
   selectedMenu!: Menu;
   selectedForm!: FormGroup;
   orderId = 0;
+  allOrders: OrderDetails[][] = [];
 
   constructor(
     private router: Router,
@@ -76,6 +79,7 @@ export class MenuComponent {
     this.table = await this.api.getOneTable(this.tableId);
     let tableData: any = localStorage.getItem('tables');
     this.tables = JSON.parse(tableData);
+    this.allMenus = await this.api.getAllMenus();
   }
 
   createOrder() {
@@ -112,6 +116,7 @@ export class MenuComponent {
       'menuNames',
       'menu_id'
     );
+
     this.extraFoods = this.utils.getSortedLocalStorageArray(
       'extraFoods',
       'extraFood_id'
@@ -265,5 +270,102 @@ export class MenuComponent {
   onNoteBoxChange(evt: any, i: number) {
     this.orders[i].note = evt.target.value;
     console.log(this.orders);
+  }
+
+  separateOrdersByOrderId(allOrderSet: OrderDetails[]): OrderDetails[][] {
+    var oid = 0;
+    var orderDetailsFromOneOrder: OrderDetails[] = [];
+    var separatedOrders: any[] = [];
+
+    allOrderSet.forEach((order: OrderDetails, i) => {
+      if (oid == 0) {
+        oid = order.order_id;
+        orderDetailsFromOneOrder.push(order);
+      } else if (oid != order.order_id) {
+        oid = order.order_id;
+        separatedOrders.push(orderDetailsFromOneOrder);
+        orderDetailsFromOneOrder = [];
+        orderDetailsFromOneOrder.push(order);
+      } else {
+        orderDetailsFromOneOrder.push(order);
+      }
+      // if order is the last item in orderSet
+      if (i == allOrderSet.length - 1) {
+        separatedOrders.push(orderDetailsFromOneOrder);
+      }
+    });
+    return separatedOrders;
+  }
+
+  generateBills(orders: OrderDetails[], i: number) {
+    var updatedOrders: OrderDetails[] = [];
+    if (orders.length > 1) {
+      updatedOrders = this.addQuantitiesForSameMenus(orders);
+    } else {
+      updatedOrders.push(orders[0]);
+    }
+    this.createBills(updatedOrders, i);
+  }
+
+  addQuantitiesForSameMenus(orders: OrderDetails[]): OrderDetails[] {
+    orders = orders.sort((a, b) => {
+      return a.menu_id - b.menu_id;
+    });
+    console.log(orders);
+
+    const updatedOrders: OrderDetails[] = [];
+    orders.reduce((prevOrder, currOrder, i) => {
+      if (prevOrder.menu_id == currOrder.menu_id) {
+        prevOrder.quantity += currOrder.quantity;
+        prevOrder.extra_ingredients = prevOrder.extra_ingredients.concat(
+          currOrder.extra_ingredients
+        );
+        prevOrder.extra_quantity = prevOrder.extra_quantity.concat(
+          currOrder.extra_quantity
+        );
+        // console.log(`same food i - ${i} so added qty`);
+        // console.log(prevOrder);
+      } else {
+        // console.log(`not same food ${i} vv`);
+        // console.log(prevOrder);
+        updatedOrders.push(prevOrder);
+        prevOrder = currOrder;
+      }
+
+      if (i == orders.length - 1) {
+        // console.log(`and last item > ${i} vv`);
+        // console.log(prevOrder);
+        updatedOrders.push(prevOrder);
+      }
+      return prevOrder;
+    });
+    return updatedOrders;
+  }
+
+  async createBills(orders: OrderDetails[], oindex: number) {
+    let subTotal = 0;
+    orders.forEach(async (order) => {
+      let total = 0;
+      order.extra_ingredients.forEach((id, i) => {
+        const extra = this.extraFoods[id - 1];
+        total += extra.price * order.extra_quantity[i];
+      });
+      total += this.menuNames[order.menu_id - 1].price! * order.quantity;
+      subTotal += total;
+
+      const bill: Bill = {
+        menu_id: order.menu_id,
+        qty: order.quantity,
+        total_price: total,
+      };
+      await this.api.createOneBill(bill, order.order_id);
+    });
+
+    const body: Order = {
+      total_price: subTotal,
+      order_submitted: true,
+    };
+    this.allOrders.splice(oindex, 1);
+    await this.api.updateOrder(body, orders[0].order_id);
   }
 }

@@ -15,17 +15,6 @@ class ImageSnippet {
   constructor(public src: string, public file: File) {}
 }
 
-// export interface DialogData {
-//   id: number;
-//   gender: string;
-//   name: string;
-//   email: string;
-//   phone: string;
-//   role: string;
-//   password: string;
-//   img: string;
-// }
-
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',

@@ -46,6 +46,9 @@ import { TablesComponent } from './waitstaff/tables/tables.component';
 import { MenuComponent } from './waitstaff/order-menus/menu.component';
 import { AdminComponent } from './manager/admin/admin.component';
 import { NgxPrintModule } from 'ngx-print';
+import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -70,6 +73,8 @@ export const storage = getStorage(app);
     EditEmployeeComponent,
     DashboardComponent,
     AdminComponent,
+    OrderInfosComponent,
+    InfoDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,6 +104,7 @@ export const storage = getStorage(app);
     MatSortModule,
     MatPaginatorModule,
     NgxPrintModule,
+    MatChipsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

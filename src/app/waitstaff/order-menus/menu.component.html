@@ -30,7 +30,6 @@
                 </div>
                 <div class="item-name">{{ menu.food_name }}</div>
                 <div class="icons">
-                  <i class="fa-solid fa-minus" (click)="reduce(menu)"></i>
                   <i
                     class="fa-solid fa-plus"
                     (click)="addOrder(menu.menu_id, menu)"
@@ -132,9 +131,6 @@
                 <i class="fa-solid fa-xmark"></i>
               </button>
               <div>
-                <button class="btn" (click)="remove()">
-                  <i class="fa-solid fa-minus"></i>
-                </button>
                 <button class="btn plus" (click)="addOrdersWithChoice()">
                   <i class="fa-solid fa-plus"></i>
                 </button>
@@ -148,11 +144,7 @@
     <div class="order-page">
       <div class="order-header">
         <div class="order-title">
-          <ng-container *ngFor="let table of tables; let i = index">
-            <ng-container *ngIf="table.table_id == tableId"
-              ><div>Table no: {{ table.table_no }}</div></ng-container
-            >
-          </ng-container>
+          <div>Table no: {{ tableId }}</div>
           <div *ngIf="orderId != 0">Order ID: {{ orderId }}</div>
         </div>
         <div class="spacer"></div>
@@ -174,7 +166,13 @@
                   >({{ order.choice_of_meat }})</ng-container
                 >
               </div>
-              <div>{{ order.quantity }}</div>
+              <input
+                type="number"
+                min="1"
+                [(ngModel)]="order.quantity"
+                class="quantity"
+                style="width: 5em"
+              />
             </div>
             <ol>
               <!-- <li>{{ order.choice_of_meat }}</li> -->

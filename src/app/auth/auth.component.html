@@ -102,16 +102,6 @@
                 />
               </div>
               <div class="row">
-                <input
-                  type="text"
-                  name="role"
-                  id="role"
-                  class="form__input"
-                  placeholder="Role"
-                  formControlName="role"
-                />
-              </div>
-              <div class="row">
                 <!-- <span class="fa fa-lock"></span> -->
                 <input
                   type="password"
@@ -132,6 +122,22 @@
                   >
                   <mat-radio-button value="female" class="radio"
                     >Female</mat-radio-button
+                  >
+                </mat-radio-group>
+              </div>
+              <div class="mb-3 row">
+                <mat-radio-group
+                  aria-label="Select an option"
+                  formControlName="role"
+                >
+                  <mat-radio-button value="waiter" class="radio"
+                    >Waiter</mat-radio-button
+                  >
+                  <mat-radio-button value="supervisor" class="radio"
+                    >Supervisor</mat-radio-button
+                  >
+                  <mat-radio-button value="manager" class="radio"
+                    >Manager</mat-radio-button
                   >
                 </mat-radio-group>
               </div>

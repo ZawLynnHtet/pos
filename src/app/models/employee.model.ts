@@ -6,12 +6,13 @@
 
 export interface Employee {
   employee_id?: number;
+  gender: string;
   name: string;
   email: string;
   phone: string;
-  gender: string;
   role: string;
   password: string;
+  img: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

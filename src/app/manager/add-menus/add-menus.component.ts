@@ -1,13 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Menu, MenuItem } from 'src/app/models/menu.model';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Category } from 'src/app/models/category.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { ExtraFood } from 'src/app/models/extrafood.model';
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from 'src/app/app.module';
+import { Router } from '@angular/router';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -23,15 +30,12 @@ export class AddMenusComponent implements OnInit {
   ingredients: Ingredient[] = [];
   extras: ExtraFood[] = [];
   meatChoices: any[] = ['Chicken', 'Pork', 'Beef', 'Fried Egg'];
-  popupBox: any = {
-    show: false,
-    name: ''
-  }
 
   constructor(
     public api: ApiService,
     private builder: FormBuilder,
     private utils: UtilsService,
+    private router: Router
   ) { }
 
   menuForm: FormGroup = this.builder.group({
@@ -43,11 +47,6 @@ export class AddMenusComponent implements OnInit {
     ingredients: this.builder.array([], [Validators.required]),
     extras: this.builder.array([], [Validators.required]),
   });
-
-  addNewForm: FormGroup = this.builder.group({
-    name: this.builder.control('', [Validators.required]),
-    price: this.builder.control(''),
-  })
 
   async ngOnInit() {
     this.getLocalStorageItems();
@@ -61,9 +60,18 @@ export class AddMenusComponent implements OnInit {
   }
 
   getLocalStorageItems() {
-    this.categories = this.utils.getSortedLocalStorageArray('categories', 'category_id');
-    this.ingredients = this.utils.getSortedLocalStorageArray('ingredients', 'ingredient_id');
-    this.extras = this.utils.getSortedLocalStorageArray('extraFoods', 'extraFood_id');
+    this.categories = this.utils.getSortedLocalStorageArray(
+      'categories',
+      'category_id'
+    );
+    this.ingredients = this.utils.getSortedLocalStorageArray(
+      'ingredients',
+      'ingredient_id'
+    );
+    this.extras = this.utils.getSortedLocalStorageArray(
+      'extraFoods',
+      'extraFood_id'
+    );
     console.log(this.ingredients, this.extras);
   }
 
@@ -80,7 +88,9 @@ export class AddMenusComponent implements OnInit {
   }
 
   onCheckboxChange(evt: any, formCtlName: string) {
-    const array: FormArray = this.menuForm.controls[`${formCtlName}`] as FormArray;
+    const array: FormArray = this.menuForm.controls[
+      `${formCtlName}`
+    ] as FormArray;
     if (evt.target.checked) {
       array.push(new FormControl(evt.target.value));
     } else {
@@ -92,37 +102,25 @@ export class AddMenusComponent implements OnInit {
   }
 
   async addMenu() {
-    const url = await this.uploadAndGetDownloadUrl(this.menuForm.value.foodName!);
+    const url = await this.uploadAndGetDownloadUrl(
+      this.menuForm.value.foodName!
+    );
 
     const menu: MenuItem = {
       category_id: this.menuForm.controls['category'].value,
       ingredient_ids: this.menuForm.controls['ingredients'].value,
       extraFood_ids: this.menuForm.controls['extras'].value,
-      meat_choice: this.menuForm.controls['meatChoices'].value.length < 1 ? null : this.menuForm.controls['meatChoices'].value,
+      meat_choice:
+        this.menuForm.controls['meatChoices'].value.length < 1
+          ? null
+          : this.menuForm.controls['meatChoices'].value,
       food_name: this.menuForm.value.foodName!,
       price: parseInt(this.menuForm.value.price!),
       img: url,
       is_available: true,
     };
 
-    this.api.postMenu(menu).subscribe((res: any) => {
-      console.log(res.data);
-    });
-  }
-
-  addNew(name: string) {
-    this.popupBox.show = true;
-    this.popupBox.name = name;
-  }
-
-
-  openOrCloseAddNewBox() {
-    this.popupBox.show = !this.popupBox.show;
-  }
-
-  add() {
-    console.log(this.addNewForm.value);
-    this.addNewForm.reset();
-    this.popupBox.show = false;
+    this.api.postMenu(menu);
+    this.router.navigateByUrl('/menus');
   }
 }

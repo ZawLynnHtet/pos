@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { Order } from '../models/order.model';
 import { OrderDetails } from '../models/orderdetails.model';
@@ -7,6 +7,8 @@ import { ExtraFood } from '../models/extrafood.model';
 import { Menu } from '../models/menu.model';
 import { Bill } from '../models/bill.model';
 import { OrderListComponent } from '../order-list/order-list.component';
+import { Table } from '../models/table.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-order-details',
@@ -16,10 +18,15 @@ import { OrderListComponent } from '../order-list/order-list.component';
 export class OrderDetailsComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
-    private api: ApiService
+    private api: ApiService,
+    private router: Router,
+    private location: Location
   ) {}
 
+  employeesData: any;
+  tables: Table[] = [];
   tableId!: number;
+  tableIndex!: number;
   allOrders: OrderDetails[][] = []; // going to be [[{}, {}], [{}]]
   headers: any[] = [];
   @ViewChild(OrderListComponent) orderListComp: any;
@@ -28,7 +35,12 @@ export class OrderDetailsComponent {
   extraFoods: ExtraFood[] = [];
 
   async ngOnInit() {
+    let data: any = localStorage.getItem('data');
+    this.employeesData = JSON.parse(data);
+    let table: any = localStorage.getItem('tables');
+    this.tables = JSON.parse(table);
     this.tableId = this.activatedRoute.snapshot.params['id'];
+    this.tableIndex = this.activatedRoute.snapshot.params['index'];
     this.getItemsFromLocalStorage();
 
     const orders = await this.getAllUnsubmittedOrdersFromOneTable();
@@ -179,6 +191,14 @@ export class OrderDetailsComponent {
     await this.api.updateOrder(body, orders[0].order_id);
 
     this.orderListComp.getAllOrders();
+  }
+
+  addOrder() {
+    this.router.navigateByUrl('tables/' + this.tableId + '/menu');
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   ngOnDestroy() {

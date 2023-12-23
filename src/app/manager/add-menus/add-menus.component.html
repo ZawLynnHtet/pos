@@ -114,7 +114,9 @@
         </button>
       </div>
 
-      <button class="submit" (click)="addMenu()">Submit</button>
+      <button class="submit" (click)="addMenu()" [disabled]="!menuForm.valid">
+        Submit
+      </button>
     </form>
     <div class="add-new-container" *ngIf="popupBox.show">
       <i
@@ -145,7 +147,7 @@
           <label for="price" class="form__label">Price</label>
         </div>
 
-        <button class="add-btn" (click)="add()">Add</button>
+        <button class="add-btn" (click)="addMenu()">Add</button>
       </form>
     </div>
   </div>

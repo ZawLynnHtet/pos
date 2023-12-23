@@ -10,11 +10,10 @@
         <button
           class="table"
           [ngStyle]="{
-            background: table.is_available
-              ? 'transparent'
-              : 'var(--main-color)',
-            color: table.is_available ? 'black' : 'var(--secondary-color)',
-          }"
+              background: table.is_available
+                ? 'var(--table-color)'
+                : 'var(--main-color)',
+            }"
           (click)="goTo(table.table_id, i)"
         >
           <div>Table {{ table.table_no }}</div>

@@ -1,0 +1,89 @@
+<form [formGroup]="employeeForm">
+  <div class="profile">
+    <div class="profile-img">
+      <img [src]="imgUrl" (click)="fileUploader.click()" />
+    </div>
+    <div class="upload">
+      <input
+        id="file-input"
+        type="file"
+        accept="image/*"
+        #fileUploader
+        (change)="processFile($event)"
+      />
+      <label id="file-input-label" for="file-input" class="label">
+        <i class="fa-solid fa-camera"></i>
+      </label>
+    </div>
+  </div>
+  <div mat-dialog-content>
+    <div class="form-group">
+      <mat-form-field class="name" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" class="email" />
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" />
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Select role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let role of roles" [value]="role">
+            {{ role }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          [type]="hide ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Select gender</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option *ngFor="let gender of genders" [value]="gender">
+            {{ gender }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button class="btn" [mat-dialog-close]="false">
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      cdkFocusInitial
+      class="btn"
+      (click)="FormSubmit()"
+      color="primary"
+    >
+      {{ data ? "Update" : "Save" }}
+    </button>
+  </div>
+</form>

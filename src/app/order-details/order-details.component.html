@@ -1,28 +1,30 @@
 <app-sidenav></app-sidenav>
 
-<div class="box flex constrains">
+<div class="box constrains">
   <div class="orders-section">
-    <div class="table-infos flex">
-      <div>
-        <a routerLink="/tables" class="back-icon"
-          ><i class="fa fa-chevron-left" aria-hidden="true"></i
-        ></a>
-        <span>Table No. {{ tableId }}</span>
-      </div>
-
-      <div>Capacity: 4</div>
-    </div>
+    <p class="header">
+      <mat-toolbar>
+        <button mat-icon-button class="example-icon" (click)="goBack()">
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <span>Table ID: {{ tableId }}</span>
+        <span class="example-spacer"></span>
+        <button mat-raised-button color="primary" (click)="addOrder()">
+          Add Order
+        </button>
+      </mat-toolbar>
+    </p>
     <ng-container *ngFor="let oneOrderSet of allOrders; let index = index">
       <div class="order-details-container">
         <div class="order-header flex">
-          <h2>MSI</h2>
-
           <div>Order No. {{ headers[index].id }}</div>
-          <div>Date & Time: {{ headers[index].date }}</div>
+          <div>
+            Date & Time: {{ headers[index].date | date : "MMM d, y, h:mm a" }}
+          </div>
 
           <div class="staff-details flex">
             <div>Table No. {{ tableId }}</div>
-            <div>Waiter: Kyaw Kyaw</div>
+            <div *ngIf="employeesData">OrderedBy: {{ employeesData.name }}</div>
           </div>
         </div>
         <div class="order-details">
@@ -69,16 +71,18 @@
           </div>
           <div class="bottom-section">
             <div>Total Qty: {{ headers[index].total_qty }}</div>
-            <button
-              class="print-btn"
-              (click)="generateBills(oneOrderSet, index)"
-            >
-              Print
-            </button>
           </div>
         </div>
-
-        <!-- <div class="order-history"></div> -->
+        <div class="bottom-section">
+          <button
+            mat-raised-button
+            color="accent"
+            class="print-btn"
+            (click)="generateBills(oneOrderSet, index)"
+          >
+            Print
+          </button>
+        </div>
       </div>
     </ng-container>
     <hr />

@@ -8,6 +8,7 @@ import { ExtraFood } from '../models/extrafood.model';
 import { Menu } from '../models/menu.model';
 import { UtilsService } from '../services/utils.service';
 import { Ingredient } from '../models/ingredient.model';
+import { Table } from '../models/table.model';
 
 @Component({
   selector: 'app-auth',
@@ -22,7 +23,6 @@ export class AuthComponent implements OnInit {
     private utils: UtilsService
   ) {}
   sign_in: boolean = false;
-  employees: Employee[] = [];
   loader: boolean = false;
 
   registerForm = this.builder.group({
@@ -64,8 +64,13 @@ export class AuthComponent implements OnInit {
             name: res.user.name,
           };
           localStorage.setItem('data', JSON.stringify(data));
-          this.router.navigateByUrl('tables');
+          if (res.user.role === 'manager') {
+            this.router.navigateByUrl('menus');
+          } else {
+            this.router.navigateByUrl('tables');
+          }
         });
+      this.callApiAndStoreResponseInLocalStorage();
     } else {
       console.warn('Please enter the required!');
     }
@@ -82,7 +87,11 @@ export class AuthComponent implements OnInit {
         };
         localStorage.setItem('data', JSON.stringify(data));
 
-        this.router.navigateByUrl('tables');
+        if (res.user.role === 'manager') {
+          this.router.navigateByUrl('menus');
+        } else {
+          this.router.navigateByUrl('tables');
+        }
       });
       this.callApiAndStoreResponseInLocalStorage();
     } else {
@@ -95,6 +104,8 @@ export class AuthComponent implements OnInit {
   }
 
   async callApiAndStoreResponseInLocalStorage() {
+    const tables: Table[] = await this.api.getAllTables();
+    localStorage.setItem('tables', JSON.stringify(tables));
     const categories: Category[] = await this.api.getAllCategories();
     localStorage.setItem('categories', JSON.stringify(categories));
     const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();

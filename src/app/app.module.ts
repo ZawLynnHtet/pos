@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
-import { TablesComponent } from './tables/tables.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { PaymentDetailsComponent } from './payment-details/payment-details.component';
@@ -11,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,18 +26,26 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { HttpClientModule } from '@angular/common/http';
-import { AddEmployeesComponent } from './manager/add-employees/add-employees.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatRadioModule } from '@angular/material/radio';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { OrderModule } from 'ngx-order-pipe';
-import { MenuComponent } from './order-menus/menu.component';
 import { MenusComponent } from './manager/menus/menus.component';
 import { EmployeesComponent } from './manager/employees/employees.component';
-import { AddMenusComponent } from './manager/add-menus/add-menus/add-menus.component';
-import { getStorage } from 'firebase/storage';
+import { AddMenusComponent } from './manager/add-menus/add-menus.component';
 import { initializeApp } from 'firebase/app';
+import { getStorage } from 'firebase/storage';
 import { firebaseConfig } from 'src/config/firebase.config';
+import { MatDialogModule } from '@angular/material/dialog';
+import { EditEmployeeComponent } from './manager/edit-employee/edit-employee.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DashboardComponent } from './manager/dashboard/dashboard.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { TablesComponent } from './waitstaff/tables/tables.component';
+import { MenuComponent } from './waitstaff/order-menus/menu.component';
+import { AdminComponent } from './manager/admin/admin.component';
+import { NgxPrintModule } from 'ngx-print';
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -56,10 +64,12 @@ export const storage = getStorage(app);
     NewReservationComponent,
     ReservDetailsComponent,
     AddMenusComponent,
-    AddEmployeesComponent,
     AppComponent,
     MenusComponent,
     EmployeesComponent,
+    EditEmployeeComponent,
+    DashboardComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +78,7 @@ export const storage = getStorage(app);
     MatInputModule,
     MatTooltipModule,
     MatSelectModule,
+    MatOptionModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
@@ -83,6 +94,11 @@ export const storage = getStorage(app);
     FilterPipeModule,
     OrderModule,
     CommonModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatPaginatorModule,
+    NgxPrintModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

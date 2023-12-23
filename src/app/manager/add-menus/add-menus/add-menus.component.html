@@ -3,6 +3,7 @@
   <button class="back" routerLink="/menus">
     <i class="fa-solid fa-left-long"></i>
   </button>
+
   <div class="set-menu">
     <div class="images">
       <div>
@@ -60,7 +61,9 @@
           />
           <div class="grid-item">{{ category.category_name }}</div>
         </label>
-        <button class="grid-item">Add New</button>
+        <button class="grid-item" (click)="addNew('Category')">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
       </div>
 
       <h2>Select Meats</h2>
@@ -89,7 +92,9 @@
           />
           <div class="grid-item">{{ ingred.ingredient_name }}</div>
         </label>
-        <button class="grid-item">Add New</button>
+        <button class="grid-item" (click)="addNew('Ingredient')">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
       </div>
 
       <h2>Select Extra Foods</h2>
@@ -104,10 +109,44 @@
           />
           <div class="grid-item">{{ extra.food_name }}</div>
         </label>
-        <button class="grid-item">Add New</button>
+        <button class="grid-item" (click)="addNew('Extra Food')">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
       </div>
 
       <button class="submit" (click)="addMenu()">Submit</button>
     </form>
+    <div class="add-new-container" *ngIf="popupBox.show">
+      <i
+        class="fa fa-times"
+        aria-hidden="true"
+        (click)="openOrCloseAddNewBox()"
+      ></i>
+      <form [formGroup]="addNewForm">
+        <div>
+          <input
+            type="text"
+            placeholder="Name"
+            id="name"
+            class="form__input new-input"
+            formControlName="name"
+          />
+          <label for="name" class="form__label">{{ popupBox.name }} Name</label>
+        </div>
+
+        <div *ngIf="popupBox.name == 'Extra Food'">
+          <input
+            type="number"
+            placeholder="Price"
+            id="price"
+            class="form__input new-input"
+            formControlName="price"
+          />
+          <label for="price" class="form__label">Price</label>
+        </div>
+
+        <button class="add-btn" (click)="add()">Add</button>
+      </form>
+    </div>
   </div>
 </section>

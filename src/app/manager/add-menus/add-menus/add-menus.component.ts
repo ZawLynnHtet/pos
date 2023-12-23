@@ -6,6 +6,8 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { Category } from 'src/app/models/category.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { ExtraFood } from 'src/app/models/extrafood.model';
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from 'src/app/app.module';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -21,6 +23,10 @@ export class AddMenusComponent implements OnInit {
   ingredients: Ingredient[] = [];
   extras: ExtraFood[] = [];
   meatChoices: any[] = ['Chicken', 'Pork', 'Beef', 'Fried Egg'];
+  popupBox: any = {
+    show: false,
+    name: ''
+  }
 
   constructor(
     public api: ApiService,
@@ -38,8 +44,20 @@ export class AddMenusComponent implements OnInit {
     extras: this.builder.array([], [Validators.required]),
   });
 
-  ngOnInit(): void {
+  addNewForm: FormGroup = this.builder.group({
+    name: this.builder.control('', [Validators.required]),
+    price: this.builder.control(''),
+  })
+
+  async ngOnInit() {
     this.getLocalStorageItems();
+  }
+
+  async uploadAndGetDownloadUrl(name: string): Promise<string> {
+    const reference = ref(storage, `menus/${this.menuForm.value.foodName}`);
+
+    await uploadBytes(reference, this.selectedFile?.file!);
+    return await getDownloadURL(ref(storage, `menus/${name}`));
   }
 
   getLocalStorageItems() {
@@ -47,7 +65,6 @@ export class AddMenusComponent implements OnInit {
     this.ingredients = this.utils.getSortedLocalStorageArray('ingredients', 'ingredient_id');
     this.extras = this.utils.getSortedLocalStorageArray('extraFoods', 'extraFood_id');
     console.log(this.ingredients, this.extras);
-
   }
 
   processFile(imageInput: any) {
@@ -74,7 +91,9 @@ export class AddMenusComponent implements OnInit {
     }
   }
 
-  addMenu() {
+  async addMenu() {
+    const url = await this.uploadAndGetDownloadUrl(this.menuForm.value.foodName!);
+
     const menu: MenuItem = {
       category_id: this.menuForm.controls['category'].value,
       ingredient_ids: this.menuForm.controls['ingredients'].value,
@@ -82,12 +101,28 @@ export class AddMenusComponent implements OnInit {
       meat_choice: this.menuForm.controls['meatChoices'].value.length < 1 ? null : this.menuForm.controls['meatChoices'].value,
       food_name: this.menuForm.value.foodName!,
       price: parseInt(this.menuForm.value.price!),
-      img: this.selectedFile?.file.name!,
+      img: url,
       is_available: true,
     };
 
     this.api.postMenu(menu).subscribe((res: any) => {
       console.log(res.data);
     });
+  }
+
+  addNew(name: string) {
+    this.popupBox.show = true;
+    this.popupBox.name = name;
+  }
+
+
+  openOrCloseAddNewBox() {
+    this.popupBox.show = !this.popupBox.show;
+  }
+
+  add() {
+    console.log(this.addNewForm.value);
+    this.addNewForm.reset();
+    this.popupBox.show = false;
   }
 }

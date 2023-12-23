@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Employee } from 'src/app/models/employee.model';
 
 class ImageSnippet {
-  constructor(public src: string, public file: File) {}
+  constructor(public src: string, public file: File) { }
 }
 @Component({
   selector: 'app-add-employees',
@@ -11,14 +12,15 @@ class ImageSnippet {
 })
 export class AddEmployeesComponent {
   selectedFile?: ImageSnippet;
+  genders: any[] = ['Male', 'Female'];
 
-  constructor(private builder: FormBuilder) {}
+  constructor(private builder: FormBuilder) { }
 
-  registerForm = this.builder.group({
+  registerForm: FormGroup = this.builder.group({
     email: this.builder.control('', [Validators.required, Validators.email]),
     phone: this.builder.control('', [Validators.required]),
-    name: this.builder.control('', Validators.required),
-    gender: this.builder.control(''),
+    name: this.builder.control('', [Validators.required]),
+    gender: this.builder.control('', [Validators.required]),
     role: this.builder.control('', [Validators.required]),
     // password: this.builder.control(
     //   '',
@@ -29,7 +31,7 @@ export class AddEmployeesComponent {
     //     ),
     //   ])
     // ),
-    password: this.builder.control('', [Validators.required]),
+    password: this.builder.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
   });
 
   processFile(imageInput: any) {
@@ -42,5 +44,20 @@ export class AddEmployeesComponent {
     });
 
     reader.readAsDataURL(file);
+  }
+
+  createEmployee() {
+    const employee: Employee = {
+      // employee_id: ;
+      name: this.registerForm.controls['name'].value,
+      email: this.registerForm.controls['email'].value,
+      phone: this.registerForm.controls['phone'].value,
+      gender: this.registerForm.controls['gender'].value,
+      role: this.registerForm.controls['role'].value!,
+      password: this.registerForm.controls['password'].value!,
+    }
+
+    console.log(employee);
+
   }
 }

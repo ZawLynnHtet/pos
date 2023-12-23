@@ -12,7 +12,7 @@ export class MenusComponent implements OnInit {
   categoryId?: number;
   menus: Menu[] = [];
 
-  constructor(public api: ApiService) {}
+  constructor(public api: ApiService) { }
 
   ngOnInit(): void {
     let category: any = localStorage.getItem('categories');

@@ -53,6 +53,12 @@ export class SidenavComponent implements OnInit {
       role: ['waiter', 'supervisor'],
     },
     {
+      routeLink: '/order-infos',
+      icon: 'fa-regular fa-rectangle-list',
+      label: 'Order Infos',
+      role: ['waiter'],
+    },
+    {
       routeLink: '/menus',
       icon: 'fa fa-cutlery',
       label: 'Menus',

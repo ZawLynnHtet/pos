@@ -160,12 +160,16 @@
         <div class="order-card">
           <ng-container *ngFor="let order of orders; let orderIndex = index">
             <div class="food-name">
-              <div>
-                {{ menuNames[order.menu_id - 1].food_name }}
-                <ng-container *ngIf="order.choice_of_meat != null"
-                  >({{ order.choice_of_meat }})</ng-container
-                >
-              </div>
+              <ng-container
+                *ngFor="let menu of allMenus; let menuIndex = index"
+              >
+                <div *ngIf="order.menu_id === menu.menu_id">
+                  {{ menu.food_name }}
+                  <ng-container *ngIf="order.choice_of_meat != null"
+                    >({{ order.choice_of_meat }})</ng-container
+                  >
+                </div>
+              </ng-container>
               <input
                 type="number"
                 min="1"

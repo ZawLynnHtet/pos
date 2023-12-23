@@ -36,6 +36,9 @@
   font-size: 23px;
   font-weight: 700;
   color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .close-btn {
@@ -115,6 +118,7 @@
   margin-left: 1.5rem;
   font-size: 18px;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .sidenav-nav-item:last-child {

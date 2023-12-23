@@ -1,0 +1,48 @@
+section {
+  margin-left: 100px;
+  padding: 20px 20px 20px 0;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+th {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+td,
+th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+td {
+  text-transform: lowercase;
+  cursor: pointer;
+  opacity: 0;
+  animation: popup 1s ease forwards;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.header h2 {
+  color: rgb(11, 96, 233);
+  font-weight: 500;
+}

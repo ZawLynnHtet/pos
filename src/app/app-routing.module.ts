@@ -14,6 +14,8 @@ import { AddMenusComponent } from './manager/add-menus/add-menus.component';
 import { DashboardComponent } from './manager/dashboard/dashboard.component';
 import { TablesComponent } from './waitstaff/tables/tables.component';
 import { AdminComponent } from './manager/admin/admin.component';
+import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
+import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
 
 const routes: Routes = [
   {
@@ -54,11 +56,19 @@ const routes: Routes = [
     component: OrderDetailsComponent,
   },
   {
-    path: 'tables/:id/:index/order-infos',
+    path: 'order-infos',
+    component: OrderInfosComponent,
+  },
+  {
+    path: 'order-infos/:orderId/:tableId/details',
+    component: InfoDetailsComponent,
+  },
+  {
+    path: 'tables/:id/order-details',
     component: OrderDetailsComponent,
   },
   {
-    path: 'tables/:id/:index/order-infos/payments/:oid',
+    path: 'tables/:id/order-details/payments/:oid',
     component: PaymentDetailsComponent,
   },
   {

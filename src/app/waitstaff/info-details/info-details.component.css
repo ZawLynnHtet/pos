@@ -1,0 +1,134 @@
+section {
+  padding: 30px 0 0 100px;
+  width: 100%;
+}
+
+.back {
+  background: #fcfcfc;
+  border: 1px solid #555353;
+  border-radius: 5px;
+  padding: 6px 20px;
+}
+
+.back i {
+  font-size: 18px;
+}
+
+.wrapper {
+  position: relative;
+  width: 60%;
+  margin: 20px auto;
+  opacity: 0;
+  animation: popup 1s ease forwards;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.invoice-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.head .logo {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.head .title,
+.inv-date .time {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.inv-date .date {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.data {
+  margin-top: 20px;
+}
+
+.data div {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+table thead tr td {
+  font-weight: 600;
+  padding: 8px 5px;
+}
+
+table tbody td {
+  padding: 7px 5px;
+}
+
+.mid {
+  text-align: center;
+}
+
+.r-col {
+  text-align: right !important;
+}
+
+table tbody tr:nth-child(odd) {
+  background: #f0f0f0;
+}
+
+table tbody tr:nth-child(even) {
+  background: #fcfcfc;
+  border-bottom: 1px solid #b4b4b4;
+  border-top: 1px solid #b4b4b4;
+}
+
+.total-section {
+  position: absolute;
+  right: 0;
+  font-size: 12px;
+  width: 160px;
+  margin-top: 5px;
+  padding-right: 3px;
+}
+
+.sub,
+.tax,
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.total {
+  border-top: 1px solid #646464;
+  padding-top: 5px;
+}
+
+.sub p:nth-child(1),
+.tax p:nth-child(1),
+.total p {
+  font-weight: 600;
+}
+
+@media screen and (max-width: 1230px) {
+  .wrapper {
+    width: 80%;
+  }
+}

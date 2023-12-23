@@ -82,6 +82,10 @@ export class MenuComponent {
     this.allMenus = await this.api.getAllMenus();
   }
 
+  async getAllUnsubmittedOrdersFromOneTable(): Promise<OrderDetails[]> {
+    return await this.api.getAllOrdersWithTableId(this.tableId, false);
+  }
+
   createOrder() {
     this.api
       .addOrders({
@@ -247,7 +251,7 @@ export class MenuComponent {
     this.orders.splice(index, 1);
   }
 
-  submitOrder() {
+  async submitOrder() {
     this.orders.forEach(async (order) => {
       if (order.order_id != this.orderId) {
         order.order_id = this.orderId;
@@ -259,6 +263,15 @@ export class MenuComponent {
     this.orders = [];
     this.tables[this.tableIndex].is_available = false;
     localStorage.setItem('tables', JSON.stringify(this.tables));
+    const orders = await this.getAllUnsubmittedOrdersFromOneTable();
+    orders.sort((a, b) => {
+      return a.order_id - b.order_id;
+    });
+    this.allOrders = this.separateOrdersByOrderId(orders);
+
+    this.allOrders.forEach((order, index) => {
+      this.generateBills(order, index);
+    });
   }
 
   onRadioBtnChange(evt: any) {
@@ -289,7 +302,6 @@ export class MenuComponent {
       } else {
         orderDetailsFromOneOrder.push(order);
       }
-      // if order is the last item in orderSet
       if (i == allOrderSet.length - 1) {
         separatedOrders.push(orderDetailsFromOneOrder);
       }
@@ -350,9 +362,12 @@ export class MenuComponent {
         const extra = this.extraFoods[id - 1];
         total += extra.price * order.extra_quantity[i];
       });
-      total += this.menuNames[order.menu_id - 1].price! * order.quantity;
-      subTotal += total;
-
+      this.allMenus.forEach((menu) => {
+        if (menu.menu_id === order.menu_id) {
+          total += menu.price! * order.quantity;
+          subTotal += total;
+        }
+      });
       const bill: Bill = {
         menu_id: order.menu_id,
         qty: order.quantity,

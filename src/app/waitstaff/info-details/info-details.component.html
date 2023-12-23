@@ -37,12 +37,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let order of allOrders; let i = index">
-          <td>
-            {{ i + 1 }}. {{ menuNames[order.menu_id - 1].food_name }}
-            <ng-container *ngIf="order.choice_of_meat != null"
-              >({{ order.choice_of_meat }})</ng-container
-            >
-          </td>
+          <ng-container *ngFor="let menu of allMenus; let menuIndex = index">
+            <td *ngIf="order.menu_id === menu.menu_id">
+              {{ i + 1 }}.{{ menu.food_name }}
+              <ng-container *ngIf="order.choice_of_meat != null"
+                >({{ order.choice_of_meat }})</ng-container
+              >
+            </td>
+          </ng-container>
           <td>
             <div *ngIf="order.removed_ingredients.length != 0">
               Remove: (<ng-container

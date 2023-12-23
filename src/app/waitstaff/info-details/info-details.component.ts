@@ -32,9 +32,8 @@ export class InfoDetailsComponent {
   orderId!: number;
   tableIndex!: number;
   allOrders: OrderDetails[] = []; // going to be [[{}, {}], [{}]]
-  headers: any[] = [];
+  allMenus: Menu[] = [];
 
-  menuNames: Menu[] = [];
   extraFoods: ExtraFood[] = [];
   ingredients: Ingredient[] = [];
   bills: Bill[] = [];
@@ -50,6 +49,7 @@ export class InfoDetailsComponent {
     this.getItemsFromLocalStorage();
     this.allOrders = await this.api.getAllOrderdetailsWithOrderId(this.orderId);
     this.getAllBillsFromOneOrder();
+    this.allMenus = await this.api.getAllMenus();
   }
 
   sortData(sort: Sort) {
@@ -81,12 +81,6 @@ export class InfoDetailsComponent {
   }
 
   getItemsFromLocalStorage() {
-    var menus = localStorage.getItem('menuNames');
-    this.menuNames = JSON.parse(menus!);
-    this.menuNames.sort((a, b) => {
-      return a.menu_id - b.menu_id;
-    });
-
     var extras = localStorage.getItem('extraFoods');
     this.extraFoods = JSON.parse(extras!);
     this.extraFoods.sort((a, b) => {

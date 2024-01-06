@@ -1,33 +1,46 @@
 <app-sidenav></app-sidenav>
 <section>
-  <button class="add-menus" routerLink="/menus/add-menus">Add Menus</button>
-  <div class="categories">
-    <ng-container *ngFor="let category of categories; let i = index">
-      <div (click)="showMenus(category.category_id)">
-        <div
-          class="category"
-          [ngStyle]="{
-          background: categoryId === category.category_id
-            ? 'var(--main-color)'
-            : '#fff',
-          color: categoryId === category.category_id ? 'var(--secondary-color)' : 'black',
-        }"
-        >
-          {{ category.category_name }}
-        </div>
-      </div>
-    </ng-container>
+  <div class="header">
+    <div class="categories">
+      <mat-form-field>
+        <mat-label>Choose Category</mat-label>
+        <mat-select>
+          <mat-option (click)="allCategories()">All</mat-option>
+          <mat-option
+            *ngFor="let category of categories; let i = index"
+            [value]="category.category_name"
+            (click)="showMenus(category.category_id)"
+            >{{ category.category_name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button class="add-menus" routerLink="/menus/add-menus">
+        Add Menus
+      </button>
+    </div>
+    <h3>Menus List</h3>
   </div>
 
-  <div class="menu-box mt-3">
+  <div class="menu-box">
     <div class="menus">
       <ng-container *ngFor="let menu of menus; let menuIndex = index">
-        <div class="item-card">
-          <div class="image">
-            <img [src]="menu.img" alt="food" />
+        <div class="card" [matMenuTriggerFor]="popup">
+          <img [src]="menu.img" alt="food" class="card-img-top" />
+          <div class="card-body">
+            <h5 class="card-title">{{ menu.food_name }}</h5>
           </div>
-          <div class="item-name">{{ menu.food_name }}</div>
         </div>
+
+        <mat-menu #popup="matMenu">
+          <button mat-menu-item (click)="editMenu(menu.menu_id)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit this menu</span>
+          </button>
+          <button mat-menu-item (click)="deleteMenu(menu.menu_id)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete this menu</span>
+          </button>
+        </mat-menu>
       </ng-container>
     </div>
   </div>

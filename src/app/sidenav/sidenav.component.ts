@@ -59,6 +59,12 @@ export class SidenavComponent implements OnInit {
       role: ['waiter'],
     },
     {
+      routeLink: '/add-tables',
+      icon: 'fa-solid fa-table-cells',
+      label: 'Tables',
+      role: ['manager'],
+    },
+    {
       routeLink: '/menus',
       icon: 'fa fa-cutlery',
       label: 'Menus',

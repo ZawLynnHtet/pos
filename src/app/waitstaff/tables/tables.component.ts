@@ -15,9 +15,9 @@ export class TablesComponent implements OnInit {
   available_table_count: number = 0;
   tables: Table[] = [];
 
-  ngOnInit() {
-    let table: any = localStorage.getItem('tables');
-    this.tables = JSON.parse(table);
+  async ngOnInit() {
+    this.tables = await this.api.getAllTables();
+
     let unavailable = 0;
     this.tables.forEach((table) => {
       if (!table.is_available) {
@@ -35,6 +35,11 @@ export class TablesComponent implements OnInit {
       this.tables[index].is_available === true
     ) {
       this.router.navigateByUrl(`tables/${id}/${index}/menu`);
+    } else if (
+      this.employeesData.role === 'waiter' &&
+      this.tables[index].is_available === false
+    ) {
+      this.router.navigateByUrl(`order-infos/${id}/details`);
     } else if (
       this.employeesData.role === 'supervisor' ||
       this.tables[index].is_available === false

@@ -1,0 +1,78 @@
+<app-sidenav></app-sidenav>
+<section>
+  <button
+    #tooltip="matTooltip"
+    matTooltip="Back"
+    matTooltipHideDelay="100000"
+    aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+    class="example-button back"
+    (click)="goBack()"
+  >
+    <i class="fa fa-mail-reply"></i>
+  </button>
+
+  <div class="wrapper">
+    <div class="invoice-header">
+      <div class="head">
+        <div class="logo">Company Name</div>
+        <div class="title">Invoice#</div>
+      </div>
+      <div class="inv-date">
+        <div class="date">Date</div>
+        <div class="time">9/12/2023</div>
+      </div>
+    </div>
+    <div class="data">
+      <div>Table No. {{ tableId }}</div>
+      <div>Order No. {{ orderId }}</div>
+      <div>OrderedBy= {{ employeesData.name }}</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <td>Food Name</td>
+          <td>Price</td>
+          <td class="mid">Quantity</td>
+          <td class="r-col">Amount</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bill of bills; let i = index">
+          <ng-container *ngFor="let menu of allMenus; let menuIndex = index">
+            <td *ngIf="bill.menu_id === menu.menu_id">
+              {{ i + 1 }}.{{ menu.food_name }}
+            </td>
+          </ng-container>
+          <ng-container *ngFor="let menu of allMenus">
+            <td *ngIf="bill.menu_id === menu.menu_id">{{ menu.price }} Ks</td>
+          </ng-container>
+          <td class="mid">{{ bill.qty }}</td>
+          <td class="r-col">
+            <ng-container *ngFor="let menu of allMenus">
+              <div *ngIf="bill.menu_id === menu.menu_id">
+                {{ bill.total_price }} Ks
+              </div>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="total-section">
+      <div class="sub">
+        <p>Sub Total:</p>
+        <p>{{ totalAmounts.total }} Ks</p>
+      </div>
+      <div class="tax">
+        <p>Tax:</p>
+        <p>{{ totalAmounts.tax }} Ks</p>
+      </div>
+      <div class="total">
+        <p>Grand Total:</p>
+        <p>{{ totalAmounts.subTotal }} Ks</p>
+      </div>
+      <button mat-raised-button color="primary" (click)="payBill()">
+        Pay Bill
+      </button>
+    </div>
+  </div>
+</section>

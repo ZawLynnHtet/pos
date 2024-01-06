@@ -16,6 +16,8 @@ import { TablesComponent } from './waitstaff/tables/tables.component';
 import { AdminComponent } from './manager/admin/admin.component';
 import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
 import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
+import { PaymentComponent } from './waitstaff/payment/payment.component';
+import { AddTablesComponent } from './manager/add-tables/add-tables.component';
 
 const routes: Routes = [
   {
@@ -64,12 +66,20 @@ const routes: Routes = [
     component: InfoDetailsComponent,
   },
   {
+    path: 'order-infos/:tableId/details',
+    component: InfoDetailsComponent,
+  },
+  {
     path: 'tables/:id/order-details',
     component: OrderDetailsComponent,
   },
   {
     path: 'tables/:id/order-details/payments/:oid',
     component: PaymentDetailsComponent,
+  },
+  {
+    path: ':tableId/:orderId/payments',
+    component: PaymentComponent,
   },
   {
     path: 'reservations',
@@ -98,6 +108,10 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+  },
+  {
+    path: 'add-tables',
+    component: AddTablesComponent,
   },
 ];
 

@@ -10,33 +10,37 @@
   >
     <i class="fa fa-mail-reply"></i>
   </button>
-  <div class="wrapper">
+
+  <div class="wrapper" *ngFor="let oneOrder of allOrders; let i = index">
     <div class="invoice-header">
-      <div class="head">
-        <div class="logo">Company Name</div>
-        <div class="title">Invoice#</div>
+      <div class="data">
+        <ng-container *ngFor="let table of tables">
+          <div *ngIf="table.table_id == tableId">
+            Table No. {{ table.table_no }}
+          </div>
+        </ng-container>
+        <div>Order No. {{ headers[i].id }}</div>
+        <div>OrderedBy= {{ employeesData.name }}</div>
       </div>
       <div class="inv-date">
         <div class="date">Date</div>
-        <div class="time">9/12/2023</div>
+        <div class="time">
+          {{ headers[i].date | date : "MMM d, y, h:mm a" }}
+        </div>
       </div>
     </div>
-    <div class="data">
-      <div>Table No. {{ tableId }}</div>
-      <div>Order No. {{ orderId }}</div>
-      <div>OrderedBy= {{ employeesData.name }}</div>
-    </div>
+
     <table>
       <thead>
         <tr>
           <td>Food Name</td>
           <td>Modifiers</td>
           <td class="mid">Quantity</td>
-          <td class="r-col">Amount</td>
+          <td class="mid">Type</td>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of allOrders; let i = index">
+        <tr *ngFor="let order of oneOrder; let i = index">
           <ng-container *ngFor="let menu of allMenus; let menuIndex = index">
             <td *ngIf="order.menu_id === menu.menu_id">
               {{ i + 1 }}.{{ menu.food_name }}
@@ -65,30 +69,20 @@
             </div>
           </td>
           <td class="mid">{{ order.quantity }}</td>
-          <td class="r-col">
-            <ng-container *ngFor="let bill of bills">
-              <div *ngIf="bill.menu_id === order.menu_id">
-                {{ bill.total_price }} Ks
-              </div>
-            </ng-container>
+          <td class="mid">
+            {{ order.takeaway === false ? "Dine in" : "Take away" }}
           </td>
         </tr>
       </tbody>
     </table>
     <div class="total-section">
-      <div class="sub">
-        <p>Sub Total:</p>
-        <p>{{ totalAmounts.total }} Ks</p>
-      </div>
-      <div class="tax">
-        <p>Tax:</p>
-        <p>{{ totalAmounts.tax }} Ks</p>
-      </div>
-      <div class="total">
-        <p>Grand Total:</p>
-        <p>{{ totalAmounts.subTotal }} Ks</p>
-      </div>
-      <button mat-raised-button color="primary">Pay Bill</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="generateBills(oneOrder, i)"
+      >
+        Print Bill
+      </button>
     </div>
   </div>
 </section>

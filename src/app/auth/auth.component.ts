@@ -88,7 +88,7 @@ export class AuthComponent implements OnInit {
         localStorage.setItem('data', JSON.stringify(data));
 
         if (res.user.role === 'manager') {
-          this.router.navigateByUrl('menus');
+          this.router.navigateByUrl('add-tables');
         } else {
           this.router.navigateByUrl('tables');
         }
@@ -104,8 +104,6 @@ export class AuthComponent implements OnInit {
   }
 
   async callApiAndStoreResponseInLocalStorage() {
-    const tables: Table[] = await this.api.getAllTables();
-    localStorage.setItem('tables', JSON.stringify(tables));
     const categories: Category[] = await this.api.getAllCategories();
     localStorage.setItem('categories', JSON.stringify(categories));
     const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();

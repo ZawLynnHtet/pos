@@ -1,6 +1,5 @@
 section {
-  margin-left: 100px;
-  padding: 20px 20px 20px 0;
+  padding: 20px 20px 20px 100px;
 }
 
 table {
@@ -30,6 +29,19 @@ th {
 
 td {
   text-transform: lowercase;
+  opacity: 0;
+  animation: popup 1s ease forwards;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
 }
 
 .profile {

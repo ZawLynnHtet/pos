@@ -48,6 +48,7 @@ export class OrderDetailsComponent {
       return a.order_id - b.order_id;
     });
     this.allOrders = this.separateOrdersByOrderId(orders);
+    console.log(this.allOrders);
 
     this.headers = this.separateOrderHeaderInfos(this.allOrders);
   }

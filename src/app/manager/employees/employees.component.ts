@@ -64,10 +64,22 @@ export class EmployeesComponent implements OnInit {
 
   ngAfterViewInit() {}
 
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  // }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
+    console.log(filterValue);
+    this.dataSource.data = this.employees.filter((user) =>
+      user.name.toLowerCase().startsWith(filterValue)
+    );
+    console.log(this.dataSource.filter);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

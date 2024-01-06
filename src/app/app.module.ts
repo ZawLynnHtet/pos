@@ -42,13 +42,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DashboardComponent } from './manager/dashboard/dashboard.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { TablesComponent } from './waitstaff/tables/tables.component';
 import { MenuComponent } from './waitstaff/order-menus/menu.component';
 import { AdminComponent } from './manager/admin/admin.component';
 import { NgxPrintModule } from 'ngx-print';
 import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
+import { PaymentComponent } from './waitstaff/payment/payment.component';
+import { AddTablesComponent } from './manager/add-tables/add-tables.component';
+import { TablesComponent } from './waitstaff/tables/tables.component';
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -75,6 +77,8 @@ export const storage = getStorage(app);
     AdminComponent,
     OrderInfosComponent,
     InfoDetailsComponent,
+    PaymentComponent,
+    AddTablesComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,4 +113,4 @@ export const storage = getStorage(app);
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -17,7 +17,7 @@ section {
 .wrapper {
   position: relative;
   width: 60%;
-  margin: 20px auto 100px;
+  margin: 20px auto;
   opacity: 0;
   animation: popup 1s ease forwards;
 }
@@ -99,7 +99,7 @@ table tbody tr:nth-child(even) {
   position: absolute;
   right: 0;
   font-size: 12px;
-  width: 110px;
+  width: 160px;
   margin-top: 5px;
   padding-right: 3px;
 }
@@ -121,10 +121,6 @@ table tbody tr:nth-child(even) {
 .tax p:nth-child(1),
 .total p {
   font-weight: 600;
-}
-
-.total-section button {
-  margin-top: 20px;
 }
 
 @media screen and (max-width: 1230px) {

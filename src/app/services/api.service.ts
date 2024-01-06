@@ -49,14 +49,16 @@ export class ApiService {
 
   updateTable(id: number, value: any): Promise<Table[]> {
     return new Promise((resolve, reject) => {
-      this.subs.sink = this.http.put(`${apiUrl}/tables${id}`, value).subscribe({
-        next: (res: any) => {
-          resolve(res);
-        },
-        error: (error: any) => {
-          reject(error);
-        },
-      });
+      this.subs.sink = this.http
+        .patch(`${apiUrl}/tables/${id}`, value)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
     });
   }
 
@@ -101,6 +103,34 @@ export class ApiService {
     });
   }
 
+  editOneMenu(id: number, data: MenuItem): Promise<MenuItem[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .patch(`${apiUrl}/menus/${id}`, data)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  deleteOneMenu(id: number): Promise<Menu[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.delete(`${apiUrl}/menus/${id}`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
   postEmployee(data: Employee): Promise<Employee[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
@@ -119,7 +149,7 @@ export class ApiService {
   updateEmployee(id: number, data: Employee): Promise<Employee[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
-        .put(`${apiUrl}/employees/${id}`, data)
+        .patch(`${apiUrl}/employees/${id}`, data)
         .subscribe({
           next: (res: any) => {
             resolve(res);
@@ -241,13 +271,10 @@ export class ApiService {
     });
   }
 
-  getAllOrdersWithTableId(
-    id: number,
-    submitted: boolean
-  ): Promise<OrderDetails[]> {
+  pay(id: number, data: Order): Promise<Order[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
-        .get(`${apiUrl}/orders/table/${id}?submitted=${submitted}`)
+        .patch(`${apiUrl}/orders/${id}`, data)
         .subscribe({
           next: (res: any) => {
             resolve(res.data);
@@ -259,7 +286,25 @@ export class ApiService {
     });
   }
 
-  getAllOrderdetailsWithOrderId(id: number): Promise<OrderDetails[]> {
+  getAllOrdersWithTableId(
+    id: number,
+    is_paid: boolean
+  ): Promise<OrderDetails[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .get(`${apiUrl}/orders/table/${id}?is_paid=${is_paid}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  getAllOrderDetailsWithOrderId(id: number): Promise<OrderDetails[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
         .get(`${apiUrl}/orderdetails/order/${id}`)
@@ -271,6 +316,19 @@ export class ApiService {
             reject(error);
           },
         });
+    });
+  }
+
+  getAllOrderDetails(): Promise<OrderDetails[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/orderdetails`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
     });
   }
 

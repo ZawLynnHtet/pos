@@ -8,6 +8,7 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface OrderDetails {
+  [x: string]: any;
   order_id: number;
   table_id: number;
   waitstaff_id: number;

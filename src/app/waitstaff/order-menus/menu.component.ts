@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -17,6 +17,9 @@ import { DetailsBody, OrderDetails } from '../../models/orderdetails.model';
 import { UtilsService } from '../../services/utils.service';
 import { ExtraFood } from '../../models/extrafood.model';
 import { Bill } from 'src/app/models/bill.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-menu',
@@ -50,6 +53,7 @@ export class MenuComponent {
   selectedForm!: FormGroup;
   orderId = 0;
   allOrders: OrderDetails[][] = [];
+  dataSource!: MatTableDataSource<any>;
 
   constructor(
     private router: Router,
@@ -76,15 +80,17 @@ export class MenuComponent {
     this.tableIndex = this.activatedRoute.snapshot.params['tableIndex'];
     console.log(this.tableId + '/' + this.tableIndex);
     this.getIngredient();
-    this.table = await this.api.getOneTable(this.tableId);
-    let tableData: any = localStorage.getItem('tables');
-    this.tables = JSON.parse(tableData);
+    this.tables = await this.api.getAllTables();
     this.allMenus = await this.api.getAllMenus();
+    this.dataSource = new MatTableDataSource(this.allMenus);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
-  async getAllUnsubmittedOrdersFromOneTable(): Promise<OrderDetails[]> {
-    return await this.api.getAllOrdersWithTableId(this.tableId, false);
-  }
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+  @ViewChild(MatSort)
+  sort!: MatSort;
 
   createOrder() {
     this.api
@@ -190,7 +196,7 @@ export class MenuComponent {
     }
   }
 
-  sort(i: number) {
+  sorted(i: number) {
     this.orderType = this.orderTypes[i];
   }
 
@@ -261,17 +267,7 @@ export class MenuComponent {
     });
     this.orderId = 0;
     this.orders = [];
-    this.tables[this.tableIndex].is_available = false;
-    localStorage.setItem('tables', JSON.stringify(this.tables));
-    const orders = await this.getAllUnsubmittedOrdersFromOneTable();
-    orders.sort((a, b) => {
-      return a.order_id - b.order_id;
-    });
-    this.allOrders = this.separateOrdersByOrderId(orders);
-
-    this.allOrders.forEach((order, index) => {
-      this.generateBills(order, index);
-    });
+    await this.api.updateTable(this.tableId, { is_available: false });
   }
 
   onRadioBtnChange(evt: any) {
@@ -285,102 +281,11 @@ export class MenuComponent {
     console.log(this.orders);
   }
 
-  separateOrdersByOrderId(allOrderSet: OrderDetails[]): OrderDetails[][] {
-    var oid = 0;
-    var orderDetailsFromOneOrder: OrderDetails[] = [];
-    var separatedOrders: any[] = [];
-
-    allOrderSet.forEach((order: OrderDetails, i) => {
-      if (oid == 0) {
-        oid = order.order_id;
-        orderDetailsFromOneOrder.push(order);
-      } else if (oid != order.order_id) {
-        oid = order.order_id;
-        separatedOrders.push(orderDetailsFromOneOrder);
-        orderDetailsFromOneOrder = [];
-        orderDetailsFromOneOrder.push(order);
-      } else {
-        orderDetailsFromOneOrder.push(order);
-      }
-      if (i == allOrderSet.length - 1) {
-        separatedOrders.push(orderDetailsFromOneOrder);
-      }
-    });
-    return separatedOrders;
-  }
-
-  generateBills(orders: OrderDetails[], i: number) {
-    var updatedOrders: OrderDetails[] = [];
-    if (orders.length > 1) {
-      updatedOrders = this.addQuantitiesForSameMenus(orders);
-    } else {
-      updatedOrders.push(orders[0]);
-    }
-    this.createBills(updatedOrders, i);
-  }
-
-  addQuantitiesForSameMenus(orders: OrderDetails[]): OrderDetails[] {
-    orders = orders.sort((a, b) => {
-      return a.menu_id - b.menu_id;
-    });
-    console.log(orders);
-
-    const updatedOrders: OrderDetails[] = [];
-    orders.reduce((prevOrder, currOrder, i) => {
-      if (prevOrder.menu_id == currOrder.menu_id) {
-        prevOrder.quantity += currOrder.quantity;
-        prevOrder.extra_ingredients = prevOrder.extra_ingredients.concat(
-          currOrder.extra_ingredients
-        );
-        prevOrder.extra_quantity = prevOrder.extra_quantity.concat(
-          currOrder.extra_quantity
-        );
-        // console.log(`same food i - ${i} so added qty`);
-        // console.log(prevOrder);
-      } else {
-        // console.log(`not same food ${i} vv`);
-        // console.log(prevOrder);
-        updatedOrders.push(prevOrder);
-        prevOrder = currOrder;
-      }
-
-      if (i == orders.length - 1) {
-        // console.log(`and last item > ${i} vv`);
-        // console.log(prevOrder);
-        updatedOrders.push(prevOrder);
-      }
-      return prevOrder;
-    });
-    return updatedOrders;
-  }
-
-  async createBills(orders: OrderDetails[], oindex: number) {
-    let subTotal = 0;
-    orders.forEach(async (order) => {
-      let total = 0;
-      order.extra_ingredients.forEach((id, i) => {
-        const extra = this.extraFoods[id - 1];
-        total += extra.price * order.extra_quantity[i];
-      });
-      this.allMenus.forEach((menu) => {
-        if (menu.menu_id === order.menu_id) {
-          total += menu.price! * order.quantity;
-          subTotal += total;
-        }
-      });
-      const bill: Bill = {
-        menu_id: order.menu_id,
-        qty: order.quantity,
-        total_price: total,
-      };
-      await this.api.createOneBill(bill, order.order_id);
-    });
-
-    const body: Order = {
-      total_price: subTotal,
-      order_submitted: true,
-    };
-    this.allOrders.splice(oindex, 1);
-    await this.api.updateOrder(body, orders[0].order_id);
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue);
+    this.dataSource.data = this.allMenus.filter((user) =>
+      user.food_name.toLowerCase().startsWith(filterValue)
+    );
   }
 }

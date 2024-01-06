@@ -2,42 +2,59 @@
   <app-sidenav></app-sidenav>
   <div class="flex-box">
     <div class="menu-page">
-      <div class="categories">
-        <ng-container *ngFor="let category of categories; let i = index">
-          <div (click)="showMenus(category.category_id)">
-            <div
-              class="category"
-              [ngStyle]="{
-              background: categoryId === category.category_id
-                ? 'var(--main-color)'
-                : '#fff',
-              color: categoryId === category.category_id ? 'var(--secondary-color)' : 'black',
-            }"
-            >
-              {{ category.category_name }}
-            </div>
+      <div class="header">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search menus ...."
+            (keyup)="applyFilter($event)"
+          />
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div>
+          <h4 class="mt-2">Category</h4>
+          <div class="categories">
+            <ng-container *ngFor="let category of categories; let i = index">
+              <div (click)="showMenus(category.category_id)">
+                <div
+                  class="category"
+                  [ngStyle]="{
+                  background: categoryId === category.category_id
+                    ? 'var(--main-color)'
+                    : '#fff',
+                  color: categoryId === category.category_id ? 'var(--secondary-color)' : 'black',
+                }"
+                >
+                  {{ category.category_name }}
+                </div>
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
+          <h4>Select Menu</h4>
+        </div>
       </div>
 
       <div class="food-box">
         <div class="menus-box">
           <div class="menus" *ngIf="topping === false; else none">
             <ng-container *ngFor="let menu of menus; let menuIndex = index">
-              <div class="item-card">
-                <div class="image">
-                  <img [src]="menu.img" alt="food" />
+              <div class="card">
+                <img [src]="menu.img" alt="food" class="card-img-top" />
+                <div class="card-body">
+                  <h5 class="card-title">{{ menu.food_name }}</h5>
+                  <div class="action">
+                    <button
+                      class="choice"
+                      (click)="showTopping(menuIndex, menu)"
+                    >
+                      Choice
+                    </button>
+                    <i
+                      class="fa-solid fa-plus"
+                      (click)="addOrder(menu.menu_id, menu)"
+                    ></i>
+                  </div>
                 </div>
-                <div class="item-name">{{ menu.food_name }}</div>
-                <div class="icons">
-                  <i
-                    class="fa-solid fa-plus"
-                    (click)="addOrder(menu.menu_id, menu)"
-                  ></i>
-                </div>
-                <button class="choice" (click)="showTopping(menuIndex, menu)">
-                  Choice
-                </button>
               </div>
             </ng-container>
           </div>

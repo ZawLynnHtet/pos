@@ -1,1 +1,1 @@
-export var apiUrl: String = 'https://pos-x7wi.onrender.com/api/v1';
+export var apiUrl: String = 'http://localhost:8080/api/v1';

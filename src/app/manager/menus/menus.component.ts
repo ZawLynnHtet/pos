@@ -1,7 +1,11 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Menu } from 'src/app/models/menu.model';
 import { ApiService } from 'src/app/services/api.service';
+import { UtilsService } from 'src/app/services/utils.service';
+import { AddMenusComponent } from '../add-menus/add-menus.component';
 
 @Component({
   selector: 'app-menus',
@@ -15,11 +19,16 @@ export class MenusComponent implements OnInit {
   selected: boolean = false;
   show: boolean = false;
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(
+    private api: ApiService,
+    private router: Router,
+    public dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private snackBar: UtilsService
+  ) {}
 
   async ngOnInit() {
-    let category: any = localStorage.getItem('categories');
-    this.categories = JSON.parse(category);
+    this.categories = await this.api.getAllCategories();
     if (this.selected === false) {
       this.menus = await this.api.getAllMenus();
     }
@@ -36,15 +45,39 @@ export class MenusComponent implements OnInit {
     this.menus = await this.api.getAllMenus();
   }
 
-  showModel() {
-    this.show = true;
-  }
-
   editMenu(id: number) {
     this.router.navigateByUrl('menus/add-menus');
   }
 
   async deleteMenu(id: number) {
     await this.api.deleteOneMenu(id);
+    this.menus = await this.api.getAllMenus();
+  }
+
+  async deleteTable(id: number) {
+    await this.api.deleteTable(id);
+    this.snackBar.openSnackBar('Table deleted successful', 'done!');
+  }
+
+  addTableFormDialog() {
+    const dialogRef = this.dialog.open(AddMenusComponent);
+
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.allCategories();
+      }
+    });
+  }
+
+  async editTableFormDialog(data: any) {
+    const dialogRef = this.dialog.open(AddMenusComponent, {
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.allCategories();
+      }
+    });
   }
 }

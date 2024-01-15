@@ -1,0 +1,41 @@
+<div class="md-header">
+  <div class="md-title">Add Table</div>
+  <button type="button" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="modal-body">
+    <form [formGroup]="tableForm">
+      <div class="inputBox">
+        <input
+          id="no"
+          type="number"
+          name="Table_no"
+          placeholder="Table no..."
+          formControlName="table_no"
+        />
+        <input
+          id="capacity"
+          type="number"
+          name="Capacity"
+          placeholder="Capacity..."
+          formControlName="capacity"
+        />
+        <div class="md-footer">
+          <button mat-raised-button color="primary" (click)="onNoClick()">
+            Cancel
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            class="save"
+            (click)="submitted()"
+          >
+            {{ data ? "Update" : "Save" }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

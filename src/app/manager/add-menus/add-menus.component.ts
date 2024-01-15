@@ -1,56 +1,101 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormArrayName,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Menu, MenuItem } from 'src/app/models/menu.model';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Category } from 'src/app/models/category.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { ExtraFood } from 'src/app/models/extrafood.model';
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from 'src/app/app.module';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { COMMA, E, ENTER } from '@angular/cdk/keycodes';
+import { Observable, map, startWith } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-class ImageSnippet {
-  constructor(public src: string, public file: File) { }
-}
 @Component({
   selector: 'app-add-menus',
   templateUrl: './add-menus.component.html',
   styleUrls: ['./add-menus.component.css'],
 })
 export class AddMenusComponent implements OnInit {
-  selectedFile?: ImageSnippet;
-  categories: Category[] = [];
-  ingredients: Ingredient[] = [];
-  extras: ExtraFood[] = [];
+  categories: any[] = [];
+  ingredients: any[] = [];
+  extras: any[] = [];
+  matSelected!: number;
   meatChoices: any[] = ['Chicken', 'Pork', 'Beef', 'Fried Egg'];
   popupBox: any = {
     show: false,
-    name: ''
-  }
+    name: '',
+  };
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  meatCtrl = new FormControl('');
+  filteredMeats!: Observable<string[]>;
+  meats: any[] = ['Pork', 'Beef', 'Chicken', 'Chicken', 'Fried Egg'];
+  imgUrl: string = '..//..//../assets/images/loading-image.png';
+  selectedFile: any = null;
+  menuForm: FormGroup;
 
   constructor(
-    public api: ApiService,
-    private builder: FormBuilder,
-    private utils: UtilsService,
-  ) { }
+    private api: ApiService,
+    public dialogRef: MatDialogRef<AddMenusComponent>,
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: UtilsService,
+    private utils: UtilsService
+  ) {
+    this.menuForm = fb.group({
+      food_name: new FormControl('', [Validators.required]),
+      price: new FormControl('', [Validators.required]),
+      category_id: new FormControl('', [Validators.required]),
+      meat_choice: new FormArray([], [Validators.required]),
+      ingredient_ids: new FormArray([], [Validators.required]),
+      extraFood_ids: new FormArray([], [Validators.required]),
+      img: new FormControl('', [Validators.required]),
+      is_available: true,
+    });
+  }
 
-  menuForm: FormGroup = this.builder.group({
-    foodName: this.builder.control('', [Validators.required]),
-    price: this.builder.control('', [Validators.required]),
-    category: this.builder.control(0, [Validators.required]),
-    meatChoices: this.builder.array([], [Validators.required]),
-    // meatChoices: this.builder.array([new FormControl]) || this.builder.control(null),
-    ingredients: this.builder.array([], [Validators.required]),
-    extras: this.builder.array([], [Validators.required]),
-  });
+  ngOnInit(): void {
+    this.menuForm.patchValue(this.data);
 
-  addNewForm: FormGroup = this.builder.group({
-    name: this.builder.control('', [Validators.required]),
-    price: this.builder.control(''),
-  })
+    console.log(this.menuForm.value);
 
-  async ngOnInit() {
-    this.getLocalStorageItems();
+    if (this.menuForm.value.img) {
+      this.imgUrl = this.menuForm.value.img;
+    } else {
+      this.imgUrl = '..//..//../assets/images/loading-image.png';
+    }
+    this.getItems();
+  }
+
+  processFile(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => (this.imgUrl = e.target.result);
+      reader.readAsDataURL(event.target.files[0]);
+      this.selectedFile = event.target.files[0];
+    } else {
+      this.selectedFile = null;
+      this.imgUrl = '..//..//../assets/images/profile.png';
+    }
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
@@ -60,29 +105,61 @@ export class AddMenusComponent implements OnInit {
     return await getDownloadURL(ref(storage, `menus/${name}`));
   }
 
-  getLocalStorageItems() {
-    this.categories = this.utils.getSortedLocalStorageArray('categories', 'category_id');
-    this.ingredients = this.utils.getSortedLocalStorageArray('ingredients', 'ingredient_id');
-    this.extras = this.utils.getSortedLocalStorageArray('extraFoods', 'extraFood_id');
-    console.log(this.ingredients, this.extras);
+  async addCategory(event: any) {
+    const value = (event.target.value || '').trim();
+    if (value) {
+      let data = { category_name: value };
+      this.categories.push(data);
+      await this.api.postCategory(data);
+    }
+    event.target.value = '';
   }
 
-  processFile(imageInput: any) {
-    const file: File = imageInput.files[0];
-    const reader = new FileReader();
+  addMeat(event: any): void {
+    const value = (event.target.value || '').trim();
+    if (value) {
+      let data = { name: value };
+      this.meats.push(data);
+    }
+    event.target.value = '';
+  }
 
-    reader.addEventListener('load', (event: any) => {
-      this.selectedFile = new ImageSnippet(event.target.result, file);
-      console.log(this.selectedFile);
-    });
+  async addIngredient(event: any) {
+    const value = (event.target.value || '').trim();
+    if (value) {
+      let data = { ingredient_name: value };
+      this.ingredients.push(data);
+      await this.api.postIngredient(data);
+    }
+    event.target.value = '';
+  }
 
-    reader.readAsDataURL(file);
+  async addExtra(event: any) {
+    const value = (event.target.value || '').trim();
+    if (value) {
+      let data = { food_name: value };
+      this.extras.push(data);
+      await this.api.postExtraFood(data);
+    }
+    event.target.value = '';
+  }
+
+  async getItems() {
+    let ctg = await this.api.getAllCategories();
+    this.categories = ctg;
+    let ing = await this.api.getAllIngredient();
+    this.ingredients = ing;
+    let ext = await this.api.getAllExtraFoods();
+    this.extras = ext;
   }
 
   onCheckboxChange(evt: any, formCtlName: string) {
-    const array: FormArray = this.menuForm.controls[`${formCtlName}`] as FormArray;
+    const array: FormArray = this.menuForm.controls[
+      `${formCtlName}`
+    ] as FormArray;
     if (evt.target.checked) {
       array.push(new FormControl(evt.target.value));
+      console.log('The value of this array' + array);
     } else {
       const index = array.controls.findIndex(
         (x) => x.value === evt.target.value
@@ -91,40 +168,44 @@ export class AddMenusComponent implements OnInit {
     }
   }
 
-  async addMenu() {
-    const url = await this.uploadAndGetDownloadUrl(this.menuForm.value.foodName!);
+  addMenu() {
+    console.log(this.menuForm.value);
+    this.menuForm.reset();
+    this.popupBox.show = false;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  async submitted() {
+    const url = await this.uploadAndGetDownloadUrl(
+      this.menuForm.value.food_name!
+    );
 
     const menu: MenuItem = {
-      category_id: this.menuForm.controls['category'].value,
-      ingredient_ids: this.menuForm.controls['ingredients'].value,
-      extraFood_ids: this.menuForm.controls['extras'].value,
-      meat_choice: this.menuForm.controls['meatChoices'].value.length < 1 ? null : this.menuForm.controls['meatChoices'].value,
-      food_name: this.menuForm.value.foodName!,
+      category_id: this.menuForm.controls['category_id'].value,
+      ingredient_ids: this.menuForm.controls['ingredient_ids'].value,
+      extraFood_ids: this.menuForm.controls['extrasFood_ids'].value,
+      meat_choice:
+        this.menuForm.controls['meat_choices'].value.length < 1
+          ? null
+          : this.menuForm.controls['meat_choices'].value,
+      food_name: this.menuForm.value.food_name!,
       price: parseInt(this.menuForm.value.price!),
       img: url,
       is_available: true,
     };
-
-    // this.api.postMenu(menu).subscribe((res: any) => {
-    //   console.log(res.data);
-    // });
-
-    await this.api.postMenu(menu);
-  }
-
-  addNew(name: string) {
-    this.popupBox.show = true;
-    this.popupBox.name = name;
-  }
-
-
-  openOrCloseAddNewBox() {
-    this.popupBox.show = !this.popupBox.show;
-  }
-
-  add() {
-    console.log(this.addNewForm.value);
-    this.addNewForm.reset();
-    this.popupBox.show = false;
+    if (this.menuForm.valid) {
+      if (this.data) {
+        await this.api.updateMenu(this.data.menu_id, menu);
+        this.snackBar.openSnackBar('Menu updated successful!');
+        this.dialogRef.close(true);
+      } else {
+        await this.api.postMenu(menu);
+        this.snackBar.openSnackBar('Menu create successful!');
+        this.dialogRef.close(true);
+      }
+    }
   }
 }

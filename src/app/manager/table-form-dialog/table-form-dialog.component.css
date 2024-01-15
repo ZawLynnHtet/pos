@@ -1,0 +1,52 @@
+.md-header {
+  width: 100%;
+  display: flex;
+  align-items: center !important;
+  justify-content: space-between;
+  padding: 20px;
+  background: #5f7ff5;
+  color: #fff;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.md-header .md-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.md-header button {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+input {
+  width: 100%;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid #262626;
+  outline: none;
+  height: 40px;
+  background: transparent;
+  font-size: 16px;
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-bottom: 2px solid #5f7ff5;
+}
+
+.md-footer {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.save {
+  margin-left: 10px;
+}

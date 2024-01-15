@@ -1,0 +1,31 @@
+<app-sidenav></app-sidenav>
+<section>
+  <div class="header">
+    <mat-toolbar>
+      <span class="title">Tables</span>
+      <span class="example-spacer"></span>
+      <button mat-raised-button color="primary" (click)="addTableFormDialog()">
+        Add Table
+      </button>
+    </mat-toolbar>
+  </div>
+  <div class="tables">
+    <ng-container *ngFor="let table of tables">
+      <div class="table" [matMenuTriggerFor]="popup">
+        <p>Table No. {{ table.table_no }}</p>
+        <p>Capacity: {{ table.capacity }}</p>
+      </div>
+
+      <mat-menu #popup="matMenu">
+        <button mat-menu-item (click)="editTableFormDialog(table)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit this menu</span>
+        </button>
+        <button mat-menu-item (click)="deleteTable(table.table_id)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete this menu</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </div>
+</section>

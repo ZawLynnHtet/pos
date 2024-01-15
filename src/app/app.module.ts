@@ -44,13 +44,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MenuComponent } from './waitstaff/order-menus/menu.component';
 import { AdminComponent } from './manager/admin/admin.component';
-import { NgxPrintModule } from 'ngx-print';
 import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
-import { MatChipsModule } from '@angular/material/chips';
 import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
 import { PaymentComponent } from './waitstaff/payment/payment.component';
-import { AddTablesComponent } from './manager/add-tables/add-tables.component';
 import { TablesComponent } from './waitstaff/tables/tables.component';
+import { TableFormDialogComponent } from './manager/table-form-dialog/table-form-dialog.component';
+import { TablesPageComponent } from './manager/tables-page/tables-page.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -78,7 +79,8 @@ export const storage = getStorage(app);
     OrderInfosComponent,
     InfoDetailsComponent,
     PaymentComponent,
-    AddTablesComponent,
+    TableFormDialogComponent,
+    TablesPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,10 +109,17 @@ export const storage = getStorage(app);
     MatSnackBarModule,
     MatSortModule,
     MatPaginatorModule,
-    NgxPrintModule,
     MatChipsModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  // constructor() {
+  //   window.onscroll = () => {
+  //     let header = document.querySelector('.header');
+  //     header?.classList.toggle('sticky', window.scrollY > 10);
+  //   };
+  // }
+}

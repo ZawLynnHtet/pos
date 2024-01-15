@@ -47,6 +47,12 @@ export class SidenavComponent implements OnInit {
   constructor(private api: ApiService) {}
   navData = [
     {
+      routeLink: '/dashboard',
+      icon: 'fa-solid fa-chart-line',
+      label: 'Dashboard',
+      role: ['manager'],
+    },
+    {
       routeLink: '/tables',
       icon: 'fa-solid fa-table-cells',
       label: 'Tables',
@@ -59,7 +65,7 @@ export class SidenavComponent implements OnInit {
       role: ['waiter'],
     },
     {
-      routeLink: '/add-tables',
+      routeLink: '/tables-page',
       icon: 'fa-solid fa-table-cells',
       label: 'Tables',
       role: ['manager'],
@@ -80,12 +86,6 @@ export class SidenavComponent implements OnInit {
       routeLink: '/employees',
       icon: 'fa-solid fa-users',
       label: 'Employees',
-      role: ['manager'],
-    },
-    {
-      routeLink: '/dashboard',
-      icon: 'fa-solid fa-chart-line',
-      label: 'Dashboard',
       role: ['manager'],
     },
     {

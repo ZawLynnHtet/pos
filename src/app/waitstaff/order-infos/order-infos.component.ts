@@ -60,15 +60,6 @@ export class OrderInfosComponent {
 
   ngAfterViewInit() {}
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
   getDataLocalStorage() {
     var table = localStorage.getItem('tables');
     this.tables = JSON.parse(table!);
@@ -82,9 +73,11 @@ export class OrderInfosComponent {
     let data = await this.api.getAllOrdersWithTableId(id, value);
     console.log(data);
 
-    if (data) {
-      this.createBills(data);
-    }
+    data.forEach((order) => {
+      if (order.order_submitted === false) {
+        this.createBills(data);
+      }
+    });
   }
 
   async createBills(orders: OrderDetails[]) {
@@ -93,7 +86,7 @@ export class OrderInfosComponent {
       let total = 0;
       order.extra_ingredients.forEach((id, i) => {
         const extra = this.extraFoods[id - 1];
-        total += extra.price * order.extra_quantity[i];
+        total += extra.price;
       });
       this.allMenus.forEach((menu) => {
         if (menu.menu_id === order.menu_id) {

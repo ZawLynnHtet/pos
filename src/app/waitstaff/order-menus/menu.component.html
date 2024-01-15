@@ -8,6 +8,7 @@
             type="text"
             placeholder="Search menus ...."
             (keyup)="applyFilter($event)"
+            #input
           />
           <i class="fa-solid fa-magnifying-glass"></i>
         </div>
@@ -30,7 +31,7 @@
               </div>
             </ng-container>
           </div>
-          <h4>Select Menu</h4>
+          <h4>{{ topping ? "Select Topping" : "Select Menu" }}</h4>
         </div>
       </div>
 
@@ -143,10 +144,8 @@
                 </div>
               </form>
             </mat-tab-group>
-            <div class="topping-bottom">
-              <button class="btn" (click)="closeTopping()">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
+            <div class="footer">
+              <button class="btn" (click)="closeTopping()">Close</button>
               <div>
                 <button class="btn plus" (click)="addOrdersWithChoice()">
                   <i class="fa-solid fa-plus"></i>

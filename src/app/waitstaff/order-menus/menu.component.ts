@@ -53,7 +53,6 @@ export class MenuComponent {
   selectedForm!: FormGroup;
   orderId = 0;
   allOrders: OrderDetails[][] = [];
-  dataSource!: MatTableDataSource<any>;
 
   constructor(
     private router: Router,
@@ -82,9 +81,6 @@ export class MenuComponent {
     this.getIngredient();
     this.tables = await this.api.getAllTables();
     this.allMenus = await this.api.getAllMenus();
-    this.dataSource = new MatTableDataSource(this.allMenus);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   @ViewChild(MatPaginator)
@@ -115,6 +111,7 @@ export class MenuComponent {
   async showMenus(id: number) {
     this.menus = await this.api.getMenus(id);
     this.categoryId = id;
+    this.topping = false;
   }
 
   getIngredient() {
@@ -137,24 +134,24 @@ export class MenuComponent {
     this.topping = true;
     this.selectedIndex = index;
     this.selectedMenu = menu;
-    this.checkOrderIdAndCreateOrder();
-    const order: DetailsBody = {
-      order_id: this.orderId,
-      quantity: 0,
-      menu_id: menu.menu_id,
-      choice_of_meat:
-        menu.meat_choice != null && menu.meat_choice.length > 0
-          ? menu.meat_choice[0]
-          : null,
-      removed_ingredients: [],
-      extra_ingredients: [],
-      extra_quantity: [],
-      takeaway: false,
-      note: null,
-    };
-    this.selectedForm.controls['meat'].patchValue(order.choice_of_meat);
-    order.quantity++;
-    this.orders.push(order);
+    // this.checkOrderIdAndCreateOrder();
+    // const order: DetailsBody = {
+    //   order_id: this.orderId,
+    //   quantity: 0,
+    //   menu_id: menu.menu_id,
+    //   choice_of_meat:
+    //     menu.meat_choice != null && menu.meat_choice.length > 0
+    //       ? menu.meat_choice[0]
+    //       : null,
+    //   removed_ingredients: [],
+    //   extra_ingredients: [],
+    //   extra_quantity: [],
+    //   takeaway: false,
+    //   note: null,
+    // };
+    // this.selectedForm.controls['meat'].patchValue(order.choice_of_meat);
+    // order.quantity++;
+    // this.orders.push(order);
   }
 
   onCheckboxChange(event: any, formCtlName: string) {
@@ -283,9 +280,8 @@ export class MenuComponent {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log(filterValue);
-    this.dataSource.data = this.allMenus.filter((user) =>
-      user.food_name.toLowerCase().startsWith(filterValue)
+    this.menus = this.menus.filter((food) =>
+      food.food_name.toLowerCase().startsWith(filterValue)
     );
   }
 }

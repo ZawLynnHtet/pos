@@ -22,9 +22,8 @@ class ImageSnippet {
 })
 export class EmployeesComponent implements OnInit {
   displayedColumns: string[] = [
-    'img',
-    'id',
     'name',
+    'id',
     'email',
     'phone',
     'role',

@@ -2,15 +2,6 @@
 <section>
   <div class="header">
     <h2>Recent Orders</h2>
-    <mat-form-field appearance="outline">
-      <mat-label>Filter</mat-label>
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Ex. David"
-        #input
-      />
-    </mat-form-field>
   </div>
 
   <div class="mat-elevation-z8">
@@ -91,12 +82,6 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">
-          No data matching the filter "{{ input.value }}"
-        </td>
-      </tr>
     </table>
 
     <mat-paginator

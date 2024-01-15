@@ -153,18 +153,12 @@ export class InfoDetailsComponent {
         prevOrder.extra_quantity = prevOrder.extra_quantity.concat(
           currOrder.extra_quantity
         );
-        // console.log(`same food i - ${i} so added qty`);
-        // console.log(prevOrder);
       } else {
-        // console.log(`not same food ${i} vv`);
-        // console.log(prevOrder);
         updatedOrders.push(prevOrder);
         prevOrder = currOrder;
       }
 
       if (i == orders.length - 1) {
-        // console.log(`and last item > ${i} vv`);
-        // console.log(prevOrder);
         updatedOrders.push(prevOrder);
       }
       return prevOrder;
@@ -178,7 +172,7 @@ export class InfoDetailsComponent {
       let total = 0;
       order.extra_ingredients.forEach((id, i) => {
         const extra = this.extraFoods[id - 1];
-        total += extra.price * order.extra_quantity[i];
+        total += extra.price;
       });
       this.allMenus.forEach((menu) => {
         if (menu.menu_id === order.menu_id) {

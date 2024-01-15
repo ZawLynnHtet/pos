@@ -1,154 +1,145 @@
-<app-sidenav></app-sidenav>
-<section>
-  <button class="back" routerLink="/menus">
-    <i class="fa-solid fa-left-long"></i>
+<div class="md-header">
+  <div class="md-title">Add Menu</div>
+  <button type="button" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
   </button>
-
-  <div class="set-menu">
-    <div class="images">
-      <div>
-        <img
-          src="..//..//../assets/images/placeholder.png"
-          alt=""
-          *ngIf="selectedFile == null; else img"
-        />
-        <ng-template #img>
-          <img
-            [src]="selectedFile!.src"
-            [alt]="selectedFile!.file"
-            *ngIf="selectedFile"
-          />
-        </ng-template>
-      </div>
-      <div>
-        <input
-          id="file-input"
-          #imageInput
-          type="file"
-          accept="image/*"
-          (change)="processFile(imageInput)"
-        />
-        <label id="file-input-label" for="file-input"> Upload Photo </label>
-      </div>
-    </div>
-    <form [formGroup]="menuForm" class="form">
-      <input
-        type="text"
-        placeholder="Food Name"
-        class="form__input"
-        id="name"
-        formControlName="foodName"
-      />
-      <label for="name" class="form__label">Food Name</label>
-
-      <input
-        type="number"
-        placeholder="Price"
-        class="form__input"
-        id="price"
-        formControlName="price"
-      />
-      <label for="price" class="form__label">Price</label>
-
-      <h2>Choose Category</h2>
-      <div class="grid-container">
-        <label *ngFor="let category of categories">
-          <input
-            class="select"
-            type="radio"
-            [value]="category.category_id"
-            formControlName="category"
-          />
-          <div class="grid-item">{{ category.category_name }}</div>
-        </label>
-        <button class="grid-item" (click)="addNew('Category')">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <h2>Select Meats</h2>
-      <div class="grid-container">
-        <label *ngFor="let meat of meatChoices">
-          <input
-            class="select"
-            type="checkbox"
-            [value]="meat"
-            formArrayName="meatChoices"
-            (change)="onCheckboxChange($event, 'meatChoices')"
-          />
-          <div class="grid-item">{{ meat }}</div>
-        </label>
-      </div>
-
-      <h2>Select Ingredients</h2>
-      <div class="grid-container">
-        <label *ngFor="let ingred of ingredients">
-          <input
-            class="select"
-            type="checkbox"
-            [value]="ingred.ingredient_id"
-            formArrayName="ingredients"
-            (change)="onCheckboxChange($event, 'ingredients')"
-          />
-          <div class="grid-item">{{ ingred.ingredient_name }}</div>
-        </label>
-        <button class="grid-item" (click)="addNew('Ingredient')">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <h2>Select Extra Foods</h2>
-      <div class="grid-container">
-        <label *ngFor="let extra of extras">
-          <input
-            class="select"
-            type="checkbox"
-            [value]="extra.extraFood_id"
-            formArrayName="extras"
-            (change)="onCheckboxChange($event, 'extras')"
-          />
-          <div class="grid-item">{{ extra.food_name }}</div>
-        </label>
-        <button class="grid-item" (click)="addNew('Extra Food')">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <button class="submit" (click)="addMenu()" [disabled]="!menuForm.valid">
-        Submit
-      </button>
-    </form>
-    <div class="add-new-container" *ngIf="popupBox.show">
-      <i
-        class="fa fa-times"
-        aria-hidden="true"
-        (click)="openOrCloseAddNewBox()"
-      ></i>
-      <form [formGroup]="addNewForm">
+</div>
+<div mat-dialog-content>
+  <div class="modal-body">
+    <form [formGroup]="menuForm">
+      <div class="images">
+        <div class="img">
+          <img [src]="imgUrl" (click)="fileUploader.click()" />
+        </div>
         <div>
           <input
-            type="text"
-            placeholder="Name"
-            id="name"
-            class="form__input new-input"
-            formControlName="name"
+            id="file-input"
+            #fileUploader
+            type="file"
+            accept="image/*"
+            (change)="processFile($event)"
           />
-          <label for="name" class="form__label">{{ popupBox.name }} Name</label>
+          <button mat-raised-button color="primary">
+            <label id="file-input-label" for="file-input">Update Photo </label>
+          </button>
         </div>
+      </div>
+      <div class="example-container">
+        <mat-form-field>
+          <mat-label>Enter food name</mat-label>
+          <input matInput type="text" formControlName="food_name" />
+        </mat-form-field>
 
-        <div *ngIf="popupBox.name == 'Extra Food'">
+        <mat-form-field floatLabel="always">
+          <mat-label>Price</mat-label>
           <input
+            matInput
             type="number"
-            placeholder="Price"
-            id="price"
-            class="form__input new-input"
+            class="example-right-align"
+            placeholder="0"
             formControlName="price"
           />
-          <label for="price" class="form__label">Price</label>
-        </div>
+          <span matTextPrefix>Kyats</span>
+          <span matTextSuffix>.00</span>
+        </mat-form-field>
+      </div>
 
-        <button class="add-btn" (click)="addMenu()">Add</button>
-      </form>
-    </div>
+      <div class="chip-list">
+        <h3 class="title">Choose Category</h3>
+        <div class="chips">
+          <label *ngFor="let category of categories">
+            <input
+              class="select"
+              type="radio"
+              [value]="category.category_id"
+              formControlName="category_id"
+            />
+            <div class="chip">
+              <i class="bi bi-check2"></i>{{ category.category_name }}
+            </div>
+          </label>
+        </div>
+        <input
+          class="input"
+          placeholder="Add Categories..."
+          (keyup.enter)="addCategory($event)"
+        />
+      </div>
+
+      <div class="chip-list">
+        <h3 class="title">Choose Meats</h3>
+        <div class="chips">
+          <label *ngFor="let meat of meats">
+            <input
+              class="select"
+              type="checkbox"
+              [value]="meat"
+              formArrayName="meat_choice"
+              (change)="onCheckboxChange($event, 'meat_choice')"
+            />
+            <div class="chip"><i class="bi bi-check2"></i>{{ meat }}</div>
+          </label>
+        </div>
+        <input
+          class="input"
+          placeholder="Add Meats..."
+          (keyup.enter)="addMeat($event)"
+        />
+      </div>
+
+      <div class="chip-list">
+        <h3 class="title">Choose Ingredients</h3>
+        <div class="chips">
+          <label *ngFor="let ingredient of ingredients">
+            <input
+              class="select"
+              type="checkbox"
+              [value]="ingredient.ingredient_id"
+              formArrayName="ingredient_ids"
+              (change)="onCheckboxChange($event, 'ingredient_ids')"
+            />
+            <div class="chip">
+              <i class="bi bi-check2"></i>{{ ingredient.ingredient_name }}
+            </div>
+          </label>
+        </div>
+        <input
+          class="input"
+          placeholder="Add Ingredients..."
+          (keyup.enter)="addIngredient($event)"
+        />
+      </div>
+
+      <div class="chip-list">
+        <h3 class="title">Choose Extra Foods</h3>
+        <div class="chips">
+          <label *ngFor="let extra of extras">
+            <input
+              class="select"
+              type="checkbox"
+              [value]="extra.extraFood_id"
+              formArrayName="extraFood_ids"
+              (change)="onCheckboxChange($event, 'extraFood_ids')"
+            />
+            <div class="chip">
+              <i class="bi bi-check2"></i>{{ extra.food_name }}
+            </div>
+          </label>
+        </div>
+        <input
+          class="input"
+          placeholder="Add Extras..."
+          (keyup.enter)="addExtra($event)"
+        />
+      </div>
+    </form>
   </div>
-</section>
+</div>
+<div class="md-footer">
+  <button mat-raised-button color="primary" (click)="onNoClick()">
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" class="save" (click)="submitted()">
+    {{ data ? "Update" : "Save" }}
+  </button>
+</div>

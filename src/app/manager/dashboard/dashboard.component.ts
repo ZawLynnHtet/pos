@@ -46,7 +46,8 @@ export class DashboardComponent implements OnInit {
       },
       options: {
         responsive: true,
-        aspectRatio: 3.5,
+        maintainAspectRatio: false,
+        // aspectRatio: 3.5,
         scales: {
           y: {
             beginAtZero: true,

@@ -62,14 +62,19 @@ export class PaymentComponent {
 
   async payBill() {
     await this.api.pay(this.orderId, { is_paid: true });
+    this.getTableData();
+  }
+
+  async getTableData() {
     const checkOrder = await this.api.getAllOrdersWithTableId(
       this.tableId,
       false
     );
     console.log(checkOrder);
 
-    if (checkOrder === null) {
+    if (!checkOrder) {
       await this.api.updateTable(this.tableId, { is_available: true });
+      console.log('Success');
     }
     // await this.api.updateTable(this.tableId, { is_available: true });
   }

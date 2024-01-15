@@ -17,7 +17,7 @@ import { AdminComponent } from './manager/admin/admin.component';
 import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
 import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
 import { PaymentComponent } from './waitstaff/payment/payment.component';
-import { AddTablesComponent } from './manager/add-tables/add-tables.component';
+import { TablesPageComponent } from './manager/tables-page/tables-page.component';
 
 const routes: Routes = [
   {
@@ -110,8 +110,8 @@ const routes: Routes = [
     component: AdminComponent,
   },
   {
-    path: 'add-tables',
-    component: AddTablesComponent,
+    path: 'tables-page',
+    component: TablesPageComponent,
   },
 ];
 

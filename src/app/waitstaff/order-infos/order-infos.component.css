@@ -3,8 +3,11 @@ section {
   padding: 20px 20px 20px 0;
 }
 
-table {
+table,
+tr,
+mat-paginator {
   width: 100%;
+  background: #f4efef;
 }
 
 .mat-mdc-form-field {

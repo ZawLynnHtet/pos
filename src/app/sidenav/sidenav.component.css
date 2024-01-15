@@ -2,7 +2,7 @@
   background: var(--primary-color);
   transition: all 0.5s ease;
   position: fixed;
-  z-index: 100;
+  z-index: 1000;
   top: 0;
   width: 5rem;
   height: 100vh;

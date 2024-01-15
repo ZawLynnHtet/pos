@@ -26,7 +26,6 @@
     "firebase": "^10.7.0",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-order-pipe": "^2.2.0",
-    "ngx-print": "^1.5.0",
     "rxjs": "~7.8.0",
     "subsink": "^1.0.2",
     "tslib": "^2.3.0",

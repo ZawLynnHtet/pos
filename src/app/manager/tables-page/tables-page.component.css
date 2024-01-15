@@ -1,0 +1,94 @@
+section {
+  padding: 0 0 20px 100px;
+  width: 100%;
+}
+
+.header {
+  padding-bottom: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.header button {
+  text-transform: uppercase;
+}
+
+.tables {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 15px;
+  padding-right: 15px;
+}
+
+.table {
+  background: var(--primary-color);
+  text-align: center;
+  color: azure;
+  opacity: 0;
+  animation: popup 1s ease forwards;
+  padding: 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.table p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 1290px) {
+  .tables {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media screen and (max-width: 1260px) {
+  .tables {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .tables {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .tables {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .tables {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 445px) {
+  .tables {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

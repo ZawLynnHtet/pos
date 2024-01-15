@@ -12,10 +12,6 @@ import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Employee } from 'src/app/models/employee.model';
 
-class ImageSnippet {
-  constructor(public src: string, public file: File) {}
-}
-
 @Component({
   selector: 'app-edit-employee',
   templateUrl: './edit-employee.component.html',
@@ -37,13 +33,13 @@ export class EditEmployeeComponent implements OnInit {
     private snackBar: UtilsService
   ) {
     this.employeeForm = fb.group({
-      name: new FormControl(''),
-      email: new FormControl(''),
-      phone: new FormControl(''),
-      role: new FormControl(''),
-      gender: new FormControl(''),
-      password: new FormControl(''),
-      img: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phone: new FormControl('', [Validators.required]),
+      role: new FormControl('', [Validators.required]),
+      gender: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      img: new FormControl('', [Validators.required]),
     });
   }
 
@@ -100,5 +96,9 @@ export class EditEmployeeComponent implements OnInit {
         this.dialogRef.close(true);
       }
     }
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

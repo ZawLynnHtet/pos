@@ -1,0 +1,26 @@
+.bar {
+  margin-left: 84px;
+}
+
+.toolbar h2 {
+  margin: 0;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.demo-section button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+
+.demo-section button:active {
+  background: #cccbcb;
+}

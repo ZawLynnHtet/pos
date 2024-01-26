@@ -1,0 +1,58 @@
+.md-header {
+  width: 100%;
+  display: flex;
+  align-items: center !important;
+  justify-content: space-between;
+  padding: 20px;
+  background: #5f7ff5;
+  color: #fff;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.md-header .md-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.md-header button {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.form-data {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.example-container mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+
+.example-right-align {
+  text-align: right;
+}
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.example-right-align {
+  -moz-appearance: textfield;
+}
+
+.md-footer {
+  padding: 15px 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.save {
+  margin-left: 10px;
+}

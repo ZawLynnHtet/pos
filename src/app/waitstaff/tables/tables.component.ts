@@ -16,6 +16,8 @@ export class TablesComponent implements OnInit {
   tables: Table[] = [];
 
   async ngOnInit() {
+    let data: any = localStorage.getItem('data');
+    this.employeesData = JSON.parse(data);
     this.tables = await this.api.getAllTables();
 
     let unavailable = 0;
@@ -25,8 +27,6 @@ export class TablesComponent implements OnInit {
       }
     });
     this.available_table_count = this.tables.length - unavailable;
-    let data: any = localStorage.getItem('data');
-    this.employeesData = JSON.parse(data);
   }
 
   goTo(id: number, index: number) {
@@ -41,10 +41,10 @@ export class TablesComponent implements OnInit {
     ) {
       this.router.navigateByUrl(`order-infos/${id}/details`);
     } else if (
-      this.employeesData.role === 'supervisor' ||
+      this.employeesData.role === 'supervisor' &&
       this.tables[index].is_available === false
     ) {
-      this.router.navigateByUrl(`tables/${id}/order-details`);
+      this.router.navigateByUrl(`tables/${id}/order-lists`);
     }
   }
 

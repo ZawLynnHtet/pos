@@ -9,6 +9,10 @@ import { Table } from 'src/app/models/table.model';
 import { Bill } from 'src/app/models/bill.model';
 import { Order } from 'src/app/models/order.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
+import { PaymentComponent } from '../payment/payment.component';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatDialog } from '@angular/material/dialog';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-info-details',
@@ -20,7 +24,10 @@ export class InfoDetailsComponent {
     private activatedRoute: ActivatedRoute,
     private api: ApiService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    public dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private snackBar: UtilsService
   ) {}
 
   employeesData: any;
@@ -46,7 +53,7 @@ export class InfoDetailsComponent {
 
     const orders = await this.getAllUnsubmittedOrdersFromOneTable();
     orders.sort((a, b) => {
-      return a.order_id - b.order_id;
+      return b.order_id - a.order_id;
     });
     this.allOrders = this.separateOrdersByOrderId(orders);
     console.log(this.allOrders);
@@ -73,11 +80,6 @@ export class InfoDetailsComponent {
     return await this.api.getAllOrdersWithTableId(this.tableId, false);
   }
 
-  /**
-   * Separate all orders from api response by order id
-   * @param {OrderDetails[]} allOrderSet an array including all data from api response
-   * @returns {OrderDetails[][]} an array including other arrays which are separated by order id
-   */
   separateOrdersByOrderId(allOrderSet: OrderDetails[]): OrderDetails[][] {
     var oid = 0;
     var orderDetailsFromOneOrder: OrderDetails[] = [];
@@ -95,7 +97,6 @@ export class InfoDetailsComponent {
       } else {
         orderDetailsFromOneOrder.push(order);
       }
-      // if order is the last item in orderSet
       if (i == allOrderSet.length - 1) {
         separatedOrders.push(orderDetailsFromOneOrder);
       }
@@ -122,50 +123,6 @@ export class InfoDetailsComponent {
     return infos;
   }
 
-  generateBills(orders: OrderDetails[], i: number) {
-    var updatedOrders: OrderDetails[] = [];
-    if (orders.length > 1) {
-      updatedOrders = this.addQuantitiesForSameMenus(orders);
-    } else {
-      updatedOrders.push(orders[0]);
-    }
-    orders.forEach((order) => {
-      if (order.order_submitted === false) {
-        this.createBills(updatedOrders, i);
-      }
-    });
-    this.goTo(this.tableId, orders[i].order_id);
-  }
-
-  addQuantitiesForSameMenus(orders: OrderDetails[]): OrderDetails[] {
-    orders = orders.sort((a, b) => {
-      return a.menu_id - b.menu_id;
-    });
-    console.log(orders);
-
-    const updatedOrders: OrderDetails[] = [];
-    orders.reduce((prevOrder, currOrder, i) => {
-      if (prevOrder.menu_id == currOrder.menu_id) {
-        prevOrder.quantity += currOrder.quantity;
-        prevOrder.extra_ingredients = prevOrder.extra_ingredients.concat(
-          currOrder.extra_ingredients
-        );
-        prevOrder.extra_quantity = prevOrder.extra_quantity.concat(
-          currOrder.extra_quantity
-        );
-      } else {
-        updatedOrders.push(prevOrder);
-        prevOrder = currOrder;
-      }
-
-      if (i == orders.length - 1) {
-        updatedOrders.push(prevOrder);
-      }
-      return prevOrder;
-    });
-    return updatedOrders;
-  }
-
   async createBills(orders: OrderDetails[], oindex: number) {
     let subTotal = 0;
     orders.forEach(async (order) => {
@@ -186,23 +143,38 @@ export class InfoDetailsComponent {
         qty: order.quantity,
         total_price: total,
       };
-      await this.api.createOneBill(bill, order.order_id);
+      if (order.order_submitted === false) {
+        await this.api.createOneBill(bill, order.order_id);
+      }
     });
 
     const body: Order = {
       total_price: subTotal,
       order_submitted: true,
     };
-    this.allOrders.splice(oindex, 1);
+    // this.allOrders.splice(oindex, 1);
     await this.api.updateOrder(body, orders[0].order_id);
+    this.openPaymentDialog(orders);
   }
 
   addOrder() {
     this.router.navigateByUrl('tables/' + this.tableId + '/menu');
   }
 
-  goTo(tid: number, oid: number) {
-    this.router.navigateByUrl(`${tid}/${oid}/payments`);
+  openPaymentDialog(data: any) {
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe(async (val) => {
+      if (val) {
+        const orders = await this.getAllUnsubmittedOrdersFromOneTable();
+        orders.sort((a, b) => {
+          return b.order_id - a.order_id;
+        });
+        this.allOrders = this.separateOrdersByOrderId(orders);
+      }
+    });
   }
 
   goBack() {

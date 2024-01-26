@@ -1,0 +1,91 @@
+<div class="md-header">
+  <div class="md-title">
+    {{ data ? "Edit Reservation" : "Create Reservation" }}
+  </div>
+  <button type="button" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="modal-body">
+    <form [formGroup]="reservationForm" class="form-data">
+      <mat-form-field>
+        <mat-label>ReservedBy</mat-label>
+        <input
+          matInput
+          placeholder="Enter your name"
+          type="text"
+          formControlName="reserved_by"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="reserved_date"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Reserve Time</mat-label>
+        <input matInput type="time" formControlName="reserved_time" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Customer Name</mat-label>
+        <input matInput type="text" formControlName="cus_name" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput type="tel" formControlName="phone" />
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Number of people</mat-label>
+        <input matInput type="number" formControlName="num_of_people" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Table</mat-label>
+        <mat-select formControlName="table_id">
+          <mat-option *ngFor="let table of tables" [value]="table.table_id">{{
+            table.table_no
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field floatLabel="always">
+        <mat-label>Deposit</mat-label>
+        <input
+          matInput
+          type="number"
+          class="example-right-align"
+          placeholder="0"
+          formControlName="deposit"
+        />
+        <span matTextPrefix>Kyats</span>
+        <span matTextSuffix>.00</span>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Prepared</mat-label>
+        <textarea matInput formControlName="prepared"></textarea>
+        <mat-icon matSuffix>mode_edit</mat-icon>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes"></textarea>
+        <mat-icon matSuffix>mode_edit</mat-icon>
+      </mat-form-field>
+    </form>
+  </div>
+</div>
+<div class="md-footer">
+  <button mat-raised-button color="primary" (click)="onNoClick()">
+    Cancel
+  </button>
+  <button mat-raised-button color="primary" class="save" (click)="submitted()">
+    {{ data ? "Update" : "Save" }}
+  </button>
+</div>

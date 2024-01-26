@@ -14,12 +14,8 @@
           >
         </mat-select>
       </mat-form-field>
-      <button
-        mat-raised-button
-        class="add-menus"
-        (click)="addTableFormDialog()"
-      >
-        Add Menus
+      <button mat-raised-button class="add-menus" (click)="addMenuFormDialog()">
+        Create Menus
       </button>
     </div>
     <h3>Menus List</h3>
@@ -36,7 +32,7 @@
         </div>
 
         <mat-menu #popup="matMenu">
-          <button mat-menu-item (click)="editTableFormDialog(menu)">
+          <button mat-menu-item (click)="editMenuFormDialog(menu)">
             <mat-icon>edit</mat-icon>
             <span>Edit this menu</span>
           </button>

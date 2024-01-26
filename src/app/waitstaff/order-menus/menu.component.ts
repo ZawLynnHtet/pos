@@ -10,16 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Category } from '../../models/category.model';
 import { Table } from '../../models/table.model';
-import { Order } from '../../models/order.model';
 import { Menu } from '../../models/menu.model';
 import { Ingredient } from '../../models/ingredient.model';
 import { DetailsBody, OrderDetails } from '../../models/orderdetails.model';
 import { UtilsService } from '../../services/utils.service';
 import { ExtraFood } from '../../models/extrafood.model';
-import { Bill } from 'src/app/models/bill.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-menu',
@@ -53,6 +48,7 @@ export class MenuComponent {
   selectedForm!: FormGroup;
   orderId = 0;
   allOrders: OrderDetails[][] = [];
+  allCategories: any[] = ['All'];
 
   constructor(
     private router: Router,
@@ -74,6 +70,11 @@ export class MenuComponent {
     this.employeesData = JSON.parse(data);
     let category: any = localStorage.getItem('categories');
     this.categories = JSON.parse(category);
+    this.categories.forEach((data: { category_name: any }) => {
+      this.allCategories.push(data.category_name);
+      console.log(this.allCategories);
+    });
+
     this.showMenus(this.categories[0].category_id);
     this.tableId = this.activatedRoute.snapshot.params['id'];
     this.tableIndex = this.activatedRoute.snapshot.params['tableIndex'];
@@ -82,11 +83,6 @@ export class MenuComponent {
     this.tables = await this.api.getAllTables();
     this.allMenus = await this.api.getAllMenus();
   }
-
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-  @ViewChild(MatSort)
-  sort!: MatSort;
 
   createOrder() {
     this.api
@@ -134,24 +130,24 @@ export class MenuComponent {
     this.topping = true;
     this.selectedIndex = index;
     this.selectedMenu = menu;
-    // this.checkOrderIdAndCreateOrder();
-    // const order: DetailsBody = {
-    //   order_id: this.orderId,
-    //   quantity: 0,
-    //   menu_id: menu.menu_id,
-    //   choice_of_meat:
-    //     menu.meat_choice != null && menu.meat_choice.length > 0
-    //       ? menu.meat_choice[0]
-    //       : null,
-    //   removed_ingredients: [],
-    //   extra_ingredients: [],
-    //   extra_quantity: [],
-    //   takeaway: false,
-    //   note: null,
-    // };
-    // this.selectedForm.controls['meat'].patchValue(order.choice_of_meat);
-    // order.quantity++;
-    // this.orders.push(order);
+    this.checkOrderIdAndCreateOrder();
+    const order: DetailsBody = {
+      order_id: this.orderId,
+      quantity: 0,
+      menu_id: menu.menu_id,
+      choice_of_meat:
+        menu.meat_choice != null && menu.meat_choice.length > 0
+          ? menu.meat_choice[0]
+          : null,
+      removed_ingredients: [],
+      extra_ingredients: [],
+      extra_quantity: [],
+      takeaway: false,
+      note: null,
+    };
+    this.selectedForm.controls['meat'].patchValue(order.choice_of_meat);
+    order.quantity++;
+    this.orders.push(order);
   }
 
   onCheckboxChange(event: any, formCtlName: string) {
@@ -278,10 +274,14 @@ export class MenuComponent {
     console.log(this.orders);
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.menus = this.menus.filter((food) =>
-      food.food_name.toLowerCase().startsWith(filterValue)
-    );
+  async applyFilter(event: any) {
+    if (event.target.value) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.menus = this.menus.filter((food) =>
+        food.food_name.toLowerCase().startsWith(filterValue)
+      );
+    } else {
+      this.allMenus = await this.api.getAllMenus();
+    }
   }
 }

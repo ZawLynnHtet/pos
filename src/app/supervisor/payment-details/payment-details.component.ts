@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../services/api.service';
-import { Bill } from '../models/bill.model';
-import { Menu } from '../models/menu.model';
+import { ApiService } from '../../services/api.service';
+import { Bill } from '../../models/bill.model';
+import { Menu } from '../../models/menu.model';
 import { Location } from '@angular/common';
 
 @Component({

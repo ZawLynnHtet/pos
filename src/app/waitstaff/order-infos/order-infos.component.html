@@ -1,19 +1,15 @@
 <app-sidenav></app-sidenav>
+<app-toolbar *ngIf="employeeData.role === 'supervisor'"></app-toolbar>
 <section>
   <div class="header">
-    <h2>Recent Orders</h2>
+    <h2>Order Lists</h2>
   </div>
 
-  <div class="mat-elevation-z8">
+  <div>
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="table_id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Table No.</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          (click)="getAllUnsubmittedOrdersFromOneTable(row.table_id, false)"
-          (click)="goTo(row.table_id, row.order_id)"
-        >
+        <td mat-cell *matCellDef="let row">
           <ng-container *ngFor="let table of tables">
             <div *ngIf="table.table_id === row.table_id">
               {{ table.table_no }}
@@ -24,12 +20,7 @@
 
       <ng-container matColumnDef="order_id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Order ID</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          (click)="getAllUnsubmittedOrdersFromOneTable(row.table_id, false)"
-          (click)="goTo(row.table_id, row.order_id)"
-        >
+        <td mat-cell *matCellDef="let row">
           {{ row.order_id }}
         </td>
       </ng-container>
@@ -48,12 +39,7 @@
 
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          (click)="getAllUnsubmittedOrdersFromOneTable(row.table_id, false)"
-          (click)="goTo(row.table_id, row.order_id)"
-        >
+        <td mat-cell *matCellDef="let row">
           <mat-chip>
             {{ row.is_paid === true ? "Completed" : "Pending" }}
             <i
@@ -70,18 +56,31 @@
 
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          (click)="getAllUnsubmittedOrdersFromOneTable(row.table_id, false)"
-          (click)="goTo(row.table_id, row.order_id)"
-        >
+        <td mat-cell *matCellDef="let row">
           {{ row.orderDate | date : "h:mm a" }}
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <ng-container matColumnDef="bills">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="mid">
+          Bills
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          (click)="sendMessage(row)"
+          class="mid"
+        >
+          <i class="fa-solid fa-angle-right"></i>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row class="head" *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="data"
+      ></tr>
     </table>
 
     <mat-paginator

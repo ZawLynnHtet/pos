@@ -4,7 +4,109 @@
   <div class="chart-container">
     <canvas id="MyChart">{{ chart }}</canvas>
   </div>
+  <div class="popular-menu">
+    <h2>Popular</h2>
+    <div class="flex-card">
+      <mat-card class="example-card">
+        <div class="data">
+          <mat-card-header class="mat-card-header">
+            <mat-card-title>Most Selling Food Menu</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="mat-details">
+            <div class="ratingChart-container">
+              <canvas id="MenuRatingChart">{{ chart }}</canvas>
+            </div>
+            <div class="details"></div>
+          </mat-card-content>
+        </div>
+      </mat-card>
+      <mat-card class="example-card">
+        <div class="data">
+          <mat-card-header class="mat-card-header">
+            <mat-card-title>Most Order Type</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="mat-details">
+            <div class="ratingChart-container">
+              <canvas id="TypeRatingChart">{{ chart }}</canvas>
+            </div>
+            <div class="details"></div>
+          </mat-card-content>
+        </div>
+      </mat-card>
+    </div>
+  </div>
   <div class="recent-order">
     <h2>Recent Orders</h2>
+    <div>
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="table_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Table No.</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngFor="let table of tables">
+              <div *ngIf="table.table_id === row.table_id">
+                {{ table.table_no }}
+              </div>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="order_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order ID</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.order_id }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Price</th>
+          <td mat-cell *matCellDef="let row">{{ row.total_price }} Ks</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-chip>
+              {{ row.is_paid === true ? "Completed" : "Pending" }}
+              <i
+                [class]="
+                  row.is_paid === true
+                    ? 'fa-solid fa-check'
+                    : 'fa-solid fa-ellipsis'
+                "
+                [ngStyle]="{ color: row.is_paid === true ? 'green' : '' }"
+              ></i>
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="orderedBy">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>OrderedBy</th>
+          <td mat-cell *matCellDef="let row"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.orderDate | date : "h:mm a" }}
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          class="head"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="data"
+        ></tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page of users"
+      ></mat-paginator>
+    </div>
   </div>
 </section>

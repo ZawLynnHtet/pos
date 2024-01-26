@@ -1,0 +1,63 @@
+<p class="bar">
+  <mat-toolbar class="toolbar">
+    <span><h2>Restaurant POS</h2></span>
+    <span class="example-spacer"></span>
+    <div class="demo-section">
+      <button
+        matTooltip="Kitchen orders"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        routerLink="/kitchen"
+      >
+        <i
+          matBadge="7"
+          matBadgeColor="warn"
+          class="fa-solid fa-kitchen-set"
+        ></i>
+      </button>
+    </div>
+    <div class="demo-section">
+      <button
+        matTooltip="Bill Slip"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+      >
+        <i matBadge="7" matBadgeColor="warn" class="fa-solid fa-print"></i>
+      </button>
+    </div>
+  </mat-toolbar>
+</p>
+
+<div class="container">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr class="table-light">
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td colspan="2">Larry the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngFor="let message of messageList">
+    <div>{{ message }}</div>
+  </div>
+</div>

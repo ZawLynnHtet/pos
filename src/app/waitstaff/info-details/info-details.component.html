@@ -1,35 +1,37 @@
 <app-sidenav></app-sidenav>
 <section>
-  <button
-    #tooltip="matTooltip"
-    matTooltip="Back"
-    matTooltipHideDelay="100000"
-    aria-label="Button that displays a tooltip that hides when scrolled out of the container"
-    class="example-button back"
-    (click)="goBack()"
-  >
-    <i class="fa fa-mail-reply"></i>
-  </button>
-
-  <div class="wrapper" *ngFor="let oneOrder of allOrders; let i = index">
+  <div class="header">
+    <div class="back">
+      <i
+        class="fa-solid fa-arrow-left-long"
+        matTooltip="Back"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        (click)="goBack()"
+      ></i>
+      <h2>Order Lists</h2>
+    </div>
+    <button mat-raised-button color="primary" (click)="addOrder()">
+      Add Orders
+    </button>
+  </div>
+  <div class="wrap" *ngFor="let oneOrder of allOrders; let i = index">
     <div class="invoice-header">
       <div class="data">
         <ng-container *ngFor="let table of tables">
-          <div *ngIf="table.table_id == tableId">
+          <p *ngIf="table.table_id == tableId">
             Table No. {{ table.table_no }}
-          </div>
+          </p>
         </ng-container>
-        <div>Order No. {{ headers[i].id }}</div>
-        <div>OrderedBy= {{ employeesData.name }}</div>
+        <p>Order No. {{ headers[i].id }}</p>
+        <p>OrderedBy = {{ employeesData.name }}</p>
       </div>
       <div class="inv-date">
-        <div class="date">Date</div>
-        <div class="time">
+        <h3 class="date">Date</h3>
+        <h4 class="time">
           {{ headers[i].date | date : "MMM d, y, h:mm a" }}
-        </div>
+        </h4>
       </div>
     </div>
-
     <table>
       <thead>
         <tr>
@@ -75,11 +77,11 @@
         </tr>
       </tbody>
     </table>
-    <div class="total-section">
+    <div class="print-section">
       <button
         mat-raised-button
         color="primary"
-        (click)="generateBills(oneOrder, i)"
+        (click)="createBills(oneOrder, i)"
       >
         Print Bill
       </button>

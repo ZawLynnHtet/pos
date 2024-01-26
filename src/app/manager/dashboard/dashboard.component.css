@@ -6,3 +6,94 @@ section {
 #MyChart {
   height: 300px;
 }
+
+.recent-order {
+  margin-top: 30px;
+}
+
+.head {
+  background: rgb(172, 172, 193) !important;
+  border-top-right-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+}
+
+table,
+mat-paginator {
+  width: 100%;
+  background: transparent;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.data:hover {
+  background: rgb(204, 204, 212) !important;
+}
+
+th {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+td,
+th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+td {
+  text-transform: lowercase;
+  opacity: 0;
+  animation: popup 1s ease forwards;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.popular-menu {
+  margin-top: 20px;
+}
+
+.flex-card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.example-card {
+  width: 49%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.data {
+  width: 100%;
+}
+
+.data .mat-card-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#MenuRatingChart,
+#TypeRatingChart {
+  width: 250px;
+}
+
+.mat-details {
+  display: flex;
+}

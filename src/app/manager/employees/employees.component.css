@@ -32,6 +32,10 @@ th {
   overflow: hidden;
 }
 
+.data:hover {
+  background: rgb(204, 204, 212) !important;
+}
+
 td {
   text-transform: lowercase;
   opacity: 0;

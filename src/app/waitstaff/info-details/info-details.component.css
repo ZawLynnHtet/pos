@@ -1,64 +1,86 @@
 section {
-  padding: 30px 0 0 100px;
+  padding: 20px 30px 30px 100px;
   width: 100%;
 }
 
-.back {
-  background: #fcfcfc;
-  border: 1px solid #555353;
-  border-radius: 5px;
-  padding: 6px 20px;
-}
-
-.back i {
-  font-size: 18px;
-}
-
-.wrapper {
+.wrap {
   position: relative;
-  width: 60%;
-  margin: 20px auto 100px;
-  opacity: 0;
-  animation: popup 1s ease forwards;
-}
-
-@keyframes popup {
-  0% {
-    opacity: 0;
-    scale: 0;
-  }
-  100% {
-    opacity: 1;
-    scale: 1;
-  }
+  width: 100%;
+  margin-bottom: 80px;
 }
 
 .invoice-header {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.header {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+}
+
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+.header i {
+  font-size: 19px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.header i:hover {
+  background: #c2c0c0;
+}
+
+.header i:active {
+  background: #c2c0c0;
 }
 
 .head .logo {
   font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .head .title,
 .inv-date .time {
   font-size: 15px;
   font-weight: 500;
+  margin: 0;
 }
 
 .inv-date .date {
   font-size: 17px;
   font-weight: 600;
+  margin: 0;
+  text-align: end;
 }
 
-.data div {
-  font-size: 17px;
+.data p {
+  font-size: 15px;
   font-weight: 500;
+  margin: 0;
 }
 
 table {
@@ -95,40 +117,11 @@ table tbody tr:nth-child(even) {
   border-top: 1px solid #b4b4b4;
 }
 
-.total-section {
+.print-section {
   position: absolute;
   right: 0;
   font-size: 12px;
   width: 110px;
-  margin-top: 5px;
+  margin-top: 15px;
   padding-right: 3px;
-}
-
-.sub,
-.tax,
-.total {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-
-.total {
-  border-top: 1px solid #646464;
-  padding-top: 5px;
-}
-
-.sub p:nth-child(1),
-.tax p:nth-child(1),
-.total p {
-  font-weight: 600;
-}
-
-.total-section button {
-  margin-top: 20px;
-}
-
-@media screen and (max-width: 1230px) {
-  .wrapper {
-    width: 80%;
-  }
 }

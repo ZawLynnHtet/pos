@@ -1,0 +1,64 @@
+<app-sidenav></app-sidenav>
+<section>
+  <div class="header">
+    <div class="back">
+      <i
+        class="fa-solid fa-arrow-left-long"
+        matTooltip="Back"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        (click)="goBack()"
+      ></i>
+      <h2>Order Lists</h2>
+    </div>
+  </div>
+  <div *ngFor="let oneOrder of allOrders; let i = index">
+    <h4>Order No. {{ headers[i].id }}</h4>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr class="table-light">
+          <th scope="col">No.</th>
+          <th scope="col">Descriptions</th>
+          <th scope="col">Modifiers</th>
+          <th scope="col" class="mid">Quantity</th>
+          <th scope="col" class="mid">Type</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let order of oneOrder; let no = index">
+        <tr>
+          <th scope="row">{{ no + 1 }}</th>
+          <ng-container *ngFor="let menu of allMenus; let menuIndex = index">
+            <td *ngIf="order.menu_id === menu.menu_id">
+              {{ menu.food_name }}
+              <ng-container *ngIf="order.choice_of_meat != null"
+                >({{ order.choice_of_meat }})</ng-container
+              >
+            </td>
+          </ng-container>
+          <td>
+            <div class="modifier" *ngIf="order.removed_ingredients.length != 0">
+              Remove: (<ng-container
+                *ngFor="let ingred_id of order.removed_ingredients"
+                >{{
+                  ingredients[ingred_id - 1].ingredient_name
+                }}, </ng-container
+              >)
+            </div>
+
+            <div class="modifier" *ngIf="order.extra_ingredients.length != 0">
+              Extra: (<ng-container
+                *ngFor="let extra of order.extra_ingredients; let i = index"
+                >{{ extraFoods[extra - 1].food_name }} (x{{
+                  order.extra_quantity![i]
+                }}), </ng-container
+              >)
+            </div>
+          </td>
+          <td class="mid">{{ order.quantity }}</td>
+          <td class="mid">
+            {{ order.takeaway === false ? "Dine in" : "Take away" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

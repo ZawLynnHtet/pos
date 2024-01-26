@@ -1,0 +1,93 @@
+<h1 mat-dialog-title>Reservation Details</h1>
+<div mat-dialog-content class="mat-typography">
+  <div *ngIf="reservationDetails; else loader" class="details">
+    <div class="data">
+      <p class="left">Reservation ID</p>
+      <p>{{ reservationDetails.id }}</p>
+    </div>
+    <div class="data">
+      <p class="left">Table No</p>
+      <p>{{ reservationDetails.table_id }}</p>
+    </div>
+    <div class="data">
+      <p class="left">ReservedBy</p>
+      <p>
+        {{ reservationDetails.reserved_by }}
+      </p>
+    </div>
+    <div class="data">
+      <p class="left">Customer Name</p>
+      <p>{{ reservationDetails.cus_name }}</p>
+    </div>
+    <div class="data">
+      <p class="left">Phone</p>
+      <p><i class="fa-solid fa-phone"></i>{{ reservationDetails.phone }}</p>
+    </div>
+    <div class="data">
+      <p class="left">Number of People</p>
+      <p>
+        <i class="fa-solid fa-person"></i>{{ reservationDetails.num_of_people }}
+      </p>
+    </div>
+    <div class="data">
+      <p class="left">Date</p>
+      <p>
+        <i class="fa-regular fa-calendar-plus date"></i
+        >{{ reservationDetails.reserved_date }}
+      </p>
+    </div>
+    <div class="data">
+      <p class="left">Time</p>
+      <p>
+        <i class="fa-regular fa-clock date"></i
+        >{{ reservationDetails.reserved_time }}
+        {{ reservationDetails.reserved_time >= "12:00:00" ? "PM" : "AM" }}
+      </p>
+    </div>
+    <div class="data">
+      <p class="left">Reserved At</p>
+      <p>
+        <i class="fa-regular fa-calendar-plus date"></i>
+        {{ reservationDetails.reserved_at | date : "MMM d, y, h:mm:ss a" }}
+      </p>
+    </div>
+    <div class="data">
+      <p class="left">Advance Prepared</p>
+      <p *ngIf="reservationDetails.prepared; else dash" class="note">
+        {{ reservationDetails.prepared }}
+      </p>
+      <ng-template #dash>
+        <p>-----------</p>
+      </ng-template>
+    </div>
+    <div class="data">
+      <p class="left">Notes</p>
+      <p *ngIf="reservationDetails.notes; else dash" class="note">
+        {{ reservationDetails.notes }}
+      </p>
+      <ng-template #dash>
+        <p>-----------</p>
+      </ng-template>
+    </div>
+    <div class="data">
+      <p class="left">Deposit</p>
+      <p>
+        <i class="fa-regular fa-credit-card deposit"></i
+        ><span *ngIf="reservationDetails.deposit; else zero">
+          {{ reservationDetails.deposit | currency : "MMK" }} Ks
+        </span>
+        <ng-template #zero>
+          <span>0 Ks</span>
+        </ng-template>
+      </p>
+    </div>
+  </div>
+  <ng-template #loader>
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+  </ng-template>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Ok</button>
+</mat-dialog-actions>

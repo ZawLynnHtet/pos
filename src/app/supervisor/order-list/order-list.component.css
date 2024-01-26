@@ -1,0 +1,59 @@
+@font-face {
+  font-family: Montserrat-Regular;
+  src: url("../../../assets/fonts/Montserrat-Regular.ttf");
+}
+
+section {
+  padding: 20px 20px 20px 100px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+}
+
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+.header i {
+  font-size: 19px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.header i:hover {
+  background: #c2c0c0;
+}
+
+.header i:active {
+  background: #c2c0c0;
+}
+
+tr,
+.modifier {
+  font-family: Montserrat-Regular, Roboto, sans-serif;
+}
+
+th,
+td {
+  padding: 10px;
+}
+
+.mid {
+  text-align: center;
+}

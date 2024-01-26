@@ -1,0 +1,104 @@
+section {
+  padding: 10px 20px 20px 100px;
+}
+
+table,
+tr,
+mat-paginator {
+  width: 100%;
+  /* background: #f4efef; */
+  background: transparent;
+}
+
+.head {
+  background: rgb(204, 204, 212) !important;
+  border-top-right-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+th {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.data:hover {
+  background: rgb(204, 204, 212) !important;
+}
+
+.name {
+  text-transform: capitalize;
+  margin-left: 10px;
+}
+
+td,
+th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+td {
+  text-transform: lowercase;
+  opacity: 0;
+  animation: popup 1s ease forwards;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+}
+
+.header button {
+  width: 200px;
+  height: 55px;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.name {
+  text-transform: capitalize;
+}
+
+.mid {
+  text-align: center;
+}
+
+.mid i {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dfdfdf;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.mid i:active {
+  background: #d2d1d1;
+}

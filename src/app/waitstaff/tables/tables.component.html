@@ -1,5 +1,6 @@
 <div class="constrains">
   <app-sidenav></app-sidenav>
+  <app-toolbar *ngIf="employeesData.role === 'supervisor'"></app-toolbar>
   <div class="tables-section">
     <div class="table-infos flex">
       <div class="table-data">Total: {{ tables.length }}</div>

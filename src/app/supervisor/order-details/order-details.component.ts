@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../services/api.service';
-import { Order } from '../models/order.model';
-import { OrderDetails } from '../models/orderdetails.model';
-import { ExtraFood } from '../models/extrafood.model';
-import { Menu } from '../models/menu.model';
-import { Bill } from '../models/bill.model';
+import { ApiService } from '../../services/api.service';
+import { Order } from '../../models/order.model';
+import { OrderDetails } from '../../models/orderdetails.model';
+import { ExtraFood } from '../../models/extrafood.model';
+import { Menu } from '../../models/menu.model';
+import { Bill } from '../../models/bill.model';
 import { OrderListComponent } from '../order-list/order-list.component';
-import { Table } from '../models/table.model';
+import { Table } from '../../models/table.model';
 import { Location } from '@angular/common';
 
 @Component({
@@ -29,7 +29,6 @@ export class OrderDetailsComponent {
   tableIndex!: number;
   allOrders: OrderDetails[][] = []; // going to be [[{}, {}], [{}]]
   headers: any[] = [];
-  @ViewChild(OrderListComponent) orderListComp: any;
 
   menuNames: Menu[] = [];
   extraFoods: ExtraFood[] = [];
@@ -71,11 +70,6 @@ export class OrderDetailsComponent {
     return await this.api.getAllOrdersWithTableId(this.tableId, false);
   }
 
-  /**
-   * Separate all orders from api response by order id
-   * @param {OrderDetails[]} allOrderSet an array including all data from api response
-   * @returns {OrderDetails[][]} an array including other arrays which are separated by order id
-   */
   separateOrdersByOrderId(allOrderSet: OrderDetails[]): OrderDetails[][] {
     var oid = 0;
     var orderDetailsFromOneOrder: OrderDetails[] = [];
@@ -93,7 +87,6 @@ export class OrderDetailsComponent {
       } else {
         orderDetailsFromOneOrder.push(order);
       }
-      // if order is the last item in orderSet
       if (i == allOrderSet.length - 1) {
         separatedOrders.push(orderDetailsFromOneOrder);
       }
@@ -190,8 +183,6 @@ export class OrderDetailsComponent {
     };
     this.allOrders.splice(oindex, 1);
     await this.api.updateOrder(body, orders[0].order_id);
-
-    this.orderListComp.getAllOrders();
   }
 
   addOrder() {

@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
-import { OrderDetailsComponent } from './order-details/order-details.component';
-import { OrderListComponent } from './order-list/order-list.component';
-import { PaymentDetailsComponent } from './payment-details/payment-details.component';
+import { OrderDetailsComponent } from './supervisor/order-details/order-details.component';
+import { OrderListComponent } from './supervisor/order-list/order-list.component';
+import { PaymentDetailsComponent } from './supervisor/payment-details/payment-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -20,11 +20,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
-import { ReservationsComponent } from './reservations/reservations.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ReservDetailsComponent } from './reserv-details/reserv-details.component';
-import { NewReservationComponent } from './new-reservation/new-reservation.component';
+import { ReservDetailsComponent } from './supervisor/reserv-details/reserv-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatRadioModule } from '@angular/material/radio';
@@ -52,6 +50,23 @@ import { TableFormDialogComponent } from './manager/table-form-dialog/table-form
 import { TablesPageComponent } from './manager/tables-page/tables-page.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { NewReservationComponent } from './supervisor/new-reservation/new-reservation.component';
+import { ReservationsComponent } from './supervisor/reservations/reservations.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ToolbarComponent } from './supervisor/toolbar/toolbar.component';
+import { KitchenComponent } from './supervisor/kitchen/kitchen.component';
+import { BillSlipComponent } from './supervisor/bill-slip/bill-slip.component';
+
+const config: SocketIoConfig = {
+  url: 'https://restaurant-pos-databse.onrender.com',
+  options: {
+    transports: ['websocket'],
+  },
+};
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -81,6 +96,9 @@ export const storage = getStorage(app);
     PaymentComponent,
     TableFormDialogComponent,
     TablesPageComponent,
+    ToolbarComponent,
+    KitchenComponent,
+    BillSlipComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,6 +129,12 @@ export const storage = getStorage(app);
     MatPaginatorModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatBadgeModule,
+    BrowserModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [],
   bootstrap: [AppComponent],

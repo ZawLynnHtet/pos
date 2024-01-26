@@ -74,6 +74,7 @@ export class AddMenusComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('all data >>' + JSON.stringify(this.data));
     this.menuForm.patchValue(this.data);
 
     console.log(this.menuForm.value);

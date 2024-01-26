@@ -45,21 +45,13 @@ export class MenusComponent implements OnInit {
     this.menus = await this.api.getAllMenus();
   }
 
-  editMenu(id: number) {
-    this.router.navigateByUrl('menus/add-menus');
-  }
-
   async deleteMenu(id: number) {
     await this.api.deleteOneMenu(id);
+    this.snackBar.openSnackBar('Table deleted successful', 'done!');
     this.menus = await this.api.getAllMenus();
   }
 
-  async deleteTable(id: number) {
-    await this.api.deleteTable(id);
-    this.snackBar.openSnackBar('Table deleted successful', 'done!');
-  }
-
-  addTableFormDialog() {
+  addMenuFormDialog() {
     const dialogRef = this.dialog.open(AddMenusComponent);
 
     dialogRef.afterClosed().subscribe((val) => {
@@ -69,7 +61,7 @@ export class MenusComponent implements OnInit {
     });
   }
 
-  async editTableFormDialog(data: any) {
+  async editMenuFormDialog(data: any) {
     const dialogRef = this.dialog.open(AddMenusComponent, {
       data,
     });

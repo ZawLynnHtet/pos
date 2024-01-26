@@ -12,6 +12,10 @@ import { ExtraFood } from 'src/app/models/extrafood.model';
 import { Menu } from 'src/app/models/menu.model';
 import { Bill } from 'src/app/models/bill.model';
 import { UtilsService } from 'src/app/services/utils.service';
+import { MatDialog } from '@angular/material/dialog';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { PaymentComponent } from '../payment/payment.component';
+import { Observable, Subscription, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-order-infos',
@@ -24,17 +28,29 @@ export class OrderInfosComponent {
     private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
     private api: ApiService,
-    private location: Location
+    private location: Location,
+    public dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private snackBar: UtilsService
   ) {}
 
-  displayedColumns: string[] = ['table_id', 'order_id', 'status', 'date'];
+  displayedColumns: string[] = [
+    'table_id',
+    'order_id',
+    'status',
+    'date',
+    'bills',
+  ];
   dataSource!: MatTableDataSource<any>;
   orders: Order[] = [];
   tables: Table[] = [];
   extraFoods: ExtraFood[] = [];
   allMenus: Menu[] = [];
+  employeeData: any;
 
   async ngOnInit() {
+    let data: any = localStorage.getItem('data');
+    this.employeeData = JSON.parse(data);
     this.orders = await this.api.getAllOrders();
     this.dataSource = new MatTableDataSource(this.orders);
 
@@ -43,6 +59,10 @@ export class OrderInfosComponent {
     this.getDataLocalStorage();
     this.getIngredient();
     this.allMenus = await this.api.getAllMenus();
+  }
+
+  sendMessage(data: any) {
+    this.api.sendMessage(data);
   }
 
   getIngredient() {
@@ -65,10 +85,6 @@ export class OrderInfosComponent {
     this.tables = JSON.parse(table!);
   }
 
-  goTo(tid: number, oid: number) {
-    this.router.navigateByUrl(`${tid}/${oid}/payments`);
-  }
-
   async getAllUnsubmittedOrdersFromOneTable(id: number, value: boolean) {
     let data = await this.api.getAllOrdersWithTableId(id, value);
     console.log(data);
@@ -78,6 +94,7 @@ export class OrderInfosComponent {
         this.createBills(data);
       }
     });
+    this.openPaymentDialog(data);
   }
 
   async createBills(orders: OrderDetails[]) {
@@ -105,6 +122,17 @@ export class OrderInfosComponent {
         order_submitted: true,
       };
       await this.api.updateOrder(body, order.order_id);
+    });
+  }
+
+  openPaymentDialog(data: any) {
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+      }
     });
   }
 }

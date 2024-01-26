@@ -8,10 +8,6 @@
           <i class="fa-solid fa-angle-left"></i>
         </button>
         <span>Table ID: {{ tableId }}</span>
-        <span class="example-spacer"></span>
-        <button mat-raised-button color="primary" (click)="addOrder()">
-          Add Order
-        </button>
       </mat-toolbar>
     </p>
     <ng-container *ngFor="let oneOrderSet of allOrders; let index = index">
@@ -86,7 +82,5 @@
       </div>
     </ng-container>
     <hr />
-
-    <app-order-list></app-order-list>
   </div>
 </div>

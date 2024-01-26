@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { apiUrl } from 'src/utils/constants';
-import { OverallResponse, Table } from '../models/table.model';
+import { Table } from '../models/table.model';
 import { SubSink } from 'subsink/dist/subsink';
 import { Order } from '../models/order.model';
 import { DetailsBody, OrderDetails } from '../models/orderdetails.model';
@@ -12,14 +12,31 @@ import { Bill } from '../models/bill.model';
 import { ExtraFood } from '../models/extrafood.model';
 import { Ingredient } from '../models/ingredient.model';
 import { Employee } from '../models/employee.model';
+import { Socket } from 'ngx-socket-io';
+import { Document } from '../models/document';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socket: Socket) {}
 
   private subs = new SubSink();
+
+  public message: BehaviorSubject<any> = new BehaviorSubject([]);
+
+  public sendMessage(message: any) {
+    this.socket.emit('message', message);
+  }
+
+  public getNewMessage() {
+    this.socket.on('message', (message: any) => {
+      this.message.next(JSON.stringify(message));
+    });
+
+    return this.message.asObservable();
+  }
 
   getAllTables(): Promise<Table[]> {
     return new Promise((resolve, reject) => {
@@ -510,6 +527,22 @@ export class ApiService {
         });
     });
   }
+
+  editReservation(id: number, data: any): Promise<Reservation> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .patch(`${apiUrl}/reservations/${id}`, data)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.reservation);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
   getAllFoodNames(): Promise<Menu[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http.get(`${apiUrl}/menus/names`).subscribe({

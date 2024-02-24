@@ -30,7 +30,7 @@
     "ng-circle-progress": "^1.7.1",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-order-pipe": "^2.2.0",
-    "ngx-socket-io": "^4.6.1",
+    "ngx-socket-io": "^4.5.1",
     "rxjs": "~7.8.0",
     "subsink": "^1.0.2",
     "tslib": "^2.3.0",

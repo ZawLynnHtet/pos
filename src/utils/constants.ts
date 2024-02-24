@@ -1,2 +1,1 @@
-export var apiUrl: String =
-  'https://restaurant-pos-databse.onrender.com/api/v1';
+export var apiUrl: String = 'http://localhost:8080/api/v1';

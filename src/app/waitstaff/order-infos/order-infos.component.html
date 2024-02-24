@@ -1,6 +1,6 @@
 <app-sidenav></app-sidenav>
 <app-toolbar *ngIf="employeeData.role === 'supervisor'"></app-toolbar>
-<section>
+<section [ngClass]="employeeData.role === 'supervisor' ? 'pad-top' : ''">
   <div class="header">
     <h2>Order Lists</h2>
   </div>
@@ -24,18 +24,6 @@
           {{ row.order_id }}
         </td>
       </ng-container>
-
-      <!-- <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Price</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          (click)="goTo(row.table_id, row.order_id)"
-          (click)="getAllUnsubmittedOrdersFromOneTable(row.table_id)"
-        >
-          {{ row.total_price }} Ks
-        </td>
-      </ng-container> -->
 
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
@@ -61,15 +49,15 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="bills">
+      <ng-container matColumnDef="details">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="mid">
-          Bills
+          Details
         </th>
         <td
           mat-cell
           *matCellDef="let row"
-          (click)="sendMessage(row)"
           class="mid"
+          (click)="goToDetails(row.table_id, row.order_id)"
         >
           <i class="fa-solid fa-angle-right"></i>
         </td>

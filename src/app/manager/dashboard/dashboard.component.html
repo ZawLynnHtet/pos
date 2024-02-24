@@ -1,39 +1,220 @@
 <app-sidenav></app-sidenav>
-<section>
-  <h2>Dashboard</h2>
-  <div class="chart-container">
-    <canvas id="MyChart">{{ chart }}</canvas>
-  </div>
-  <div class="popular-menu">
-    <h2>Popular</h2>
-    <div class="flex-card">
-      <mat-card class="example-card">
-        <div class="data">
-          <mat-card-header class="mat-card-header">
-            <mat-card-title>Most Selling Food Menu</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="mat-details">
-            <div class="ratingChart-container">
-              <canvas id="MenuRatingChart">{{ chart }}</canvas>
+<header class="app-header">
+  <div class="app-header-actions">
+    <button class="user-profile" [matMenuTriggerFor]="menu">
+      <ng-container *ngFor="let waiter of waiters">
+        <ng-container *ngIf="waiter.employee_id == employeeData.id">
+          <span>{{ waiter.name }}</span>
+          <span>
+            <img [src]="waiter.img" *ngIf="waiter.img != null; else avatar" />
+            <ng-template #avatar>
+              <img src="..//..//../assets/images/profile.png" alt="" />
+            </ng-template>
+          </span>
+        </ng-container>
+      </ng-container>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>U Myint</button>
+    </mat-menu>
+    <div class="app-header-actions-buttons">
+      <button class="icon-button large">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+      <div class="box">
+        <div class="display">
+          <div class="nothing">
+            <i class="fas fa-child stick"></i>
+            <div class="cent">Looks Like your all caught up!</div>
+          </div>
+          <div class="cont">
+            <div class="sec new">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="https://c1.staticflickr.com/5/4007/4626436851_5629a97f30_b.jpg"
+                  />
+                </div>
+                <div class="txt">
+                  James liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/7 - 2:30 pm</div>
+              </a>
             </div>
-            <div class="details"></div>
-          </mat-card-content>
-        </div>
-      </mat-card>
-      <mat-card class="example-card">
-        <div class="data">
-          <mat-card-header class="mat-card-header">
-            <mat-card-title>Most Order Type</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="mat-details">
-            <div class="ratingChart-container">
-              <canvas id="TypeRatingChart">{{ chart }}</canvas>
+            <div class="sec new">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="https://obamawhitehouse.archives.gov/sites/obamawhitehouse.archives.gov/files/styles/person_medium_photo/public/person-photo/amanda_lucidon22.jpg?itok=JFPi8OFJ"
+                  />
+                </div>
+                <div class="txt">
+                  Annita liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/7 - 2:13 pm</div>
+              </a>
             </div>
-            <div class="details"></div>
-          </mat-card-content>
+            <div class="sec">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="https://c1.staticflickr.com/4/3725/10214643804_75c0b6eeab_b.jpg"
+                  />
+                </div>
+                <div class="txt">
+                  Madison liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/6 - 4:04 pm</div>
+              </a>
+            </div>
+            <div class="sec">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="https://upload.wikimedia.org/wikipedia/commons/5/52/NG_headshot_white_shirt_square_Jan18.jpg"
+                  />
+                </div>
+                <div class="txt">
+                  Ted liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/6 - 10:37 am</div>
+              </a>
+            </div>
+            <div class="sec">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Pat-headshot-square.jpg"
+                  />
+                </div>
+                <div class="txt">
+                  Tommas liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/5 - 7:30 pm</div>
+              </a>
+            </div>
+            <div class="sec">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="//c1.staticflickr.com/1/185/440890151_54c5b920b0_b.jpg"
+                  />
+                </div>
+                <div class="txt">
+                  Jerimaiah liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/5 - 1:34 pm</div>
+              </a>
+            </div>
+            <div class="sec">
+              <a href="https://codepen.io/Golez/">
+                <div class="profCont">
+                  <img
+                    class="profile"
+                    src="//c2.staticflickr.com/4/3397/3585544855_28442029a5_z.jpg?zz=1"
+                  />
+                </div>
+                <div class="txt">
+                  Debra liked your post: "Pure css notification box"
+                </div>
+                <div class="txt sub">11/5 - 10:20 am</div>
+              </a>
+            </div>
+          </div>
         </div>
-      </mat-card>
+      </div>
     </div>
+  </div>
+</header>
+<section>
+  <div class="head-data">
+    <div class="order-card order-qty">
+      <i class="fa-solid fa-user-tag"></i>
+      <div class="qty">
+        <h3 class="tye">{{ orders.length }}</h3>
+        <p>Today's Order</p>
+      </div>
+    </div>
+    <div class="order-card in">
+      <circle-progress
+        [percent]="dineIn"
+        [space]="-3"
+        [radius]="20"
+        [outerStrokeWidth]="3"
+      >
+        [innerStrokeWidth]='3' [outerStrokeColor]="'#4882c2'"
+        [innerStrokeColor]="'#e7e8ea'" [animation]="true"
+        [animationDuration]="1000"
+      </circle-progress>
+      <h3 class="tye">Dine In</h3>
+    </div>
+    <div class="order-card take">
+      <circle-progress
+        [percent]="takeaway"
+        [space]="-3"
+        [radius]="20"
+        [outerStrokeWidth]="3"
+      >
+        [innerStrokeWidth]='3' [outerStrokeColor]="'#4882c2'"
+        [innerStrokeColor]="'#e7e8ea'" [animation]="true"
+        [animationDuration]="1000"
+      </circle-progress>
+      <h3 class="tye">Take Away</h3>
+    </div>
+  </div>
+  <div class="flex-card">
+    <mat-card class="example-card chart">
+      <div class="dorp-down-select">
+        <select [(ngModel)]="value" (ngModelChange)="getData($event)">
+          <option *ngFor="let dt of date">
+            {{ dt }}
+          </option>
+        </select>
+        <input type="date" #search (input)="getSearchDate(search.value)" />
+      </div>
+      <div class="chart-container">
+        <canvas id="MyChart">{{ chart }}</canvas>
+      </div>
+    </mat-card>
+    <mat-card class="example-card card">
+      <div class="trending">
+        <mat-card-header class="mat-card-header">
+          <mat-card-title>Trending Menus</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mat-details">
+          <div class="menus" *ngIf="popularMenu.length > 0; else noData">
+            <ng-container *ngFor="let menu of allMenus">
+              <ng-container *ngFor="let popular of popularMenu; let i = index">
+                <div class="menu" *ngIf="menu.menu_id == popular.menu_id">
+                  <div class="menu-data">
+                    <img [src]="menu.img" alt="menu" />
+                    <div>
+                      <h3>{{ menu.food_name }}</h3>
+                      <p>{{ menu.price }} Ks</p>
+                    </div>
+                  </div>
+                  <div class="rating">
+                    <p>#{{ i + 1 }}</p>
+                    <p>
+                      {{ (popular.percentage / orderDetails.length) * 100 }}%
+                    </p>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+          <ng-template #noData>
+            <p>There's no popular menu in this week</p>
+          </ng-template>
+        </mat-card-content>
+      </div>
+    </mat-card>
   </div>
   <div class="recent-order">
     <h2>Recent Orders</h2>
@@ -43,7 +224,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Table No.</th>
           <td mat-cell *matCellDef="let row">
             <ng-container *ngFor="let table of tables">
-              <div *ngIf="table.table_id === row.table_id">
+              <div *ngIf="table.table_id == row.table_id">
                 {{ table.table_no }}
               </div>
             </ng-container>
@@ -99,7 +280,7 @@
         <tr
           mat-row
           *matRowDef="let row; columns: displayedColumns"
-          class="data"
+          class="data-row"
         ></tr>
       </table>
 

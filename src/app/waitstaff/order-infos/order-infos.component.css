@@ -1,5 +1,10 @@
 section {
-  padding: 10px 20px 20px 100px;
+  padding: 20px 20px 0 0;
+  margin-left: 100px;
+}
+
+.pad-top {
+  padding-top: 85px;
 }
 
 table,
@@ -9,10 +14,12 @@ mat-paginator {
   background: transparent;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .head {
-  background: rgb(204, 204, 212) !important;
-  border-top-right-radius: 10px !important;
-  border-top-left-radius: 10px !important;
+  background: rgba(121, 169, 197, 0.92);
 }
 
 .mat-mdc-form-field {
@@ -23,6 +30,7 @@ mat-paginator {
 th {
   font-size: 16px;
   font-weight: 600;
+  color: #fff;
 }
 
 td,

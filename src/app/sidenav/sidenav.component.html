@@ -13,7 +13,9 @@
       </div>
     </div>
     <div class="employee" *ngIf="employeesData">
-      <div class="name">{{ employeesData.name }}</div>
+      <div class="name" *ngIf="employeesData.role == 'waiter'">
+        {{ employeesData.name }}
+      </div>
     </div>
     <div class="diver"></div>
   </div>

@@ -1,29 +1,102 @@
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+<section>
+  <div class="bar">
+    <div class="back">
+      <i
+        class="fa-solid fa-arrow-left-long"
+        matTooltip="Back"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        (click)="goBack()"
+      ></i>
+      <h2>Restaurant POS</h2>
+    </div>
+    <button mat-raised-button color="primary" (click)="print()">
+      Print <i class="fa-solid fa-print"></i>
+    </button>
+  </div>
+
+  <div class="container">
+    <h2 class="title">Bill Slip</h2>
+
+    <div class="slip">
+      <div class="header">
+        <div class="data">
+          <p>Table No. {{ table_id }}</p>
+          <p>Order ID: #{{ order_id }}</p>
+          <p>OrderedBy: Kyaw Oo</p>
+        </div>
+        <div class="date">
+          <p>Date</p>
+          <p>6/15/15, 9:03 AM</p>
+        </div>
+      </div>
+      <hr />
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col" class="mid">Quantity</th>
+            <th scope="col" class="r-col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of bills; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <ng-container *ngFor="let menu of allMenus; let menuIndex = index">
+              <td *ngIf="bill.menu_id === menu.menu_id">
+                {{ menu.food_name }}
+              </td>
+            </ng-container>
+            <ng-container *ngFor="let menu of allMenus">
+              <td *ngIf="bill.menu_id === menu.menu_id">{{ menu.price }} Ks</td>
+            </ng-container>
+            <td class="mid">{{ bill.qty }}</td>
+            <td class="r-col">
+              <ng-container *ngFor="let menu of allMenus">
+                <div *ngIf="bill.menu_id === menu.menu_id">
+                  {{ bill.total_price }} Ks
+                </div>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="footer">
+        <div class="payment-method">
+          <h3>Payment Methods:</h3>
+          <div class="informs">
+            <p>Bank name:</p>
+            <p>KBZ Pay</p>
+          </div>
+          <div class="informs">
+            <p>Acc name:</p>
+            <p>Zaw Lynn Htet</p>
+          </div>
+        </div>
+
+        <div class="total-section">
+          <h3>Total due</h3>
+          <hr />
+          <div class="sub">
+            <p>Sub Total:</p>
+            <p>{{ totalAmounts.total }} Ks</p>
+          </div>
+          <hr />
+
+          <div class="tax">
+            <p>Tax:</p>
+            <p>{{ totalAmounts.tax }} Ks</p>
+          </div>
+          <hr />
+
+          <div class="total">
+            <p>Grand Total:</p>
+            <p>{{ totalAmounts.subTotal }} Ks</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

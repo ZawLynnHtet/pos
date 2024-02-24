@@ -19,7 +19,7 @@ import { Employee } from 'src/app/models/employee.model';
 })
 export class EditEmployeeComponent implements OnInit {
   roles: string[] = ['waiter', 'supervisor'];
-  genders: string[] = ['Female', 'Male'];
+  genders: string[] = ['female', 'male'];
   hide = true;
   employeeForm: FormGroup;
   selectedFile: any = null;
@@ -33,13 +33,13 @@ export class EditEmployeeComponent implements OnInit {
     private snackBar: UtilsService
   ) {
     this.employeeForm = fb.group({
-      name: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      phone: new FormControl('', [Validators.required]),
-      role: new FormControl('', [Validators.required]),
-      gender: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      img: new FormControl('', [Validators.required]),
+      name: new FormControl(''),
+      email: new FormControl(''),
+      phone: new FormControl(''),
+      role: new FormControl(''),
+      gender: new FormControl(''),
+      password: new FormControl(''),
+      img: new FormControl(''),
     });
   }
 
@@ -52,12 +52,6 @@ export class EditEmployeeComponent implements OnInit {
     }
   }
 
-  async uploadAndGetDownloadUrl(name: string): Promise<string> {
-    const reference = ref(storage, `employees/${this.employeeForm.value.name}`);
-    await uploadBytes(reference, this.selectedFile);
-    return await getDownloadURL(ref(storage, `employees/${name}`));
-  }
-
   processFile(event: any) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
@@ -68,6 +62,12 @@ export class EditEmployeeComponent implements OnInit {
       this.selectedFile = null;
       this.imgUrl = '..//..//../assets/images/profile.png';
     }
+  }
+
+  async uploadAndGetDownloadUrl(name: string): Promise<string> {
+    const reference = ref(storage, `employees/${this.employeeForm.value.name}`);
+    await uploadBytes(reference, this.selectedFile);
+    return await getDownloadURL(ref(storage, `employees/${name}`));
   }
 
   async FormSubmit() {
@@ -95,6 +95,8 @@ export class EditEmployeeComponent implements OnInit {
         this.snackBar.openSnackBar('Employee added successful!');
         this.dialogRef.close(true);
       }
+    } else {
+      console.log('Invalid');
     }
   }
 

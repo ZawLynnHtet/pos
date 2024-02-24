@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./tables.component.css'],
 })
 export class TablesComponent implements OnInit {
+  messageList: any;
   constructor(private router: Router, private api: ApiService) {}
 
   employeesData: any;
@@ -19,7 +20,6 @@ export class TablesComponent implements OnInit {
     let data: any = localStorage.getItem('data');
     this.employeesData = JSON.parse(data);
     this.tables = await this.api.getAllTables();
-
     let unavailable = 0;
     this.tables.forEach((table) => {
       if (!table.is_available) {
@@ -44,7 +44,7 @@ export class TablesComponent implements OnInit {
       this.employeesData.role === 'supervisor' &&
       this.tables[index].is_available === false
     ) {
-      this.router.navigateByUrl(`tables/${id}/order-lists`);
+      this.router.navigateByUrl(`tables/${id}/order-details`);
     }
   }
 

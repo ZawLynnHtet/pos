@@ -63,8 +63,22 @@ export class PaymentComponent {
   async payBill() {
     await this.api.pay(this.data[0].order_id, { is_paid: true });
     this.getTableData();
+    let msg = {
+      table_id: this.data[0].table_id,
+      order_id: this.data[0].order_id,
+      waiter_id: this.data[0].waitstaff_id,
+      kitchen_id: false,
+      read: false,
+      print: false,
+    };
+    this.sendMessage(msg);
+    await this.api.postMessages(msg);
     this.snackBar.openSnackBar('Bill successful!');
     this.dialogRef.close(true);
+  }
+
+  sendMessage(data: any) {
+    this.api.sendMessage(data);
   }
 
   async getTableData() {

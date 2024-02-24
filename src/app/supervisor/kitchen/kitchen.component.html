@@ -1,63 +1,88 @@
-<p class="bar">
-  <mat-toolbar class="toolbar">
-    <span><h2>Restaurant POS</h2></span>
-    <span class="example-spacer"></span>
-    <div class="demo-section">
-      <button
-        matTooltip="Kitchen orders"
+<section>
+  <div class="bar">
+    <div class="back">
+      <i
+        class="fa-solid fa-arrow-left-long"
+        matTooltip="Back"
         aria-label="Button that displays a tooltip when focused or hovered over"
-        routerLink="/kitchen"
-      >
-        <i
-          matBadge="7"
-          matBadgeColor="warn"
-          class="fa-solid fa-kitchen-set"
-        ></i>
-      </button>
+        (click)="goBack()"
+      ></i>
+      <h2>Restaurant POS</h2>
     </div>
-    <div class="demo-section">
-      <button
-        matTooltip="Bill Slip"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-      >
-        <i matBadge="7" matBadgeColor="warn" class="fa-solid fa-print"></i>
-      </button>
-    </div>
-  </mat-toolbar>
-</p>
-
-<div class="container">
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr class="table-light">
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngFor="let message of messageList">
-    <div>{{ message }}</div>
+    <button mat-raised-button color="primary" (click)="print()">
+      Print <i class="fa-solid fa-print"></i>
+    </button>
   </div>
-</div>
+
+  <div class="container">
+    <h2 class="title">Kitchen Slip</h2>
+
+    <div class="slip">
+      <div class="header">
+        <div class="data">
+          <p>Table No. {{ table_id }}</p>
+          <p>Order ID: #{{ order_id }}</p>
+          <p>OrderedBy: Kyaw Oo</p>
+        </div>
+        <div class="date">
+          <p>Date</p>
+          <p>6/15/15, 9:03 AM</p>
+        </div>
+      </div>
+      <hr />
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Description</th>
+            <th scope="col">Modifiers</th>
+            <th scope="col" class="mid">Quantity</th>
+            <th scope="col" class="mid">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <ng-container *ngFor="let menu of allMenus; let menuIndex = index">
+              <td *ngIf="order.menu_id === menu.menu_id">
+                {{ menu.food_name }}
+                <ng-container *ngIf="order.choice_of_meat != null"
+                  >({{ order.choice_of_meat }})</ng-container
+                >
+              </td>
+            </ng-container>
+            <td>
+              <div *ngIf="order.removed_ingredients.length != 0">
+                Remove: (<ng-container
+                  *ngFor="let ingred_id of order.removed_ingredients"
+                  >{{ ingredients[0].ingredient_name }}, </ng-container
+                >)
+              </div>
+
+              <div *ngIf="order.extra_ingredients.length != 0">
+                Extra: (<ng-container
+                  *ngFor="let extra of order.extra_ingredients; let i = index"
+                  >{{ extraFoods[extra - 1].food_name }}, </ng-container
+                >)
+              </div>
+            </td>
+            <td class="mid">{{ order.quantity }}</td>
+            <td class="mid">
+              {{ order.takeaway === false ? "Dine in" : "Take away" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notes">
+        <h3>Notes</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Id repellat
+          consequatur alias neque accusamus illo soluta. Ab, natus nostrum,
+          recusandae aperiam veritatis, magni sapiente velit esse impedit
+          tempore delectus exercitationem.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

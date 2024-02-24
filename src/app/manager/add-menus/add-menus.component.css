@@ -1,3 +1,7 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
 .select {
   display: none;
 }
@@ -19,17 +23,29 @@
   color: #000;
   cursor: pointer;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 }
 
-.chip i {
+.chip .bi-check2 {
   display: none;
   font-size: 20px;
   margin-right: 10px;
   transition: 1.3s ease;
 }
 
-input:checked + .chip i {
+.chip .fa-xmark {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #c0bcbc;
+  margin-left: 10px;
+  z-index: 20;
+}
+
+input:checked + .chip .bi-check2 {
   display: inline;
 }
 

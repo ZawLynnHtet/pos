@@ -3,7 +3,7 @@
   <div class="flex-box">
     <div class="menu-page">
       <div class="header">
-        <div class="search-box">
+        <!-- <div class="search-box">
           <input
             type="text"
             placeholder="Search menus ...."
@@ -11,7 +11,7 @@
             #input
           />
           <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+        </div> -->
         <div>
           <h4 class="mt-2">Category</h4>
           <div class="categories">
@@ -113,10 +113,14 @@
                             formArrayName="toppings"
                             (change)="onCheckboxChange($event, 'toppings')"
                           />
-                          <div class="grid-item">
-                            {{ ingredients[ingred_id - 1].ingredient_name }}
-                            <!-- {{ ingredient.ingredient_name }} -->
-                          </div>
+                          <ng-container *ngFor="let ing of ingredients">
+                            <div
+                              class="grid-item"
+                              *ngIf="ing.ingredient_id == ingred_id"
+                            >
+                              {{ ing.ingredient_name }}
+                            </div>
+                          </ng-container>
                         </label>
                       </ng-container>
                     </div>
@@ -134,9 +138,16 @@
                             formArrayName="extras"
                             (change)="onCheckboxChange($event, 'extras')"
                           />
-                          <div class="grid-item">
-                            {{ extraFoods[id - 1].food_name }}
-                          </div>
+                          <ng-container *ngFor="let extra of extraFoods">
+                            <div
+                              (click)="showOption()"
+                              class="grid-item"
+                              *ngIf="extra.extraFood_id == id"
+                              (click)="addExtra(extra)"
+                            >
+                              {{ extra.food_name }}
+                            </div>
+                          </ng-container>
                         </label>
                       </ng-container>
                     </div>
@@ -145,11 +156,18 @@
               </form>
             </mat-tab-group>
             <div class="footer">
-              <button class="btn" (click)="closeTopping()">Close</button>
-              <div>
-                <button class="btn plus" (click)="addOrdersWithChoice()">
-                  <i class="fa-solid fa-plus"></i>
-                </button>
+              <div class="button-section">
+                <button class="btn" (click)="closeTopping()">Close</button>
+                <div>
+                  <button class="btn" (click)="addOrdersWithChoice()">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="button-section extra-btn" *ngIf="show_option == true">
+                <p>Add extra qty:</p>
+                <i class="fa-solid fa-minus" (click)="removeExtraQty()"></i>
+                <i class="fa-solid fa-plus" (click)="addExtraQty()"></i>
               </div>
             </div>
           </div>
@@ -191,22 +209,29 @@
                 min="1"
                 [(ngModel)]="order.quantity"
                 class="quantity"
-                style="width: 5em"
               />
             </div>
             <ol>
-              <!-- <li>{{ order.choice_of_meat }}</li> -->
               <li *ngIf="order.removed_ingredients.length != 0">
                 Remove:
                 <ng-container
                   *ngFor="let ingred_id of order.removed_ingredients"
-                  >{{ ingredients[ingred_id - 1].ingredient_name }},
+                >
+                  <ng-container *ngFor="let ing of ingredients">
+                    <span *ngIf="ing.ingredient_id == ingred_id">
+                      {{ ing.ingredient_name }},
+                    </span>
+                  </ng-container>
                 </ng-container>
               </li>
               <li *ngIf="order.extra_ingredients.length != 0">
                 Extras:
-                <ng-container *ngFor="let extra_id of order.extra_ingredients"
-                  >{{ extraFoods[extra_id - 1].food_name }},
+                <ng-container *ngFor="let extra_id of order.extra_ingredients">
+                  <ng-container *ngFor="let extra of extraFoods">
+                    <span *ngIf="extra.extraFood_id == extra_id">
+                      {{ extra.food_name }} ({{ extra.qty }}),
+                    </span>
+                  </ng-container>
                 </ng-container>
               </li>
             </ol>

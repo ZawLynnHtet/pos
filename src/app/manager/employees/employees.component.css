@@ -10,14 +10,23 @@ mat-paginator {
   background: transparent;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
 }
 
+.head {
+  background: rgba(121, 169, 197, 0.92);
+}
+
 th {
   font-size: 16px;
   font-weight: 600;
+  color: #fff;
 }
 
 .name {

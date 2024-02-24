@@ -16,46 +16,26 @@ export class PaymentDetailsComponent {
     private activatedRoute: ActivatedRoute,
     private api: ApiService,
     private location: Location
-  ) {}
+  ) {
+    window.onscroll = () => {
+      let header = document.querySelector('.bar');
+      header?.classList.toggle('sticky', window.scrollY > 10);
+    };
+  }
 
-  tableId!: number;
-  orderId!: number;
-
-  // orders: any = [
-  //   {
-  //     name: "Burger",
-  //     qty: 3,
-  //     price: 7000
-  //   },
-  //   {
-  //     name: "Monhinga",
-  //     qty: 1,
-  //     price: 2000
-  //   }, {
-  //     name: "Shan Noodles",
-  //     qty: 1,
-  //     price: 2000
-  //   }
-  // ];
+  table_id!: number;
+  order_id!: number;
+  msg_id!: number;
 
   bills: Bill[] = [];
   totalAmounts: any = {};
-  menuNames: Menu[] = [];
+  allMenus: Menu[] = [];
 
-  ngOnInit() {
-    this.tableId = this.activatedRoute.snapshot.params['id'];
-    this.orderId = this.activatedRoute.snapshot.params['oid'];
-
-    const names = localStorage.getItem('menuNames');
-
-    if (names != null) {
-      this.menuNames = JSON.parse(names);
-      this.menuNames.sort((a, b) => {
-        return a.menu_id - b.menu_id;
-      });
-
-      console.log(this.menuNames);
-    }
+  async ngOnInit() {
+    this.msg_id = this.activatedRoute.snapshot.params['msgId'];
+    this.order_id = this.activatedRoute.snapshot.params['oid'];
+    this.table_id = this.activatedRoute.snapshot.params['id'];
+    this.allMenus = await this.api.getAllMenus();
 
     this.getAllBillsFromOneOrder();
   }
@@ -64,12 +44,13 @@ export class PaymentDetailsComponent {
     this.location.back();
   }
 
-  addOrder() {
-    this.router.navigateByUrl('tables/' + this.tableId + '/menu');
+  async print() {
+    window.print();
+    await this.api.updateMessages(this.msg_id, { print: true });
   }
 
   async getAllBillsFromOneOrder() {
-    this.bills = await this.api.getAllBillsWithOrderId(this.orderId);
+    this.bills = await this.api.getAllBillsWithOrderId(this.order_id);
     this.updateTotalAmounts();
   }
 

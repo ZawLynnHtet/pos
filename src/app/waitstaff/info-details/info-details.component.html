@@ -1,19 +1,19 @@
 <app-sidenav></app-sidenav>
-<section>
-  <div class="header">
-    <div class="back">
-      <i
-        class="fa-solid fa-arrow-left-long"
-        matTooltip="Back"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        (click)="goBack()"
-      ></i>
-      <h2>Order Lists</h2>
-    </div>
-    <button mat-raised-button color="primary" (click)="addOrder()">
-      Add Orders
-    </button>
+<div class="header">
+  <div class="back">
+    <i
+      class="fa-solid fa-arrow-left-long"
+      matTooltip="Back"
+      aria-label="Button that displays a tooltip when focused or hovered over"
+      (click)="goBack()"
+    ></i>
+    <h2>Order Lists</h2>
   </div>
+  <button mat-raised-button color="primary" (click)="addOrder()">
+    Add Orders
+  </button>
+</div>
+<section>
   <div class="wrap" *ngFor="let oneOrder of allOrders; let i = index">
     <div class="invoice-header">
       <div class="data">
@@ -23,7 +23,11 @@
           </p>
         </ng-container>
         <p>Order No. {{ headers[i].id }}</p>
-        <p>OrderedBy = {{ employeesData.name }}</p>
+        <ng-container *ngFor="let employee of employeesData">
+          <p *ngIf="headers[i].waitstaff_id == employee.employee_id">
+            OrderedBy: {{ employee.name }}
+          </p>
+        </ng-container>
       </div>
       <div class="inv-date">
         <h3 class="date">Date</h3>
@@ -32,7 +36,7 @@
         </h4>
       </div>
     </div>
-    <table>
+    <table class="table-bordered">
       <thead>
         <tr>
           <td>Food Name</td>
@@ -78,11 +82,7 @@
       </tbody>
     </table>
     <div class="print-section">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="createBills(oneOrder, i)"
-      >
+      <button mat-raised-button color="primary" (click)="createBills(oneOrder)">
         Print Bill
       </button>
     </div>

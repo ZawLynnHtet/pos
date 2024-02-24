@@ -1,29 +1,30 @@
-<div class="constrains">
-  <app-sidenav></app-sidenav>
-  <app-toolbar *ngIf="employeesData.role === 'supervisor'"></app-toolbar>
-  <div class="tables-section">
-    <div class="table-infos flex">
-      <div class="table-data">Total: {{ tables.length }}</div>
-      <div class="table-data">Available: {{ available_table_count }}</div>
-    </div>
-    <div class="tables">
-      <ng-container *ngFor="let table of tables; let i = index">
-        <button
-          class="table"
-          [ngStyle]="{
+<app-sidenav></app-sidenav>
+<app-toolbar *ngIf="employeesData.role === 'supervisor'"></app-toolbar>
+<div
+  class="tables-section"
+  [ngClass]="employeesData.role === 'supervisor' ? 'pad-top' : ''"
+>
+  <div class="table-infos flex">
+    <div class="table-data">Total: {{ tables.length }}</div>
+    <div class="table-data">Available: {{ available_table_count }}</div>
+  </div>
+  <div class="tables">
+    <ng-container *ngFor="let table of tables; let i = index">
+      <button
+        class="table"
+        [ngStyle]="{
               background: table.is_available
                 ? 'var(--table-color)'
                 : 'var(--main-color)',
             }"
-          (click)="goTo(table.table_id, i)"
-        >
-          <div>Table {{ table.table_no }}</div>
-          <div class="available">
-            {{ table.is_available ? "Available" : "Unavailable" }}
-          </div>
-          <div>Capacity: {{ table.capacity }}</div>
-        </button>
-      </ng-container>
-    </div>
+        (click)="goTo(table.table_id, i)"
+      >
+        <div>Table {{ table.table_no }}</div>
+        <div class="available">
+          {{ table.is_available ? "Available" : "Unavailable" }}
+        </div>
+        <div>Capacity: {{ table.capacity }}</div>
+      </button>
+    </ng-container>
   </div>
 </div>

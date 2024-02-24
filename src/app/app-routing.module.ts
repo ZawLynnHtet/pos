@@ -20,6 +20,7 @@ import { OrderListComponent } from './supervisor/order-list/order-list.component
 import { NewReservationComponent } from './supervisor/new-reservation/new-reservation.component';
 import { ReservationsComponent } from './supervisor/reservations/reservations.component';
 import { KitchenComponent } from './supervisor/kitchen/kitchen.component';
+import { EachOrderDetailsComponent } from './waitstaff/each-order-details/each-order-details.component';
 
 const routes: Routes = [
   {
@@ -56,7 +57,7 @@ const routes: Routes = [
     component: MenusComponent,
   },
   {
-    path: 'orders',
+    path: 'tables/:id/order-details',
     component: OrderDetailsComponent,
   },
   {
@@ -72,11 +73,11 @@ const routes: Routes = [
     component: InfoDetailsComponent,
   },
   {
-    path: 'tables/:id/order-lists',
+    path: 'order-lists',
     component: OrderListComponent,
   },
   {
-    path: 'tables/:id/order-details/payments/:oid',
+    path: 'message/:msgId/table/:id/order/:oid/bills',
     component: PaymentDetailsComponent,
   },
   {
@@ -108,12 +109,16 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'kitchen',
+    path: 'message/:msgId/table/:id/order/:oid/kitchen',
     component: KitchenComponent,
   },
   {
     path: 'tables-page',
     component: TablesPageComponent,
+  },
+  {
+    path: 'order-infos/table/:tid/order/:oid/each-order-details',
+    component: EachOrderDetailsComponent,
   },
 ];
 

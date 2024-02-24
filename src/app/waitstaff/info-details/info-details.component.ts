@@ -43,8 +43,7 @@ export class InfoDetailsComponent {
   ingredients: Ingredient[] = [];
 
   async ngOnInit() {
-    let data: any = localStorage.getItem('data');
-    this.employeesData = JSON.parse(data);
+    this.employeesData = await this.api.getAllEmployees();
     let table: any = localStorage.getItem('tables');
     this.tables = JSON.parse(table);
     this.tableId = this.activatedRoute.snapshot.params['tableId'];
@@ -52,9 +51,7 @@ export class InfoDetailsComponent {
     this.getItemsFromLocalStorage();
 
     const orders = await this.getAllUnsubmittedOrdersFromOneTable();
-    orders.sort((a, b) => {
-      return b.order_id - a.order_id;
-    });
+
     this.allOrders = this.separateOrdersByOrderId(orders);
     console.log(this.allOrders);
 
@@ -123,7 +120,7 @@ export class InfoDetailsComponent {
     return infos;
   }
 
-  async createBills(orders: OrderDetails[], oindex: number) {
+  async createBills(orders: OrderDetails[]) {
     let subTotal = 0;
     orders.forEach(async (order) => {
       let total = 0;
@@ -143,8 +140,12 @@ export class InfoDetailsComponent {
         qty: order.quantity,
         total_price: total,
       };
-      if (order.order_submitted === false) {
+      if (order.order_submitted == false) {
+        console.log('False');
+
         await this.api.createOneBill(bill, order.order_id);
+      } else {
+        console.log('True');
       }
     });
 
@@ -152,9 +153,10 @@ export class InfoDetailsComponent {
       total_price: subTotal,
       order_submitted: true,
     };
-    // this.allOrders.splice(oindex, 1);
     await this.api.updateOrder(body, orders[0].order_id);
     this.openPaymentDialog(orders);
+    const orderData = await this.getAllUnsubmittedOrdersFromOneTable();
+    this.allOrders = this.separateOrdersByOrderId(orderData);
   }
 
   addOrder() {
@@ -169,9 +171,6 @@ export class InfoDetailsComponent {
     dialogRef.afterClosed().subscribe(async (val) => {
       if (val) {
         const orders = await this.getAllUnsubmittedOrdersFromOneTable();
-        orders.sort((a, b) => {
-          return b.order_id - a.order_id;
-        });
         this.allOrders = this.separateOrdersByOrderId(orders);
       }
     });

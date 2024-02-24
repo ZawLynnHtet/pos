@@ -1,112 +1,168 @@
-.box {
-  justify-content: start;
-  flex-flow: row nowrap;
-  align-items: start;
-  width: 100%;
+@font-face {
+  font-family: Oswald-Light;
+  src: url("../../../assets/fonts/Oswald-Light.ttf");
 }
 
-.payment-section {
-  width: 100%;
-  padding: 15px 20px 0 0;
-  margin-left: 100px;
+::-webkit-scrollbar {
+  display: none;
 }
 
-.header {
+section {
+  position: relative;
+}
+
+.bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+  margin-bottom: 20px;
+  background: transparent;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
 }
 
-.example-spacer {
-  flex: 1 1 auto;
+.bar.sticky {
+  background: #fff;
+  box-shadow: 0 0 20px #7d7c7c, 0 0 15px rgb(217, 217, 234);
 }
 
-.example-icon {
+.back {
+  display: flex;
+  align-items: center;
+}
+
+.back h2 {
+  margin: 0;
+}
+
+.back i {
+  font-size: 19px;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
 }
 
-.payment {
-  width: 50%;
-  margin: auto;
+.back i:hover {
+  background: #c2c0c0;
 }
 
-.payment-container {
-  width: 100%;
+.back i:active {
+  background: #c2c0c0;
 }
 
-.payment-header {
-  flex-flow: column nowrap;
-  align-items: center;
+.container {
+  padding: 20px 0;
 }
 
-.infos {
-  width: 100%;
-  flex-flow: row nowrap;
+.slip {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 5px;
+  font-family: Oswald-Light;
+}
+
+.header {
+  display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.details {
-  width: 100%;
+.slip hr,
+.total-section hr {
+  background: #e0dfdf;
 }
 
-.order-grid-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 50% 17% 15% 18%;
+.header .data p,
+.date p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #666666;
+  padding-bottom: 2px;
 }
 
-.order-grid-container .g-item:first-child + div {
-  text-align: center;
-}
-
-.order-grid-container .g-item:last-child {
+.header .date p {
   text-align: end;
 }
 
-.details .order-grid-container:first-child {
-  margin: 10px 0;
+.table tr th,
+tr td {
+  background: transparent !important;
+  padding: 15px 10px;
 }
 
-.g-head {
-  font-size: 18px;
+.table tr th {
+  font-size: 16px;
+}
+
+.table tr td {
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 1;
+  color: #595959;
+}
+
+.mid {
+  text-align: center;
+}
+
+.r-col {
+  text-align: right !important;
+}
+
+@media print {
+  .bar,
+  .title {
+    display: none;
+  }
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer h3 {
+  font-size: 16px;
   font-weight: 500;
 }
 
-.g-item {
+.footer .payment-method,
+.total-section {
+  width: 45%;
 }
 
-.amount-grid-container {
-  display: grid;
-  grid-template-columns: auto auto;
+.footer .payment-method .informs {
+  display: flex;
   justify-content: space-between;
+  font-size: 17px;
+  font-weight: 400;
+  color: #595959;
 }
 
-.amount-grid-container .amount {
-  text-align: end;
+.footer .total-section .sub,
+.tax,
+.total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #595959;
 }
 
-.b-top {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: dashed grey !important;
-}
-
-.align-right {
-  text-align: end;
-}
-
-.details div:last-child {
-  text-align: center;
-}
-
-.print-btn {
-  text-align: end;
-}
-
-.print-btn button {
-  width: 20%;
-  padding: 5px 0;
-  margin-top: 20px;
+.total-section h3 {
+  padding: 0 15px;
 }

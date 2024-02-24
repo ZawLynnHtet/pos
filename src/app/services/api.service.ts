@@ -12,30 +12,29 @@ import { Bill } from '../models/bill.model';
 import { ExtraFood } from '../models/extrafood.model';
 import { Ingredient } from '../models/ingredient.model';
 import { Employee } from '../models/employee.model';
-import { Socket } from 'ngx-socket-io';
-import { Document } from '../models/document';
-import { BehaviorSubject } from 'rxjs';
+// import { Socket } from 'ngx-socket-io';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Message } from '../models/message.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient, private socket: Socket) {}
+  constructor(private http: HttpClient) {}
 
   private subs = new SubSink();
 
   public message: BehaviorSubject<any> = new BehaviorSubject([]);
 
   public sendMessage(message: any) {
-    this.socket.emit('message', message);
+    // this.socket.emit('message', message);
   }
 
-  public getNewMessage() {
-    this.socket.on('message', (message: any) => {
-      this.message.next(JSON.stringify(message));
-    });
-
-    return this.message.asObservable();
+  public getMessage() {
+    // this.socket.on('message', (message: any) => {
+    //   this.message.next(message);
+    // });
+    // return this.message.asObservable();
   }
 
   getAllTables(): Promise<Table[]> {
@@ -342,6 +341,19 @@ export class ApiService {
     });
   }
 
+  getOrderById(id: number): Promise<Order[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/orders/${id}`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
   pay(id: number, data: Order): Promise<Order[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
@@ -569,6 +581,19 @@ export class ApiService {
     });
   }
 
+  getOneExtraFood(id: number): Promise<ExtraFood[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/extra-food/${id}`).subscribe({
+        next: (res: any) => {
+          resolve(res);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
   postExtraFood(data: any): Promise<ExtraFood[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http.post(`${apiUrl}/extra-food`, data).subscribe({
@@ -592,6 +617,107 @@ export class ApiService {
           },
           error: (err: any) => {
             reject(err);
+          },
+        });
+    });
+  }
+
+  getIncomeByDate(date: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/bills/${date}`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  getIncomeBySearchDate(date: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .get(`${apiUrl}/bills/date?createdAt=${date}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  getByWeekPopularMenu(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .get(`${apiUrl}/orderdetails/popular-menu`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  postMessages(data: any): Promise<Message[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.post(`${apiUrl}/message`, data).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  getMessages(params: boolean): Promise<Message[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .get(`${apiUrl}/message/printed?print=${params}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  getMessagesByUnread(params: boolean): Promise<Message[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .get(`${apiUrl}/message/read?read=${params}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  updateMessages(id: number, data: any): Promise<Message[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .patch(`${apiUrl}/message/${id}`, data)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
           },
         });
     });

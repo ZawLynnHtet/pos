@@ -1,0 +1,157 @@
+section {
+  padding: 50px 30px 30px;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.header {
+  width: 100%;
+  background: rgb(141, 141, 207);
+  padding: 10px;
+  position: fixed;
+  z-index: 20;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.back h2 {
+  color: #fff;
+}
+
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+.header i {
+  font-size: 19px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: #bcbcbc;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.header i:hover {
+  background: #c2c0c0;
+}
+
+.header i:active {
+  background: #c2c0c0;
+}
+
+.wrap {
+  position: relative;
+  width: 100%;
+  margin: 20px 0 60px;
+}
+
+.invoice-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.head .logo {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.head .title,
+.inv-date .time {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.inv-date .date {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+  text-align: end;
+}
+
+.data p {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.status-data {
+  margin-top: 15px !important;
+}
+
+.status {
+  padding: 5px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+table thead {
+  background: rgba(121, 169, 197, 0.92);
+  color: #fff;
+}
+
+table thead tr td,
+table tbody tr td {
+  padding: 15px 8px !important;
+}
+
+table thead tr td {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 5px;
+}
+
+table tbody td {
+  padding: 7px 5px;
+}
+
+.mid {
+  text-align: center;
+}
+
+.r-col {
+  text-align: right !important;
+}
+
+table tbody tr:nth-child(odd) {
+  background: #f0f0f0;
+}
+
+table tbody tr:nth-child(even) {
+  background: #f3f8fa;
+}
+
+.print-section {
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  margin-top: 15px;
+  padding-right: 3px;
+}

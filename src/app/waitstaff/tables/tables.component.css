@@ -1,6 +1,14 @@
 .tables-section {
-  padding: 15px 20px 0 0;
+  padding: 20px 20px 0 0;
   margin-left: 100px;
+}
+
+.pad-top {
+  padding-top: 85px;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .table-data {

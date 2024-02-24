@@ -3,6 +3,10 @@ section {
   width: 100%;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .header {
   padding-bottom: 20px;
   position: sticky;

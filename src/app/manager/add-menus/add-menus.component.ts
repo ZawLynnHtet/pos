@@ -48,7 +48,7 @@ export class AddMenusComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   meatCtrl = new FormControl('');
   filteredMeats!: Observable<string[]>;
-  meats: any[] = ['Pork', 'Beef', 'Chicken', 'Chicken', 'Fried Egg'];
+  meats: any[] = ['Pork', 'Beef', 'Chicken', 'Fried Egg'];
   imgUrl: string = '..//..//../assets/images/loading-image.png';
   selectedFile: any = null;
   menuForm: FormGroup;
@@ -58,26 +58,25 @@ export class AddMenusComponent implements OnInit {
     public dialogRef: MatDialogRef<AddMenusComponent>,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: UtilsService,
-    private utils: UtilsService
+    private snackBar: UtilsService
   ) {
     this.menuForm = fb.group({
-      food_name: new FormControl('', [Validators.required]),
-      price: new FormControl('', [Validators.required]),
-      category_id: new FormControl('', [Validators.required]),
-      meat_choice: new FormArray([], [Validators.required]),
-      ingredient_ids: new FormArray([], [Validators.required]),
-      extraFood_ids: new FormArray([], [Validators.required]),
-      img: new FormControl('', [Validators.required]),
+      food_name: new FormControl(''),
+      price: new FormControl(''),
+      category_id: new FormControl(''),
+      meat_choice: new FormArray([]),
+      ingredient_ids: new FormArray([]),
+      extraFood_ids: new FormArray([]),
+      img: new FormControl(''),
       is_available: true,
     });
   }
 
   ngOnInit(): void {
-    console.log('all data >>' + JSON.stringify(this.data));
     this.menuForm.patchValue(this.data);
-
-    console.log(this.menuForm.value);
+    this.menuForm.value.meat_choice.push(this.data.meat_choice);
+    this.menuForm.value.ingredient_ids.push(this.data.ingredient_ids);
+    this.menuForm.value.extraFood_ids.push(this.data.extraFood_ids);
 
     if (this.menuForm.value.img) {
       this.imgUrl = this.menuForm.value.img;
@@ -100,9 +99,9 @@ export class AddMenusComponent implements OnInit {
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
-    const reference = ref(storage, `menus/${this.menuForm.value.foodName}`);
+    const reference = ref(storage, `menus/${this.menuForm.value.food_name}`);
 
-    await uploadBytes(reference, this.selectedFile?.file!);
+    await uploadBytes(reference, this.selectedFile);
     return await getDownloadURL(ref(storage, `menus/${name}`));
   }
 
@@ -116,6 +115,10 @@ export class AddMenusComponent implements OnInit {
     event.target.value = '';
   }
 
+  delCategroy(index: number) {
+    this.categories.splice(index, 1);
+  }
+
   addMeat(event: any): void {
     const value = (event.target.value || '').trim();
     if (value) {
@@ -123,6 +126,10 @@ export class AddMenusComponent implements OnInit {
       this.meats.push(data);
     }
     event.target.value = '';
+  }
+
+  delMeat(index: number) {
+    this.meats.splice(index, 1);
   }
 
   async addIngredient(event: any) {
@@ -135,6 +142,10 @@ export class AddMenusComponent implements OnInit {
     event.target.value = '';
   }
 
+  delIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+  }
+
   async addExtra(event: any) {
     const value = (event.target.value || '').trim();
     if (value) {
@@ -143,6 +154,10 @@ export class AddMenusComponent implements OnInit {
       await this.api.postExtraFood(data);
     }
     event.target.value = '';
+  }
+
+  delExtra(index: number) {
+    this.extras.splice(index, 1);
   }
 
   async getItems() {
@@ -154,19 +169,45 @@ export class AddMenusComponent implements OnInit {
     this.extras = ext;
   }
 
-  onCheckboxChange(evt: any, formCtlName: string) {
-    const array: FormArray = this.menuForm.controls[
-      `${formCtlName}`
-    ] as FormArray;
+  onCheckboxChange(evt: any, type: any) {
     if (evt.target.checked) {
-      array.push(new FormControl(evt.target.value));
-      console.log('The value of this array' + array);
+      if (type == 1) {
+        this.menuForm.value.meat_choice.push(evt.target.value);
+      } else if (type == 2) {
+        this.menuForm.value.ingredient_ids.push(evt.target.value);
+      } else if (type == 3) {
+        this.menuForm.value.extraFood_ids.push(evt.target.value);
+      }
     } else {
-      const index = array.controls.findIndex(
-        (x) => x.value === evt.target.value
-      );
-      array.removeAt(index);
+      if (type == 1) {
+        const index = this.menuForm.value.meat_choice.indexOf(evt.target.value);
+        this.menuForm.value.meat_choice.splice(index, 1);
+      } else if (type == 2) {
+        const index = this.menuForm.value.ingredient_ids.indexOf(
+          evt.target.value
+        );
+        this.menuForm.value.ingredient_ids.splice(index, 1);
+      } else if (type == 3) {
+        const index = this.menuForm.value.extraFood_ids.indexOf(
+          evt.target.value
+        );
+        this.menuForm.value.extraFood_ids.splice(index, 1);
+      }
     }
+    // const array: FormArray = this.menuForm.ingredient_ids[
+    //   `${formCtlName}`
+    // ] as FormArray;
+    // if (evt.target.checked) {
+    //   array.push(new FormControl(evt.target.value));
+    //   console.log('The value of this array' + array);
+    // } else {
+    //   const index = array.controls.findIndex(
+    //     (x) => x.value === evt.target.value
+    //   );
+    //   console.log('removed');
+
+    //   array.removeAt(index);
+    // }
   }
 
   addMenu() {
@@ -187,16 +228,18 @@ export class AddMenusComponent implements OnInit {
     const menu: MenuItem = {
       category_id: this.menuForm.controls['category_id'].value,
       ingredient_ids: this.menuForm.controls['ingredient_ids'].value,
-      extraFood_ids: this.menuForm.controls['extrasFood_ids'].value,
+      extraFood_ids: this.menuForm.controls['extraFood_ids'].value,
       meat_choice:
-        this.menuForm.controls['meat_choices'].value.length < 1
+        this.menuForm.controls['meat_choice'].value.length < 1
           ? null
-          : this.menuForm.controls['meat_choices'].value,
-      food_name: this.menuForm.value.food_name!,
-      price: parseInt(this.menuForm.value.price!),
+          : this.menuForm.controls['meat_choice'].value,
+      food_name: this.menuForm.value.food_name,
+      price: parseInt(this.menuForm.value.price),
       img: url,
       is_available: true,
     };
+    console.log(this.menuForm.value);
+
     if (this.menuForm.valid) {
       if (this.data) {
         await this.api.updateMenu(this.data.menu_id, menu);
@@ -207,6 +250,8 @@ export class AddMenusComponent implements OnInit {
         this.snackBar.openSnackBar('Menu create successful!');
         this.dialogRef.close(true);
       }
+    } else {
+      this.snackBar.openSnackBar('Please add requirement!');
     }
   }
 }

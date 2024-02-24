@@ -1,12 +1,16 @@
 section {
-  padding: 20px 30px 30px 100px;
+  padding: 60px 30px 30px 100px;
   width: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .wrap {
   position: relative;
   width: 100%;
-  margin-bottom: 80px;
+  margin: 20px 0 60px;
 }
 
 .invoice-header {
@@ -18,14 +22,22 @@ section {
 
 .header {
   width: 100%;
-  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
+  background: rgb(141, 141, 207);
+  padding: 10px 5px;
+  position: fixed;
+  z-index: 20;
 }
 
 .back {
   display: flex;
   align-items: center;
+  margin-left: 80px;
+}
+
+.back h2 {
+  color: #fff;
 }
 
 h2,
@@ -42,7 +54,7 @@ h4 {
   align-items: center;
   justify-content: center;
   border: none;
-  background: transparent;
+  background: #bcbcbc;
   border-radius: 50%;
   cursor: pointer;
   margin-right: 5px;
@@ -90,7 +102,18 @@ table {
   margin-top: 20px;
 }
 
+table thead {
+  background: rgba(121, 169, 197, 0.92);
+  color: #fff;
+}
+
+table thead tr td,
+table tbody tr td {
+  padding: 15px 8px !important;
+}
+
 table thead tr td {
+  font-size: 16px;
   font-weight: 600;
   padding: 8px 5px;
 }
@@ -112,9 +135,7 @@ table tbody tr:nth-child(odd) {
 }
 
 table tbody tr:nth-child(even) {
-  background: #fcfcfc;
-  border-bottom: 1px solid #b4b4b4;
-  border-top: 1px solid #b4b4b4;
+  background: #f3f8fa;
 }
 
 .print-section {

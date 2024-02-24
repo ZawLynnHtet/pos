@@ -12,6 +12,9 @@ import { OrderDetails } from 'src/app/models/orderdetails.model';
 import { Table } from 'src/app/models/table.model';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import 'chartjs-plugin-datalabels';
+import { DatePipe } from '@angular/common';
+import { Employee } from 'src/app/models/employee.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,13 +23,20 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class DashboardComponent implements OnInit {
   public chart: any;
+  pieChartPlugins = [];
+  search: boolean = false;
 
   constructor(
     private router: Router,
-    private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
-    private api: ApiService
-  ) {}
+    private api: ApiService,
+    private datePipe: DatePipe
+  ) {
+    window.onscroll = () => {
+      let header = document.querySelector('app-header');
+      header?.classList.toggle('sticky', window.scrollY > 10);
+    };
+  }
 
   displayedColumns: string[] = [
     'table_id',
@@ -38,23 +48,153 @@ export class DashboardComponent implements OnInit {
   ];
   dataSource!: MatTableDataSource<any>;
   orders: Order[] = [];
+  orderDetails: OrderDetails[] = [];
   tables: Table[] = [];
   extraFoods: ExtraFood[] = [];
   allMenus: Menu[] = [];
+  popularMenu: any = [];
+  popularType = {};
+  getIncome: any[] = [];
+  totalSale: any[] = [];
+  date = ['weekly', 'monthly'];
+  value: string = 'weekly';
+  takeaway = 0;
+  dineIn = 0;
+  months = [
+    { month: 'January', price: null },
+    { month: 'February', price: null },
+    { month: 'March', price: null },
+    { month: 'April', price: null },
+    { month: 'May', price: null },
+    { month: 'June', price: null },
+    { month: 'July', price: null },
+    { month: 'August', price: null },
+    { month: 'September', price: null },
+    { month: 'October', price: null },
+    { month: 'November', price: null },
+    { month: 'December', price: null },
+  ];
+  days = [
+    { day: 'Sat', price: null },
+    { day: 'Sun', price: null },
+    { day: 'Mon', price: null },
+    { day: 'Tue', price: null },
+    { day: 'Wed', price: null },
+    { day: 'Thu', price: null },
+    { day: 'Fri', price: null },
+  ];
+  label: any[] = [];
+  employeeData: any;
+  waiters: Employee[] = [];
 
   async ngOnInit() {
-    this.createChart();
-    this.createMenuRatingChart();
-    this.createTypeRatingChart();
+    let data: any = localStorage.getItem('data');
+    this.employeeData = JSON.parse(data);
 
+    this.waiters = await this.api.getAllEmployees();
+    let takeawayCount = 0;
+    let dineInCount = 0;
+    this.orderDetails = await this.api.getAllOrderDetails();
+
+    this.orderDetails.forEach((order) => {
+      if (order.takeaway == true) {
+        takeawayCount++;
+        this.takeaway = (takeawayCount / this.orderDetails.length) * 100;
+      } else if (order.takeaway == false) {
+        dineInCount++;
+
+        this.dineIn = (dineInCount / this.orderDetails.length) * 100;
+      }
+    });
+
+    if (this.search == false) {
+      this.getData('weekly');
+    }
+
+    this.popularMenu = await this.api.getByWeekPopularMenu();
+    this.tables = await this.api.getAllTables();
     this.orders = await this.api.getAllOrders();
     this.dataSource = new MatTableDataSource(this.orders);
-
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.getDataLocalStorage();
     this.getIngredient();
     this.allMenus = await this.api.getAllMenus();
+  }
+
+  async getSearchDate(searchValue: string) {
+    this.search = true;
+    this.totalSale = [];
+    this.label = [];
+    this.days.forEach((value) => {
+      this.label.push(value.day);
+      value.price = null;
+    });
+
+    this.getIncome = await this.api.getIncomeBySearchDate(searchValue);
+    this.getIncome.forEach((value) => {
+      const date = new Date(value.date);
+      const dayName = this.datePipe.transform(date, 'EE');
+
+      const index = this.days.findIndex((day) => day.day === dayName);
+
+      this.days[index].price = value.totalPrice;
+    });
+
+    this.days.forEach((item) => {
+      this.totalSale.push(item.price);
+    });
+    this.reloadChart();
+  }
+
+  async getData(params: string) {
+    this.search = false;
+    this.totalSale = [];
+    this.label = [];
+    this.getIncome = await this.api.getIncomeByDate(params);
+
+    if (params === 'weekly') {
+      this.days.forEach((value) => {
+        this.label.push(value.day);
+      });
+      this.getIncome.forEach((value) => {
+        const date = new Date(value.date);
+        const dayName = this.datePipe.transform(date, 'EE');
+        const index = this.days.findIndex((day) => day.day === dayName);
+        this.days[index].price = value.totalPrice;
+      });
+
+      this.days.forEach((item) => {
+        this.totalSale.push(item.price);
+      });
+    } else if (params === 'monthly') {
+      this.months.forEach((value) => {
+        this.label.push(value.month);
+      });
+      this.getIncome.forEach((value) => {
+        const date = new Date(value.month);
+        const monthName = this.datePipe.transform(date, 'MMMM');
+        const index = this.months.findIndex((day) => day.month === monthName);
+        this.months[index].price = value.totalPrice;
+      });
+
+      this.months.forEach((item) => {
+        this.totalSale.push(item.price);
+      });
+    }
+
+    this.reloadChart();
+  }
+
+  destroyChart() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  }
+
+  reloadChart() {
+    this.destroyChart();
+    this.createChart();
   }
 
   getIngredient() {
@@ -122,39 +262,26 @@ export class DashboardComponent implements OnInit {
 
   createChart() {
     this.chart = new Chart('MyChart', {
-      type: 'bar', //this denotes tha type of chart
+      type: 'bar',
 
       data: {
-        // values on X-Axis
-        labels: [
-          '2023-12-1',
-          '2023-12-2',
-          '2023-12-3',
-          '2023-12-4',
-          '2023-12-5',
-          '2023-12-6',
-          '2023-12-7',
-          '2023-12-8',
-          '2023-12-9',
-          '2023-12-10',
-        ],
+        labels: this.label,
         datasets: [
           {
             label: 'Sales',
-            data: ['467', '576', '572', '79', '92', '574', '573', '576'],
+            data: this.totalSale,
             backgroundColor: '#1C4E80',
           },
-          {
-            label: 'Profit',
-            data: ['542', '542', '536', '327', '17', '0.00', '538', '541'],
-            backgroundColor: '#199CD9',
-          },
+          // {
+          //   label: 'Profit',
+          //   data: ['542', '542', '536', '327', '17', '0.00', '538', '541'],
+          //   backgroundColor: '#199CD9',
+          // },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        // aspectRatio: 3.5,
         scales: {
           y: {
             beginAtZero: true,
@@ -165,63 +292,10 @@ export class DashboardComponent implements OnInit {
             display: false,
           },
           title: {
-            text: 'Sales & Profit Chart',
             display: true,
             font: {
               size: 18,
             },
-          },
-        },
-      },
-    });
-  }
-
-  createMenuRatingChart() {
-    this.chart = new Chart('MenuRatingChart', {
-      type: 'doughnut',
-
-      data: {
-        // values on X-Axis
-        labels: ['Red', 'Pink', 'Green', 'Yellow', 'Orange'],
-        datasets: [
-          {
-            label: 'Popular menu',
-            data: [300, 240, 100, 432, 253],
-            backgroundColor: ['red', 'pink', 'green', 'yellow', 'orange'],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      },
-    });
-  }
-
-  createTypeRatingChart() {
-    this.chart = new Chart('TypeRatingChart', {
-      type: 'doughnut',
-
-      data: {
-        // values on X-Axis
-        labels: ['Red', 'Pink'],
-        datasets: [
-          {
-            label: 'Most Order Type',
-            data: [300, 240],
-            backgroundColor: ['red', 'pink'],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: false,
           },
         },
       },

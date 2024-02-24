@@ -47,7 +47,7 @@
       <div class="chip-list">
         <h3 class="title">Choose Category</h3>
         <div class="chips">
-          <label *ngFor="let category of categories">
+          <label *ngFor="let category of categories; let i = index">
             <input
               class="select"
               type="radio"
@@ -55,7 +55,8 @@
               formControlName="category_id"
             />
             <div class="chip">
-              <i class="bi bi-check2"></i>{{ category.category_name }}
+              <i class="bi bi-check2"></i>{{ category.category_name
+              }}<i class="fa-solid fa-xmark" (click)="delCategroy(i)"></i>
             </div>
           </label>
         </div>
@@ -69,15 +70,18 @@
       <div class="chip-list">
         <h3 class="title">Choose Meats</h3>
         <div class="chips">
-          <label *ngFor="let meat of meats">
+          <label *ngFor="let meat of meats; let i = index">
             <input
               class="select"
               type="checkbox"
               [value]="meat"
               formArrayName="meat_choice"
-              (change)="onCheckboxChange($event, 'meat_choice')"
+              (change)="onCheckboxChange($event, 1)"
             />
-            <div class="chip"><i class="bi bi-check2"></i>{{ meat }}</div>
+            <div class="chip">
+              <i class="bi bi-check2"></i>{{ meat
+              }}<i class="fa-solid fa-xmark" (click)="delMeat(i)"></i>
+            </div>
           </label>
         </div>
         <input
@@ -90,16 +94,17 @@
       <div class="chip-list">
         <h3 class="title">Choose Ingredients</h3>
         <div class="chips">
-          <label *ngFor="let ingredient of ingredients">
+          <label *ngFor="let ingredient of ingredients; let i = index">
             <input
               class="select"
               type="checkbox"
               [value]="ingredient.ingredient_id"
               formArrayName="ingredient_ids"
-              (change)="onCheckboxChange($event, 'ingredient_ids')"
+              (change)="onCheckboxChange($event, 2)"
             />
             <div class="chip">
-              <i class="bi bi-check2"></i>{{ ingredient.ingredient_name }}
+              <i class="bi bi-check2"></i>{{ ingredient.ingredient_name
+              }}<i class="fa-solid fa-xmark" (click)="delIngredient(i)"></i>
             </div>
           </label>
         </div>
@@ -113,16 +118,17 @@
       <div class="chip-list">
         <h3 class="title">Choose Extra Foods</h3>
         <div class="chips">
-          <label *ngFor="let extra of extras">
+          <label *ngFor="let extra of extras; let i = index">
             <input
               class="select"
               type="checkbox"
               [value]="extra.extraFood_id"
               formArrayName="extraFood_ids"
-              (change)="onCheckboxChange($event, 'extraFood_ids')"
+              (change)="onCheckboxChange($event, 3)"
             />
             <div class="chip">
-              <i class="bi bi-check2"></i>{{ extra.food_name }}
+              <i class="bi bi-check2"></i>{{ extra.food_name
+              }}<i class="fa-solid fa-xmark" (click)="delExtra(i)"></i>
             </div>
           </label>
         </div>

@@ -1,31 +1,138 @@
-.bar {
-  margin-bottom: 20px;
+@font-face {
+  font-family: Oswald-Light;
+  src: url("../../../assets/fonts/Oswald-Light.ttf");
 }
 
-.toolbar h2 {
+::-webkit-scrollbar {
+  display: none;
+}
+
+section {
+  position: relative;
+}
+
+.bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+  margin-bottom: 20px;
+  background: transparent;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.bar.sticky {
+  background: #fff;
+  box-shadow: 0 0 20px #7d7c7c, 0 0 15px rgb(217, 217, 234);
+}
+
+.back {
+  display: flex;
+  align-items: center;
+}
+
+.back h2 {
   margin: 0;
 }
 
-.example-spacer {
-  flex: 1 1 auto;
-}
-
-.demo-section button {
+.back i {
+  font-size: 19px;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
   border: none;
+  background: transparent;
   border-radius: 50%;
-  margin-left: 20px;
+  cursor: pointer;
+  margin-right: 5px;
 }
 
-.demo-section button:active {
-  background: #cccbcb;
+.back i:hover {
+  background: #c2c0c0;
 }
 
-th,
-td {
+.back i:active {
+  background: #c2c0c0;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.slip {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 5px;
+  font-family: Oswald-Light;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.slip hr {
+  background: #e0dfdf;
+}
+
+.header .data p,
+.date p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #666666;
+  padding-bottom: 2px;
+}
+
+.header .date p {
+  text-align: end;
+}
+
+.table tr th,
+tr td {
+  background: transparent !important;
   padding: 15px 10px;
+}
+
+.table tr th {
+  font-size: 16px;
+}
+
+.table tr td {
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 1;
+  color: #595959;
+}
+
+.mid {
+  text-align: center;
+}
+
+.notes h3 {
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 500;
+  color: #975aff;
+}
+
+.notes p {
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 1;
+  color: #595959;
+}
+
+@media print {
+  .bar,
+  .title {
+    display: none;
+  }
 }

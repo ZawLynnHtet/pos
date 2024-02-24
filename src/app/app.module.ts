@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AppComponent } from './app.component';
 import { OrderDetailsComponent } from './supervisor/order-details/order-details.component';
 import { OrderListComponent } from './supervisor/order-list/order-list.component';
@@ -53,20 +53,22 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+// import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { NewReservationComponent } from './supervisor/new-reservation/new-reservation.component';
 import { ReservationsComponent } from './supervisor/reservations/reservations.component';
 import { MatBadgeModule } from '@angular/material/badge';
-import { ToolbarComponent } from './supervisor/toolbar/toolbar.component';
 import { KitchenComponent } from './supervisor/kitchen/kitchen.component';
 import { BillSlipComponent } from './supervisor/bill-slip/bill-slip.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { ToolbarComponent } from './supervisor/toolbar/toolbar.component';
+import { EachOrderDetailsComponent } from './waitstaff/each-order-details/each-order-details.component';
 
-const config: SocketIoConfig = {
-  url: 'https://restaurant-pos-databse.onrender.com',
-  options: {
-    transports: ['websocket'],
-  },
-};
+// const config: SocketIoConfig = {
+//   url: 'http://localhost:8080',
+//   options: {
+//     transports: ['websocket'],
+//   },
+// };
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -96,9 +98,10 @@ export const storage = getStorage(app);
     PaymentComponent,
     TableFormDialogComponent,
     TablesPageComponent,
-    ToolbarComponent,
     KitchenComponent,
     BillSlipComponent,
+    ToolbarComponent,
+    EachOrderDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -134,16 +137,27 @@ export const storage = getStorage(app);
     MatNativeDateModule,
     MatBadgeModule,
     BrowserModule,
-    SocketIoModule.forRoot(config),
+    // SocketIoModule.forRoot(config),
+    NgCircleProgressModule.forRoot({
+      outerStrokeGradient: true,
+      outerStrokeColor: '#4882c2',
+      outerStrokeGradientStopColor: '#53a9ff',
+      innerStrokeColor: '#e7e8ea',
+      animateTitle: false,
+      animationDuration: 1000,
+      showUnits: true,
+      showBackground: false,
+      clockwise: false,
+      startFromZero: true,
+      lazy: true,
+      showSubtitle: false,
+      titleFontSize: '12px',
+    }),
+    DatePipe,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  // constructor() {
-  //   window.onscroll = () => {
-  //     let header = document.querySelector('.header');
-  //     header?.classList.toggle('sticky', window.scrollY > 10);
-  //   };
-  // }
+  constructor() {}
 }

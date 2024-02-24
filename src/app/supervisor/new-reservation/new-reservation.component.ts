@@ -44,64 +44,12 @@ export class NewReservationComponent {
     reserved_at: new FormControl(),
   });
 
-  ngOnInit() {
+  async ngOnInit() {
     this.reservationForm.patchValue(this.data);
-    const string = localStorage.getItem('tables');
-    this.tables = JSON.parse(string!);
+    this.tables = await this.api.getAllTables();
     let data: any = localStorage.getItem('data');
     this.employeeData = JSON.parse(data);
-
-    // this.updateSupervisorName();
   }
-
-  // updateSupervisorName() {
-  //   const supervisors: Employee[] = JSON.parse(
-  //     localStorage.getItem('supervisors')!
-  //   );
-
-  //   const id: any = sessionStorage.getItem('id');
-
-  //   const employee = supervisors.find((empl) => {
-  //     return empl.employee_id == id * 1;
-  //   });
-
-  //   if (employee) {
-  //     this.reservationForm.patchValue({
-  //       supervisor: employee.name,
-  //     });
-  //   }
-  // }
-
-  // getNumOfPeople() {
-  //   this.numOfPeople = this.reservationForm.value.num_of_people!;
-  //   console.log(this.numOfPeople);
-
-  //   this.selectionTables = [];
-  //   this.tables.forEach((table) => {
-  //     if (table.capacity >= this.numOfPeople) {
-  //       this.selectionTables.push(table);
-  //     }
-  //   });
-  // }
-
-  // async reserve() {
-  //   const id: any = sessionStorage.getItem('id');
-
-  //   this.reservationForm.patchValue({
-  //     supervisor_id: id * 1,
-  //     table_id: this.reservationForm.value.table_id! * 1,
-  //     num_of_people: this.reservationForm.value.num_of_people! * 1,
-  //     deposit: this.reservationForm.value.deposit! * 1,
-  //     reserved_at: new Date(),
-  //   });
-
-  //   const reservation: Reservation = await this.api.makeReservation(
-  //     this.reservationForm.value
-  //   );
-  //   console.log(reservation);
-
-  //   this.router.navigateByUrl('/reservations');
-  // }
 
   async submitted() {
     if (this.reservationForm.valid) {

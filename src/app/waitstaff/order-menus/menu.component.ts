@@ -48,7 +48,8 @@ export class MenuComponent {
   selectedForm!: FormGroup;
   orderId = 0;
   allOrders: OrderDetails[][] = [];
-  allCategories: any[] = ['All'];
+  extraQty!: ExtraFood;
+  show_option: boolean = false;
 
   constructor(
     private router: Router,
@@ -70,10 +71,6 @@ export class MenuComponent {
     this.employeesData = JSON.parse(data);
     let category: any = localStorage.getItem('categories');
     this.categories = JSON.parse(category);
-    this.categories.forEach((data: { category_name: any }) => {
-      this.allCategories.push(data.category_name);
-      console.log(this.allCategories);
-    });
 
     this.showMenus(this.categories[0].category_id);
     this.tableId = this.activatedRoute.snapshot.params['id'];
@@ -82,6 +79,20 @@ export class MenuComponent {
     this.getIngredient();
     this.tables = await this.api.getAllTables();
     this.allMenus = await this.api.getAllMenus();
+  }
+
+  addExtra(extra: any) {
+    this.extraQty = extra;
+  }
+
+  addExtraQty() {
+    this.extraQty.qty += 1;
+  }
+
+  removeExtraQty() {
+    if (this.extraQty.qty > 1) {
+      this.extraQty.qty -= 1;
+    }
   }
 
   createOrder() {
@@ -124,13 +135,22 @@ export class MenuComponent {
       'extraFoods',
       'extraFood_id'
     );
+    console.log(this.ingredients);
+    console.log(this.extraFoods);
+  }
+
+  showOption() {
+    console.log(this.show_option + 'before');
+
+    this.show_option = true;
+    console.log(this.show_option) + 'after';
   }
 
   showTopping(index: number, menu: Menu) {
     this.topping = true;
     this.selectedIndex = index;
     this.selectedMenu = menu;
-    this.checkOrderIdAndCreateOrder();
+    // this.checkOrderIdAndCreateOrder();
     const order: DetailsBody = {
       order_id: this.orderId,
       quantity: 0,
@@ -256,11 +276,26 @@ export class MenuComponent {
         order.order_id = this.orderId;
       }
       await this.api.createOrderDetails(order);
+
       console.log('order created', order);
     });
+    let msg = {
+      table_id: this.tableId,
+      order_id: this.orderId,
+      waiter_id: this.employeesData.id,
+      kitchen: true,
+      read: false,
+      print: false,
+    };
+    this.sendMessage(msg);
+    await this.api.postMessages(msg);
     this.orderId = 0;
     this.orders = [];
     await this.api.updateTable(this.tableId, { is_available: false });
+  }
+
+  sendMessage(data: any) {
+    this.api.sendMessage(data);
   }
 
   onRadioBtnChange(evt: any) {

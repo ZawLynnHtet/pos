@@ -1,5 +1,6 @@
 export interface ExtraFood {
-    extraFood_id: number;
-    food_name: string;
-    price: number;
+  extraFood_id: number;
+  food_name: string;
+  price: number;
+  qty: number;
 }

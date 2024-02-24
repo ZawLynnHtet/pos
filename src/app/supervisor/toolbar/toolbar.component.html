@@ -1,27 +1,82 @@
-<p class="bar">
-  <mat-toolbar class="toolbar">
-    <span><h2>Restaurant POS</h2></span>
-    <span class="example-spacer"></span>
-    <div class="demo-section">
-      <button
-        matTooltip="Kitchen orders"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        routerLink="/kitchen"
-      >
-        <i
-          matBadge="7"
-          matBadgeColor="warn"
-          class="fa-solid fa-kitchen-set"
-        ></i>
+<header class="app-header">
+  <div class="app-header-actions">
+    <button class="user-profile">
+      <ng-container *ngFor="let waiter of waiters">
+        <ng-container *ngIf="waiter.employee_id == employeeData.id">
+          <span>{{ waiter.name }}</span>
+          <span>
+            <img [src]="waiter.img" *ngIf="waiter.img != null; else avatar" />
+            <ng-template #avatar>
+              <img src="..//..//../assets/images/profile.png" alt="" />
+            </ng-template>
+          </span>
+        </ng-container>
+      </ng-container>
+    </button>
+
+    <div class="app-header-actions-buttons" (click)="openMsg()">
+      <button class="icon-button large">
+        <i class="fa-regular fa-bell"></i>
+        <span class="button__badge" *ngIf="unReadMessage.length > 0">{{
+          unReadMessage.length
+        }}</span>
       </button>
+      <div class="box" [ngClass]="msgOpen == true ? 'open' : ''">
+        <div class="display">
+          <div class="cont">
+            <ng-container *ngFor="let msg of message">
+              <div
+                class="sec new"
+                [ngStyle]="{
+                  background:
+                    msg.read == false ? 'rgb(191, 202, 244)' : 'transparent'
+                }"
+              >
+                <a
+                  class="msg-list"
+                  (click)="
+                    goToDetails(
+                      msg.message_id,
+                      msg.table_id,
+                      msg.order_id,
+                      msg.kitchen
+                    )
+                  "
+                >
+                  <ng-container *ngFor="let waiter of waiters">
+                    <ng-container *ngIf="waiter.employee_id == msg.waiter_id">
+                      <div class="profCont">
+                        <img
+                          class="profile"
+                          [src]="waiter.img"
+                          *ngIf="waiter.img != null; else avatar"
+                        />
+                        <ng-template #avatar>
+                          <img
+                            class="profile"
+                            src="..//..//../assets/images/profile.png"
+                            alt=""
+                          />
+                        </ng-template>
+                      </div>
+                      <div class="txt">{{ waiter.name }}</div>
+                    </ng-container>
+                  </ng-container>
+                  <div class="txt sub">
+                    Table ID: #{{ msg.table_id }} / Order ID: #{{
+                      msg.order_id
+                    }}
+                  </div>
+                  <div class="txt sub">
+                    {{ msg.createdAt | date : "h:mm a" }}
+                    {{ msg.kitchen == false ? "(Bills)" : "(Kitchen)" }}
+                  </div>
+                </a>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="demo-section">
-      <button
-        matTooltip="Bill Slip"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-      >
-        <i matBadge="7" matBadgeColor="warn" class="fa-solid fa-print"></i>
-      </button>
-    </div>
-  </mat-toolbar>
-</p>
+  </div>
+</header>

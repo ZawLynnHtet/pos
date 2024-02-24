@@ -33,14 +33,14 @@ export class ToolbarComponent implements OnInit {
   async ngOnInit() {
     this.unReadMessage = await this.api.getMessagesByUnread(false);
     this.message = await this.api.getMessages(false);
-    // this.api.getMessage().subscribe(async (message: any) => {
-    //   console.log(message);
+    this.api.getMessage().subscribe(async (message: any) => {
+      console.log(message);
 
-    //   if (message.length != 0) {
-    //     this.unReadMessage = await this.api.getMessagesByUnread(false);
-    //     this.message = await this.api.getMessages(false);
-    //   }
-    // });
+      if (message.length != 0) {
+        this.unReadMessage = await this.api.getMessagesByUnread(false);
+        this.message = await this.api.getMessages(false);
+      }
+    });
     let data: any = localStorage.getItem('data');
     this.employeeData = JSON.parse(data);
 

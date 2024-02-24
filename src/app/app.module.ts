@@ -53,7 +53,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-// import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { NewReservationComponent } from './supervisor/new-reservation/new-reservation.component';
 import { ReservationsComponent } from './supervisor/reservations/reservations.component';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -63,12 +63,12 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { ToolbarComponent } from './supervisor/toolbar/toolbar.component';
 import { EachOrderDetailsComponent } from './waitstaff/each-order-details/each-order-details.component';
 
-// const config: SocketIoConfig = {
-//   url: 'http://localhost:8080',
-//   options: {
-//     transports: ['websocket'],
-//   },
-// };
+const config: SocketIoConfig = {
+  url: 'http://localhost:8080',
+  options: {
+    transports: ['websocket'],
+  },
+};
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
@@ -137,7 +137,7 @@ export const storage = getStorage(app);
     MatNativeDateModule,
     MatBadgeModule,
     BrowserModule,
-    // SocketIoModule.forRoot(config),
+    SocketIoModule.forRoot(config),
     NgCircleProgressModule.forRoot({
       outerStrokeGradient: true,
       outerStrokeColor: '#4882c2',

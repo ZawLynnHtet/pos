@@ -12,7 +12,7 @@ import { Bill } from '../models/bill.model';
 import { ExtraFood } from '../models/extrafood.model';
 import { Ingredient } from '../models/ingredient.model';
 import { Employee } from '../models/employee.model';
-// import { Socket } from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Message } from '../models/message.model';
 
@@ -20,21 +20,22 @@ import { Message } from '../models/message.model';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private socket: Socket) {}
 
   private subs = new SubSink();
 
   public message: BehaviorSubject<any> = new BehaviorSubject([]);
 
   public sendMessage(message: any) {
-    // this.socket.emit('message', message);
+    this.socket.emit('message', message);
   }
 
   public getMessage() {
-    // this.socket.on('message', (message: any) => {
-    //   this.message.next(message);
-    // });
-    // return this.message.asObservable();
+    this.socket.on('message', (message: any) => {
+      this.message.next(message);
+    });
+
+    return this.message.asObservable();
   }
 
   getAllTables(): Promise<Table[]> {

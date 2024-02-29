@@ -47,7 +47,7 @@ export class OrderInfosComponent {
   async ngOnInit() {
     let data: any = localStorage.getItem('data');
     this.employeeData = JSON.parse(data);
-    this.orders = await this.api.getAllOrders();
+    this.orders = await this.api.getOrderCountByToday();
 
     this.dataSource = new MatTableDataSource(this.orders);
 

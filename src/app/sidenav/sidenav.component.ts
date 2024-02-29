@@ -89,6 +89,12 @@ export class SidenavComponent implements OnInit {
       role: ['manager'],
     },
     {
+      routeLink: '/settings',
+      icon: 'fa-solid fa-gear',
+      label: 'Settings',
+      role: ['manager'],
+    },
+    {
       routeLink: '/auth',
       icon: 'fa-solid fa-arrow-right-from-bracket',
       label: 'Logout',

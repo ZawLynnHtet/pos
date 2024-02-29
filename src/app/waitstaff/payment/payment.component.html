@@ -8,17 +8,17 @@
       <div class="inv-date">
         <h2 class="date">Date</h2>
         <h4 class="time">
-          {{ data.orderDate | date : "MMM d, y, h:mm a" }}
+          {{ data[0].orderDate | date : "MMM d, y, h:mm a" }}
         </h4>
       </div>
     </div>
     <div class="data">
       <ng-container *ngFor="let table of tables">
-        <p *ngIf="table.table_id == data.table_id">
+        <p *ngIf="table.table_id == data[0].table_id">
           Table No. {{ table.table_no }}
         </p>
       </ng-container>
-      <p>Order No. {{ data.order_id }}</p>
+      <p>Order No. {{ data[0].order_id }}</p>
       <p *ngIf="employeesData">OrderedBy = {{ employeesData.name }}</p>
     </div>
   </div>

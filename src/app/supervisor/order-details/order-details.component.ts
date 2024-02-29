@@ -39,8 +39,7 @@ export class OrderDetailsComponent {
 
   async ngOnInit() {
     this.employees = await this.api.getAllEmployees();
-    let table: any = localStorage.getItem('tables');
-    this.tables = JSON.parse(table);
+    this.tables = await this.api.getAllTables();
     this.tableId = this.activatedRoute.snapshot.params['id'];
     this.getItemsFromLocalStorage();
 

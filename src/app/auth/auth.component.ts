@@ -24,6 +24,10 @@ export class AuthComponent implements OnInit {
   sign_in: boolean = false;
   loader: boolean = false;
   errorMessage: string = '';
+  selectedRole: boolean = false;
+  userRole: string = '';
+  manager: boolean = false;
+  roles = ['Manager', 'Supervisor', 'Waiter'];
   registerForm = this.builder.group({
     email: this.builder.control('', [Validators.required, Validators.email]),
     phone: this.builder.control('', [Validators.required]),
@@ -63,7 +67,7 @@ export class AuthComponent implements OnInit {
           };
           localStorage.setItem('data', JSON.stringify(data));
           if (res.user.role === 'manager') {
-            this.router.navigateByUrl('menus');
+            this.router.navigateByUrl('dashboard');
           } else {
             this.router.navigateByUrl('tables');
           }
@@ -167,5 +171,18 @@ export class AuthComponent implements OnInit {
         this.markFormGroupTouched(control);
       }
     });
+  }
+
+  click(role: string) {
+    this.selectedRole = true;
+    if (role === 'Manager') {
+      this.manager = true;
+    } else {
+      this.manager = false;
+    }
+  }
+
+  back() {
+    this.selectedRole = false;
   }
 }

@@ -41,7 +41,6 @@ import { DashboardComponent } from './manager/dashboard/dashboard.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MenuComponent } from './waitstaff/order-menus/menu.component';
-import { AdminComponent } from './manager/admin/admin.component';
 import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
 import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
 import { PaymentComponent } from './waitstaff/payment/payment.component';
@@ -62,9 +61,10 @@ import { BillSlipComponent } from './supervisor/bill-slip/bill-slip.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { ToolbarComponent } from './supervisor/toolbar/toolbar.component';
 import { EachOrderDetailsComponent } from './waitstaff/each-order-details/each-order-details.component';
+import { SettingsComponent } from './manager/settings/settings.component';
 
 const config: SocketIoConfig = {
-  url: 'http://localhost:8080',
+  url: 'https://pos-zlh-1.onrender.com',
   options: {
     transports: ['websocket'],
   },
@@ -92,7 +92,6 @@ export const storage = getStorage(app);
     EmployeesComponent,
     EditEmployeeComponent,
     DashboardComponent,
-    AdminComponent,
     OrderInfosComponent,
     InfoDetailsComponent,
     PaymentComponent,
@@ -102,6 +101,7 @@ export const storage = getStorage(app);
     BillSlipComponent,
     ToolbarComponent,
     EachOrderDetailsComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

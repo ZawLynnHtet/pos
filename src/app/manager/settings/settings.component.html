@@ -1,0 +1,44 @@
+<app-sidenav></app-sidenav>
+<section>
+  <h1 class="title">Setup Your Company Infos</h1>
+  <mat-card class="example-card">
+    <mat-card-header> </mat-card-header>
+    <mat-card-content>
+      <form>
+        <div class="profile">
+          <div class="profile-img">
+            <img [src]="imgUrl" (click)="fileUploader.click()" />
+          </div>
+          <div class="upload">
+            <input
+              id="file-input"
+              type="file"
+              accept="image/*"
+              #fileUploader
+              (change)="processFile($event)"
+            />
+            <button mat-raised-button color="primary">
+              <label id="file-input-label" for="file-input" class="label">
+                Upload Logo
+              </label>
+            </button>
+          </div>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label class="input-title">Enter restaurant name</mat-label>
+            <input
+              matInput
+              placeholder="Restaurant"
+              [formControl]="name"
+              required
+            />
+
+            <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" class="save">Save</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

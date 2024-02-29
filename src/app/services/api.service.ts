@@ -636,6 +636,21 @@ export class ApiService {
     });
   }
 
+  getIncomeByMonthBetweenYear(year: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .get(`${apiUrl}/bills/monthly?createdAt=${year}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
   getIncomeBySearchDate(date: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
@@ -651,10 +666,10 @@ export class ApiService {
     });
   }
 
-  getByWeekPopularMenu(): Promise<any[]> {
+  getPopularMenus(date: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
-        .get(`${apiUrl}/orderdetails/popular-menu`)
+        .get(`${apiUrl}/orderdetails/popular-menu/${date}`)
         .subscribe({
           next: (res: any) => {
             resolve(res.data);
@@ -721,6 +736,32 @@ export class ApiService {
             reject(error);
           },
         });
+    });
+  }
+
+  getOrderCountByToday(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/orders/count`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  getOrderDetailsByDay(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/orderdetails/day`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
     });
   }
 

@@ -11,7 +11,6 @@ import { EmployeesComponent } from './manager/employees/employees.component';
 import { AddMenusComponent } from './manager/add-menus/add-menus.component';
 import { DashboardComponent } from './manager/dashboard/dashboard.component';
 import { TablesComponent } from './waitstaff/tables/tables.component';
-import { AdminComponent } from './manager/admin/admin.component';
 import { OrderInfosComponent } from './waitstaff/order-infos/order-infos.component';
 import { InfoDetailsComponent } from './waitstaff/info-details/info-details.component';
 import { PaymentComponent } from './waitstaff/payment/payment.component';
@@ -21,6 +20,7 @@ import { NewReservationComponent } from './supervisor/new-reservation/new-reserv
 import { ReservationsComponent } from './supervisor/reservations/reservations.component';
 import { KitchenComponent } from './supervisor/kitchen/kitchen.component';
 import { EachOrderDetailsComponent } from './waitstaff/each-order-details/each-order-details.component';
+import { SettingsComponent } from './manager/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -115,6 +115,10 @@ const routes: Routes = [
   {
     path: 'tables-page',
     component: TablesPageComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
   },
   {
     path: 'order-infos/table/:tid/order/:oid/each-order-details',

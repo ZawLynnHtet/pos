@@ -24,6 +24,7 @@ export class EditEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   selectedFile: any = null;
   imgUrl: string = '..//..//../assets/images/profile.png';
+  url: string = '';
 
   constructor(
     private api: ApiService,
@@ -71,11 +72,13 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   async FormSubmit() {
-    const url = await this.uploadAndGetDownloadUrl(
-      this.employeeForm.value.name!
-    );
-    console.log(url);
-
+    if (this.data.img == null) {
+      this.url = await this.uploadAndGetDownloadUrl(
+        this.employeeForm.value.name!
+      );
+    } else {
+      this.url = this.data.img;
+    }
     const employeeData: Employee = {
       name: this.employeeForm.value.name,
       email: this.employeeForm.value.email,
@@ -83,7 +86,7 @@ export class EditEmployeeComponent implements OnInit {
       role: this.employeeForm.value.role,
       gender: this.employeeForm.value.gender,
       password: this.employeeForm.value.password,
-      img: url,
+      img: this.url,
     };
     if (this.employeeForm.valid) {
       if (this.data) {

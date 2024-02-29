@@ -1,4 +1,3 @@
-<app-sidenav></app-sidenav>
 <section>
   <div class="header">
     <div class="back">
@@ -8,11 +7,15 @@
         aria-label="Button that displays a tooltip when focused or hovered over"
         (click)="goBack()"
       ></i>
-      <h2>Order Lists</h2>
+      <ng-container *ngFor="let table of tables">
+        <h2 *ngIf="table.table_id == tableId">
+          Table No. #{{ table.table_no }}
+        </h2>
+      </ng-container>
     </div>
   </div>
   <div *ngFor="let oneOrder of allOrders; let i = index">
-    <h4>Order No. {{ headers[i].id }}</h4>
+    <h4 class="orderId">Order No. {{ headers[i].id }}</h4>
     <table class="table table-bordered">
       <thead>
         <tr>

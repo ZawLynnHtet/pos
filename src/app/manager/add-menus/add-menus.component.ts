@@ -52,6 +52,7 @@ export class AddMenusComponent implements OnInit {
   imgUrl: string = '..//..//../assets/images/loading-image.png';
   selectedFile: any = null;
   menuForm: FormGroup;
+  url: string = '';
 
   constructor(
     private api: ApiService,
@@ -73,6 +74,7 @@ export class AddMenusComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getItems();
     this.menuForm.patchValue(this.data);
     this.menuForm.value.meat_choice.push(this.data.meat_choice);
     this.menuForm.value.ingredient_ids.push(this.data.ingredient_ids);
@@ -83,7 +85,6 @@ export class AddMenusComponent implements OnInit {
     } else {
       this.imgUrl = '..//..//../assets/images/loading-image.png';
     }
-    this.getItems();
   }
 
   processFile(event: any) {
@@ -194,20 +195,6 @@ export class AddMenusComponent implements OnInit {
         this.menuForm.value.extraFood_ids.splice(index, 1);
       }
     }
-    // const array: FormArray = this.menuForm.ingredient_ids[
-    //   `${formCtlName}`
-    // ] as FormArray;
-    // if (evt.target.checked) {
-    //   array.push(new FormControl(evt.target.value));
-    //   console.log('The value of this array' + array);
-    // } else {
-    //   const index = array.controls.findIndex(
-    //     (x) => x.value === evt.target.value
-    //   );
-    //   console.log('removed');
-
-    //   array.removeAt(index);
-    // }
   }
 
   addMenu() {
@@ -221,9 +208,13 @@ export class AddMenusComponent implements OnInit {
   }
 
   async submitted() {
-    const url = await this.uploadAndGetDownloadUrl(
-      this.menuForm.value.food_name!
-    );
+    if (this.data.img == null) {
+      this.url = await this.uploadAndGetDownloadUrl(
+        this.menuForm.value.food_name!
+      );
+    } else {
+      this.url = this.data.img;
+    }
 
     const menu: MenuItem = {
       category_id: this.menuForm.controls['category_id'].value,
@@ -235,7 +226,7 @@ export class AddMenusComponent implements OnInit {
           : this.menuForm.controls['meat_choice'].value,
       food_name: this.menuForm.value.food_name,
       price: parseInt(this.menuForm.value.price),
-      img: url,
+      img: this.url,
       is_available: true,
     };
     console.log(this.menuForm.value);

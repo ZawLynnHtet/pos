@@ -1,56 +1,77 @@
-.wrapper {
+.container {
   width: 100%;
-  height: 100vh;
+  min-height: 100%;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
+
+.title {
+  text-align: center;
+}
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
 
 .main-content {
   width: 50%;
   border-radius: 20px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
-  display: flex;
 }
 .company__info {
+  position: relative;
+  width: 100%;
+  height: 160px;
   background-color: #008080;
   border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   color: #fff;
 }
+
+.company__info img {
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.company__info i {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f7f7;
+  border-radius: 50%;
+  font-size: 18px;
+  color: #111;
+  cursor: pointer;
+}
+
 .fa-android {
   font-size: 3em;
 }
-@media screen and (max-width: 640px) {
-  .main-content {
-    width: 90%;
-  }
-  .company__info {
-    display: none;
-  }
-  .login_form {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-  }
-}
-@media screen and (min-width: 642px) and (max-width: 800px) {
-  .main-content {
-    width: 70%;
-  }
-}
+
 .row > h2 {
   color: #008080;
   margin-top: 20px;
 }
 .login_form {
   background-color: #fff;
-  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  border-top: 1px solid #ccc;
-  border-right: 1px solid #ccc;
 }
 form {
   padding: 0 2em;
@@ -73,7 +94,7 @@ form {
 }
 .btn {
   transition: all 0.5s ease;
-  width: 70%;
+  width: 60%;
   border-radius: 30px;
   color: #008080;
   font-weight: 600;
@@ -154,4 +175,48 @@ input.ng-invalid.ng-touched {
 }
 .btn {
   transition: all 0.2s ease-in-out;
+}
+
+.my-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back {
+  transition: all 0.5s ease;
+  width: 30%;
+  padding: 8px;
+  border-radius: 30px;
+  color: #008080;
+  font-weight: 600;
+  background-color: #fff;
+  border: 1px solid #008080;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+
+.back:hover,
+.back:focus {
+  background-color: #008080;
+  color: #fff;
+}
+
+.back:active {
+  transform: scaleX(70%);
+}
+.back {
+  transition: all 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 1170px) {
+  .main-content {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main-content {
+    width: 80%;
+  }
 }

@@ -41,10 +41,9 @@ export class DashboardComponent implements OnInit {
   displayedColumns: string[] = [
     'table_id',
     'order_id',
-    'price',
     'status',
-    'orderedBy',
     'date',
+    'details',
   ];
   dataSource!: MatTableDataSource<any>;
   orders: Order[] = [];
@@ -54,10 +53,18 @@ export class DashboardComponent implements OnInit {
   allMenus: Menu[] = [];
   popularMenu: any = [];
   popularType = {};
-  getIncome: any[] = [];
+  getIncomeByDay: any[] = [];
+  getIncomeByWeek: any[] = [];
+  getIncomeByMonthly: any[] = [];
   totalSale: any[] = [];
   date = ['weekly', 'monthly'];
+  popularMenuDate = ['daily', 'weekly', 'monthly'];
+  pmdValue: string = 'daily';
+  message: string = '';
   value: string = 'weekly';
+  showYear: boolean = false;
+  yearDate: string = '2024';
+
   takeaway = 0;
   dineIn = 0;
   months = [
@@ -94,7 +101,7 @@ export class DashboardComponent implements OnInit {
     this.waiters = await this.api.getAllEmployees();
     let takeawayCount = 0;
     let dineInCount = 0;
-    this.orderDetails = await this.api.getAllOrderDetails();
+    this.orderDetails = await this.api.getOrderDetailsByDay();
 
     this.orderDetails.forEach((order) => {
       if (order.takeaway == true) {
@@ -108,21 +115,32 @@ export class DashboardComponent implements OnInit {
     });
 
     if (this.search == false) {
-      this.getData('weekly');
+      this.getData(this.value);
     }
 
-    this.popularMenu = await this.api.getByWeekPopularMenu();
+    this.getPopularMenu(this.pmdValue);
     this.tables = await this.api.getAllTables();
-    this.orders = await this.api.getAllOrders();
+    this.orders = await this.api.getOrderCountByToday();
     this.dataSource = new MatTableDataSource(this.orders);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.getDataLocalStorage();
     this.getIngredient();
     this.allMenus = await this.api.getAllMenus();
   }
 
+  async getPopularMenu(params: string) {
+    if (params === 'daily') {
+      this.message = "There's no popular menu in this day!";
+    } else if (params === 'weekly') {
+      this.message = "There's no popular menu in this week!";
+    } else {
+      this.message = "There's no popular menu in this month!";
+    }
+    this.popularMenu = await this.api.getPopularMenus(params);
+  }
+
   async getSearchDate(searchValue: string) {
+    this.showYear = false;
     this.search = true;
     this.totalSale = [];
     this.label = [];
@@ -131,8 +149,8 @@ export class DashboardComponent implements OnInit {
       value.price = null;
     });
 
-    this.getIncome = await this.api.getIncomeBySearchDate(searchValue);
-    this.getIncome.forEach((value) => {
+    this.getIncomeByDay = await this.api.getIncomeBySearchDate(searchValue);
+    this.getIncomeByDay.forEach((value) => {
       const date = new Date(value.date);
       const dayName = this.datePipe.transform(date, 'EE');
 
@@ -147,17 +165,21 @@ export class DashboardComponent implements OnInit {
     this.reloadChart();
   }
 
+  async betweenYear(value: string) {
+    this.getIncomeByMonthly = await this.api.getIncomeByMonthBetweenYear(value);
+  }
+
   async getData(params: string) {
     this.search = false;
     this.totalSale = [];
     this.label = [];
-    this.getIncome = await this.api.getIncomeByDate(params);
-
     if (params === 'weekly') {
+      this.getIncomeByWeek = await this.api.getIncomeByDate(params);
+      this.showYear = false;
       this.days.forEach((value) => {
         this.label.push(value.day);
       });
-      this.getIncome.forEach((value) => {
+      this.getIncomeByWeek.forEach((value) => {
         const date = new Date(value.date);
         const dayName = this.datePipe.transform(date, 'EE');
         const index = this.days.findIndex((day) => day.day === dayName);
@@ -168,10 +190,14 @@ export class DashboardComponent implements OnInit {
         this.totalSale.push(item.price);
       });
     } else if (params === 'monthly') {
+      this.getIncomeByMonthly = await this.api.getIncomeByMonthBetweenYear(
+        this.yearDate
+      );
+      this.showYear = true;
       this.months.forEach((value) => {
         this.label.push(value.month);
       });
-      this.getIncome.forEach((value) => {
+      this.getIncomeByMonthly.forEach((value) => {
         const date = new Date(value.month);
         const monthName = this.datePipe.transform(date, 'MMMM');
         const index = this.months.findIndex((day) => day.month === monthName);
@@ -211,11 +237,6 @@ export class DashboardComponent implements OnInit {
   sort!: MatSort;
 
   ngAfterViewInit() {}
-
-  getDataLocalStorage() {
-    var table = localStorage.getItem('tables');
-    this.tables = JSON.parse(table!);
-  }
 
   goTo(tid: number, oid: number) {
     this.router.navigateByUrl(`${tid}/${oid}/payments`);
@@ -300,5 +321,11 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
+  }
+
+  goToDetails(tid: number, oid: number) {
+    this.router.navigateByUrl(
+      `order-infos/table/${tid}/order/${oid}/each-order-details`
+    );
   }
 }

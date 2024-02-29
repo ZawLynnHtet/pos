@@ -48,7 +48,6 @@ export class MenuComponent {
   selectedForm!: FormGroup;
   orderId = 0;
   allOrders: OrderDetails[][] = [];
-  extraQty!: ExtraFood;
   show_option: boolean = false;
 
   constructor(
@@ -79,20 +78,6 @@ export class MenuComponent {
     this.getIngredient();
     this.tables = await this.api.getAllTables();
     this.allMenus = await this.api.getAllMenus();
-  }
-
-  addExtra(extra: any) {
-    this.extraQty = extra;
-  }
-
-  addExtraQty() {
-    this.extraQty.qty += 1;
-  }
-
-  removeExtraQty() {
-    if (this.extraQty.qty > 1) {
-      this.extraQty.qty -= 1;
-    }
   }
 
   createOrder() {
@@ -150,7 +135,7 @@ export class MenuComponent {
     this.topping = true;
     this.selectedIndex = index;
     this.selectedMenu = menu;
-    // this.checkOrderIdAndCreateOrder();
+    this.checkOrderIdAndCreateOrder();
     const order: DetailsBody = {
       order_id: this.orderId,
       quantity: 0,

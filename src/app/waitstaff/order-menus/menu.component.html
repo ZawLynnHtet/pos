@@ -143,7 +143,6 @@
                               (click)="showOption()"
                               class="grid-item"
                               *ngIf="extra.extraFood_id == id"
-                              (click)="addExtra(extra)"
                             >
                               {{ extra.food_name }}
                             </div>
@@ -163,11 +162,6 @@
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
-              </div>
-              <div class="button-section extra-btn" *ngIf="show_option == true">
-                <p>Add extra qty:</p>
-                <i class="fa-solid fa-minus" (click)="removeExtraQty()"></i>
-                <i class="fa-solid fa-plus" (click)="addExtraQty()"></i>
               </div>
             </div>
           </div>
@@ -229,7 +223,7 @@
                 <ng-container *ngFor="let extra_id of order.extra_ingredients">
                   <ng-container *ngFor="let extra of extraFoods">
                     <span *ngIf="extra.extraFood_id == extra_id">
-                      {{ extra.food_name }} ({{ extra.qty }}),
+                      {{ extra.food_name }},
                     </span>
                   </ng-container>
                 </ng-container>

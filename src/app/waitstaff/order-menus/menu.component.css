@@ -195,31 +195,6 @@ input:checked + .grid-item {
   margin-right: 10px;
 }
 
-.extra-btn {
-  margin-right: 33rem;
-}
-
-.extra-btn p {
-  margin-right: 10px;
-  color: #6a6a6a;
-  font-size: 15px;
-  font-weight: 300;
-  padding: 0;
-}
-
-.extra-btn i {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-  border: none;
-  border-radius: 50%;
-  background-color: #c2c0c0;
-  cursor: pointer;
-}
-
 .taps {
   height: 87%;
   overflow: auto;

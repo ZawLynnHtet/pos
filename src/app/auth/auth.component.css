@@ -36,18 +36,22 @@
 }
 
 .company__info img {
-  object-fit: cover;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: inherit;
+  height: inherit;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  object-fit: fill;
 }
 
-.company__info i {
+#file-input {
+  display: none;
+}
+
+.company__info .label i {
   position: absolute;
   right: 20px;
-  top: 20px;
+  top: 10px;
   width: 50px;
   height: 50px;
   display: flex;

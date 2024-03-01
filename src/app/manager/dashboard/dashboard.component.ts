@@ -15,6 +15,9 @@ import { UtilsService } from 'src/app/services/utils.service';
 import 'chartjs-plugin-datalabels';
 import { DatePipe } from '@angular/common';
 import { Employee } from 'src/app/models/employee.model';
+import { EditEmployeeComponent } from '../edit-employee/edit-employee.component';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +33,10 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private api: ApiService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public dialog: MatDialog,
+    private _liveAnnouncer: LiveAnnouncer,
+    private snackBar: UtilsService
   ) {
     window.onscroll = () => {
       let header = document.querySelector('app-header');
@@ -97,8 +103,8 @@ export class DashboardComponent implements OnInit {
   async ngOnInit() {
     let data: any = localStorage.getItem('data');
     this.employeeData = JSON.parse(data);
+    this.getAllEmployee();
 
-    this.waiters = await this.api.getAllEmployees();
     let takeawayCount = 0;
     let dineInCount = 0;
     this.orderDetails = await this.api.getOrderDetailsByDay();
@@ -126,6 +132,10 @@ export class DashboardComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.getIngredient();
     this.allMenus = await this.api.getAllMenus();
+  }
+
+  async getAllEmployee() {
+    this.waiters = await this.api.getAllEmployees();
   }
 
   async getPopularMenu(params: string) {
@@ -228,6 +238,18 @@ export class DashboardComponent implements OnInit {
     this.extraFoods = JSON.parse(extras!);
     this.extraFoods.sort((a, b) => {
       return a.extraFood_id - b.extraFood_id;
+    });
+  }
+
+  async openEditFormDialog(data: any) {
+    const dialogRef = this.dialog.open(EditEmployeeComponent, {
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe((val) => {
+      if (val) {
+        this.getAllEmployee();
+      }
     });
   }
 

@@ -49,6 +49,7 @@ export class MenuComponent {
   orderId = 0;
   allOrders: OrderDetails[][] = [];
   show_option: boolean = false;
+  extraValue!: ExtraFood;
 
   constructor(
     private router: Router,
@@ -129,6 +130,16 @@ export class MenuComponent {
 
     this.show_option = true;
     console.log(this.show_option) + 'after';
+  }
+
+  addExtra(params: any) {
+    this.extraValue = params;
+  }
+
+  addExtraQty(i: number) {
+    if (this.extraValue.extraFood_id == this.orders[i].extraFood_id) {
+      this.extraValue.qty++;
+    }
   }
 
   showTopping(index: number, menu: Menu) {
@@ -292,16 +303,5 @@ export class MenuComponent {
   onNoteBoxChange(evt: any, i: number) {
     this.orders[i].note = evt.target.value;
     console.log(this.orders);
-  }
-
-  async applyFilter(event: any) {
-    if (event.target.value) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.menus = this.menus.filter((food) =>
-        food.food_name.toLowerCase().startsWith(filterValue)
-      );
-    } else {
-      this.allMenus = await this.api.getAllMenus();
-    }
   }
 }

@@ -15,6 +15,8 @@ import { Employee } from '../models/employee.model';
 import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Message } from '../models/message.model';
+import { Vinyl } from '../models/vinyl.model';
+import { Restaurant } from '../models/info.model';
 
 @Injectable({
   providedIn: 'root',
@@ -762,6 +764,90 @@ export class ApiService {
           reject(error);
         },
       });
+    });
+  }
+
+  getVinyl(): Promise<Vinyl[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/vinyl`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  postVinyl(body: any): Promise<Vinyl[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.post(`${apiUrl}/vinyl`, body).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  updateVinyl(id: number, body: any): Promise<Vinyl[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .patch(`${apiUrl}/vinyl/${id}`, body)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  getRestaurantInfo(): Promise<Restaurant[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http.get(`${apiUrl}/restaurant-info`).subscribe({
+        next: (res: any) => {
+          resolve(res.data);
+        },
+        error: (error: any) => {
+          reject(error);
+        },
+      });
+    });
+  }
+
+  postRestaurantInfo(body: any): Promise<Restaurant[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .post(`${apiUrl}/restaurant-info`, body)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  updateRestaurantInfo(id: number, body: any): Promise<Restaurant[]> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .patch(`${apiUrl}/restaurant-info/${id}`, body)
+        .subscribe({
+          next: (res: any) => {
+            resolve(res.data);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
     });
   }
 

@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="selectedRole == false; else formPage">
+  <!-- <div *ngIf="selectedRole == false; else formPage">
     <h1 class="title">Welcome!</h1>
     <mat-form-field>
       <mat-label>Choose your role</mat-label>
@@ -12,56 +12,152 @@
         >
       </mat-select>
     </mat-form-field>
-  </div>
-  <ng-template #formPage>
-    <div class="main-content" *ngIf="loader === false; else loading">
-      <div class="company__info">
+  </div> -->
+  <!-- <ng-template #formPage> -->
+  <div class="main-content" *ngIf="loader === false; else loading">
+    <div class="company__info">
+      <ng-template #vinyl>
         <span class="company__logo"
           ><h2><span class="fa fa-android"></span></h2
         ></span>
         <h4 class="company_title">Your Company Logo</h4>
-        <!-- <img src="..//../assets/images/zsh.png" alt="" /> -->
-        <i
-          *ngIf="manager == true"
-          class="fa-solid fa-image"
-          matTooltip="Upload Image"
-          aria-label="Button that displays a tooltip when focused or hovered over"
-        ></i>
+      </ng-template>
+      <img [src]="imgUrl" alt="" *ngIf="imgUrl != ''; else vinyl" />
+      <div class="upload">
+        <input
+          id="file-input"
+          type="file"
+          accept="image/*"
+          #fileUploader
+          (change)="processFile($event)"
+        />
+        <label id="file-input-label" for="file-input" class="label">
+          <i
+            class="fa-solid fa-image"
+            matTooltip="Upload Image"
+            aria-label="Button that displays a tooltip when focused or hovered over"
+            (click)="vinylUpload()"
+          ></i>
+        </label>
       </div>
-      <div class="login_form">
-        <div class="container-fluid" *ngIf="sign_in === false; else register">
+    </div>
+    <div class="login_form">
+      <div class="container-fluid" *ngIf="sign_in === false; else register">
+        <div class="row">
+          <h2>Log In</h2>
+        </div>
+        <div class="row">
+          <form [formGroup]="loginForm" class="form-group">
+            <div class="row">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form__input"
+                placeholder="Email or phone number"
+                formControlName="email"
+              />
+              <div
+                *ngIf="
+                  loginForm.get('email')?.hasError('required') &&
+                  loginForm.get('email')?.touched
+                "
+                class="error"
+              >
+                *Email is required
+              </div>
+              <div
+                *ngIf="
+                  loginForm.get('email')?.hasError('email') &&
+                  loginForm.get('email')?.touched
+                "
+                class="error"
+              >
+                *Invalid email format
+              </div>
+            </div>
+            <div class="row">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form__input"
+                placeholder="Password"
+                formControlName="password"
+              />
+              <div
+                *ngIf="
+                  loginForm.get('password')?.hasError('required') &&
+                  loginForm.get('password')?.touched
+                "
+                class="error"
+              >
+                *Password is required
+              </div>
+            </div>
+            <div class="my-btn">
+              <input
+                type="submit"
+                value="Submit"
+                class="btn"
+                (click)="login()"
+              />
+              <!-- <button (click)="back()" class="back">Back</button> -->
+            </div>
+          </form>
+        </div>
+        <div class="row">
+          <p>
+            Don't have an account? <a (click)="signInOrUp()">Register Here</a>
+          </p>
+        </div>
+        <div class="row">
+          <div
+            *ngIf="errorMessage"
+            style="color: red; margin-bottom: 10px"
+            class="error error-footer"
+          >
+            *{{ errorMessage }}
+          </div>
+        </div>
+      </div>
+
+      <ng-template #register>
+        <div class="container-fluid">
           <div class="row">
-            <h2>Log In</h2>
+            <h2>Register</h2>
           </div>
           <div class="row">
-            <form [formGroup]="loginForm" class="form-group">
+            <form [formGroup]="registerForm" class="form-group">
+              <div class="row">
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  class="form__input"
+                  placeholder="Username"
+                  formControlName="name"
+                />
+              </div>
               <div class="row">
                 <input
                   type="email"
                   name="email"
                   id="email"
                   class="form__input"
-                  placeholder="Email or phone number"
+                  placeholder="Email"
                   formControlName="email"
                 />
-                <div
-                  *ngIf="
-                    loginForm.get('email')?.hasError('required') &&
-                    loginForm.get('email')?.touched
-                  "
-                  class="error"
-                >
-                  *Email is required
-                </div>
-                <div
-                  *ngIf="
-                    loginForm.get('email')?.hasError('email') &&
-                    loginForm.get('email')?.touched
-                  "
-                  class="error"
-                >
-                  *Invalid email format
-                </div>
+              </div>
+              <div class="row">
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  class="form__input"
+                  placeholder="Phone"
+                  formControlName="phone"
+                />
               </div>
               <div class="row">
                 <input
@@ -72,14 +168,43 @@
                   placeholder="Password"
                   formControlName="password"
                 />
-                <div
-                  *ngIf="
-                    loginForm.get('password')?.hasError('required') &&
-                    loginForm.get('password')?.touched
-                  "
-                  class="error"
+              </div>
+              <div class="mb-3 row">
+                <mat-radio-group
+                  aria-label="Select an option"
+                  formControlName="gender"
                 >
-                  *Password is required
+                  <mat-radio-button value="male" class="radio"
+                    >Male</mat-radio-button
+                  >
+                  <mat-radio-button value="female" class="radio"
+                    >Female</mat-radio-button
+                  >
+                </mat-radio-group>
+              </div>
+              <div class="mb-3 row">
+                <mat-radio-group
+                  aria-label="Select an option"
+                  formControlName="role"
+                >
+                  <mat-radio-button value="waiter" class="radio"
+                    >Waiter</mat-radio-button
+                  >
+                  <mat-radio-button value="supervisor" class="radio"
+                    >Supervisor</mat-radio-button
+                  >
+                  <mat-radio-button value="manager" class="radio"
+                    >Manager</mat-radio-button
+                  >
+                </mat-radio-group>
+              </div>
+              <div class="row">
+                <div
+                  *ngIf="errorMessage"
+                  class="error error-footer"
+                  style="margin-bottom: 0"
+                >
+                  *{{ errorMessage }}
                 </div>
               </div>
               <div class="my-btn">
@@ -87,136 +212,24 @@
                   type="submit"
                   value="Submit"
                   class="btn"
-                  (click)="login()"
+                  (click)="registration()"
                 />
-                <button (click)="back()" class="back">Back</button>
+                <!-- <button (click)="back()" class="back">Back</button> -->
               </div>
             </form>
           </div>
-          <div class="row" *ngIf="manager == true">
+          <div class="row">
             <p>
-              Don't have an account? <a (click)="signInOrUp()">Register Here</a>
+              Already have an account?
+              <a (click)="signInOrUp()">Login Here</a>
             </p>
           </div>
-          <div class="row">
-            <div
-              *ngIf="errorMessage"
-              style="color: red; margin-bottom: 10px"
-              class="error error-footer"
-            >
-              *{{ errorMessage }}
-            </div>
-          </div>
         </div>
-
-        <ng-template #register>
-          <div class="container-fluid">
-            <div class="row">
-              <h2>Register</h2>
-            </div>
-            <div class="row">
-              <form [formGroup]="registerForm" class="form-group">
-                <div class="row">
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    class="form__input"
-                    placeholder="Username"
-                    formControlName="name"
-                  />
-                </div>
-                <div class="row">
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    class="form__input"
-                    placeholder="Email"
-                    formControlName="email"
-                  />
-                </div>
-                <div class="row">
-                  <input
-                    type="tel"
-                    name="phone"
-                    id="phone"
-                    class="form__input"
-                    placeholder="Phone"
-                    formControlName="phone"
-                  />
-                </div>
-                <div class="row">
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    class="form__input"
-                    placeholder="Password"
-                    formControlName="password"
-                  />
-                </div>
-                <div class="mb-3 row">
-                  <mat-radio-group
-                    aria-label="Select an option"
-                    formControlName="gender"
-                  >
-                    <mat-radio-button value="male" class="radio"
-                      >Male</mat-radio-button
-                    >
-                    <mat-radio-button value="female" class="radio"
-                      >Female</mat-radio-button
-                    >
-                  </mat-radio-group>
-                </div>
-                <div class="mb-3 row">
-                  <mat-radio-group
-                    aria-label="Select an option"
-                    formControlName="role"
-                  >
-                    <mat-radio-button value="waiter" class="radio"
-                      >Waiter</mat-radio-button
-                    >
-                    <mat-radio-button value="supervisor" class="radio"
-                      >Supervisor</mat-radio-button
-                    >
-                    <mat-radio-button value="manager" class="radio"
-                      >Manager</mat-radio-button
-                    >
-                  </mat-radio-group>
-                </div>
-                <div class="row">
-                  <div
-                    *ngIf="errorMessage"
-                    class="error error-footer"
-                    style="margin-bottom: 0"
-                  >
-                    *{{ errorMessage }}
-                  </div>
-                </div>
-                <div class="my-btn">
-                  <input
-                    type="submit"
-                    value="Submit"
-                    class="btn"
-                    (click)="registration()"
-                  />
-                  <button (click)="back()" class="back">Back</button>
-                </div>
-              </form>
-            </div>
-            <div class="row">
-              <p>
-                Already have an account?
-                <a (click)="signInOrUp()">Login Here</a>
-              </p>
-            </div>
-          </div>
-        </ng-template>
-      </div>
+      </ng-template>
     </div>
-    <ng-template #loading>
-      <span class="loader"></span>
-    </ng-template>
+  </div>
+  <ng-template #loading>
+    <span class="loader"></span>
   </ng-template>
+  <!-- </ng-template> -->
 </div>

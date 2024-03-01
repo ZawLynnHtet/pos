@@ -53,6 +53,7 @@ export class AddMenusComponent implements OnInit {
   selectedFile: any = null;
   menuForm: FormGroup;
   url: string = '';
+  updateUrl: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -208,13 +209,9 @@ export class AddMenusComponent implements OnInit {
   }
 
   async submitted() {
-    if (this.data.img == null) {
-      this.url = await this.uploadAndGetDownloadUrl(
-        this.menuForm.value.food_name!
-      );
-    } else {
-      this.url = this.data.img;
-    }
+    if (this.data.img == null && this.updateUrl == true) {
+      this.url = await this.uploadAndGetDownloadUrl(this.menuForm.value.name!);
+    } else this.url = this.data.img;
 
     const menu: MenuItem = {
       category_id: this.menuForm.controls['category_id'].value,

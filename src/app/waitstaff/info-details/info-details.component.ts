@@ -37,7 +37,6 @@ export class InfoDetailsComponent {
   allOrders: OrderDetails[][] = []; // going to be [[{}, {}], [{}]]
   headers: any[] = [];
 
-  menuNames: Menu[] = [];
   extraFoods: ExtraFood[] = [];
   allMenus: Menu[] = [];
   ingredients: Ingredient[] = [];
@@ -48,7 +47,6 @@ export class InfoDetailsComponent {
     this.tables = JSON.parse(table);
     this.tableId = this.activatedRoute.snapshot.params['tableId'];
     this.tableIndex = this.activatedRoute.snapshot.params['index'];
-    this.getItemsFromLocalStorage();
 
     const orders = await this.getAllUnsubmittedOrdersFromOneTable();
 
@@ -57,20 +55,8 @@ export class InfoDetailsComponent {
 
     this.headers = this.separateOrderHeaderInfos(this.allOrders);
     this.allMenus = await this.api.getAllMenus();
-  }
-
-  getItemsFromLocalStorage() {
-    var extras = localStorage.getItem('extraFoods');
-    this.extraFoods = JSON.parse(extras!);
-    this.extraFoods.sort((a, b) => {
-      return a.extraFood_id - b.extraFood_id;
-    });
-
-    var ingredient = localStorage.getItem('ingredients');
-    this.ingredients = JSON.parse(ingredient!);
-    this.ingredients.sort((a, b) => {
-      return a.ingredient_id - b.ingredient_id;
-    });
+    this.ingredients = await this.api.getAllIngredient();
+    this.extraFoods = await this.api.getAllExtraFoods();
   }
 
   async getAllUnsubmittedOrdersFromOneTable(): Promise<OrderDetails[]> {

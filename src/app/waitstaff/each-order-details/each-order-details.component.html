@@ -66,18 +66,23 @@
             <div *ngIf="detail.removed_ingredients.length != 0">
               Remove: (<ng-container
                 *ngFor="let ingred_id of detail.removed_ingredients"
-                >{{
-                  ingredients[ingred_id - 1].ingredient_name
-                }}, </ng-container
+                ><ng-container *ngFor="let ing of ingredients">
+                  <span *ngIf="ing.ingredient_id == ingred_id">
+                    {{ ing.ingredient_name }},
+                  </span>
+                </ng-container> </ng-container
               >)
             </div>
 
             <div *ngIf="detail.extra_ingredients.length != 0">
               Extra: (<ng-container
                 *ngFor="let extra of detail.extra_ingredients; let i = index"
-                >{{ extraFoods[extra - 1].food_name }} (x{{
-                  detail.extra_quantity![i]
-                }}), </ng-container
+              >
+                <ng-container *ngFor="let ext of extraFoods">
+                  <span *ngIf="ext.extraFood_id == extra">
+                    {{ ext.food_name }} (x{{ detail.extra_quantity![i] }}),
+                  </span>
+                </ng-container></ng-container
               >)
             </div>
           </td>

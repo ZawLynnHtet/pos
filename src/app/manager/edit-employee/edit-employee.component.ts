@@ -18,13 +18,14 @@ import { Employee } from 'src/app/models/employee.model';
   styleUrls: ['./edit-employee.component.css'],
 })
 export class EditEmployeeComponent implements OnInit {
-  roles: string[] = ['waiter', 'supervisor'];
+  roles: string[] = ['waiter', 'supervisor', 'manager'];
   genders: string[] = ['female', 'male'];
   hide = true;
   employeeForm: FormGroup;
   selectedFile: any = null;
   imgUrl: string = '..//..//../assets/images/profile.png';
   url: string = '';
+  updateUrl: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -63,6 +64,7 @@ export class EditEmployeeComponent implements OnInit {
       this.selectedFile = null;
       this.imgUrl = '..//..//../assets/images/profile.png';
     }
+    this.updateUrl = true;
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
@@ -72,13 +74,16 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   async FormSubmit() {
-    if (this.data.img == null) {
+    // const url = await this.uploadAndGetDownloadUrl(
+    //   this.employeeForm.value.name!
+    // );
+
+    if (this.data.img == null && this.updateUrl == true) {
       this.url = await this.uploadAndGetDownloadUrl(
         this.employeeForm.value.name!
       );
-    } else {
-      this.url = this.data.img;
-    }
+    } else this.url = this.data.img;
+
     const employeeData: Employee = {
       name: this.employeeForm.value.name,
       email: this.employeeForm.value.email,

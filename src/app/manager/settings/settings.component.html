@@ -4,7 +4,7 @@
   <mat-card class="example-card">
     <mat-card-header> </mat-card-header>
     <mat-card-content>
-      <form>
+      <form [formGroup]="infoForm">
         <div class="profile">
           <div class="profile-img">
             <img [src]="imgUrl" (click)="fileUploader.click()" />
@@ -30,14 +30,20 @@
             <input
               matInput
               placeholder="Restaurant"
-              [formControl]="name"
-              required
+              formControlName="restaurant_name"
             />
 
             <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error>
           </mat-form-field>
         </div>
-        <button mat-raised-button color="primary" class="save">Save</button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="save"
+          (click)="uploadInfo()"
+        >
+          Save
+        </button>
       </form>
     </mat-card-content>
   </mat-card>

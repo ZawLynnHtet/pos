@@ -1,26 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { Employee } from '../models/employee.model';
 import { Category } from '../models/category.model';
-import { ExtraFood } from '../models/extrafood.model';
-import { Menu } from '../models/menu.model';
 import { UtilsService } from '../services/utils.service';
-import { Ingredient } from '../models/ingredient.model';
-import { Table } from '../models/table.model';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../app.module';
+import { Vinyl } from '../models/vinyl.model';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent implements OnInit {
+  selectedFile: any = null;
+  imgUrl: string = '';
+  vinylUrl: string = '';
+  vinylData: Vinyl[] = [];
+  vinylForm: FormGroup;
   constructor(
     private router: Router,
     private builder: FormBuilder,
     private api: ApiService,
-    private utils: UtilsService
-  ) {}
+    private utils: UtilsService,
+    private fb: FormBuilder,
+    private snackBar: UtilsService
+  ) {
+    this.vinylForm = fb.group({
+      vinyl: new FormControl(''),
+    });
+  }
   sign_in: boolean = false;
   loader: boolean = false;
   errorMessage: string = '';
@@ -50,8 +64,8 @@ export class AuthComponent implements OnInit {
     password: this.builder.control('', [Validators.required]),
   });
 
-  ngOnInit(): void {
-    // this.getEmployeeData();
+  async ngOnInit() {
+    this.vinylData = await this.api.getVinyl();
   }
 
   registration() {
@@ -146,20 +160,20 @@ export class AuthComponent implements OnInit {
   async callApiAndStoreResponseInLocalStorage() {
     const categories: Category[] = await this.api.getAllCategories();
     localStorage.setItem('categories', JSON.stringify(categories));
-    const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();
-    localStorage.setItem('extraFoods', JSON.stringify(extraFoods));
-    const menuNames: Menu[] = await this.api.getAllFoodNames();
-    localStorage.setItem('menuNames', JSON.stringify(menuNames));
-    const ingredients: Ingredient[] = await this.api.getAllIngredient();
-    localStorage.setItem('ingredients', JSON.stringify(ingredients));
-    const waitstaffs: Employee[] = await this.api.getEmployeesWithRole(
-      'waiter'
-    );
-    localStorage.setItem('waitstaffs', JSON.stringify(waitstaffs));
-    const supervisors: Employee[] = await this.api.getEmployeesWithRole(
-      'supervisor'
-    );
-    localStorage.setItem('supervisors', JSON.stringify(supervisors));
+    // const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();
+    // localStorage.setItem('extraFoods', JSON.stringify(extraFoods));
+    // const menuNames: Menu[] = await this.api.getAllFoodNames();
+    // localStorage.setItem('menuNames', JSON.stringify(menuNames));
+    // const ingredients: Ingredient[] = await this.api.getAllIngredient();
+    // localStorage.setItem('ingredients', JSON.stringify(ingredients));
+    // const waitstaffs: Employee[] = await this.api.getEmployeesWithRole(
+    //   'waiter'
+    // );
+    // localStorage.setItem('waitstaffs', JSON.stringify(waitstaffs));
+    // const supervisors: Employee[] = await this.api.getEmployeesWithRole(
+    //   'supervisor'
+    // );
+    // localStorage.setItem('supervisors', JSON.stringify(supervisors));
   }
   ngOnDestroy() {
     this.api.unsubscribe();
@@ -179,6 +193,36 @@ export class AuthComponent implements OnInit {
       this.manager = true;
     } else {
       this.manager = false;
+    }
+  }
+
+  processFile(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => (this.imgUrl = e.target.result);
+      reader.readAsDataURL(event.target.files[0]);
+      this.selectedFile = event.target.files[0];
+    } else {
+      this.selectedFile = null;
+      this.imgUrl = '';
+    }
+  }
+
+  async uploadAndGetDownloadUrl(): Promise<string> {
+    const reference = ref(storage, 'restaurant');
+    await uploadBytes(reference, this.selectedFile);
+    return await getDownloadURL(ref(storage, 'restaurant'));
+  }
+
+  async vinylUpload() {
+    if (this.vinylData.length > 0) {
+      this.vinylUrl = this.vinylData[0].vinyl;
+      await this.api.postVinyl({ vinyl: this.vinylUrl });
+    } else {
+      this.vinylUrl = await this.uploadAndGetDownloadUrl();
+      await this.api.updateVinyl(this.vinylData[0].id, {
+        vinyl: this.vinylUrl,
+      });
     }
   }
 

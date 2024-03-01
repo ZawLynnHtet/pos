@@ -1,8 +1,8 @@
 <app-sidenav></app-sidenav>
 <header class="app-header">
   <div class="app-header-actions">
-    <button class="user-profile">
-      <ng-container *ngFor="let waiter of waiters">
+    <ng-container *ngFor="let waiter of waiters">
+      <button class="user-profile" (click)="openEditFormDialog(waiter)">
         <ng-container *ngIf="waiter.employee_id == employeeData.id">
           <span>{{ waiter.name }}</span>
           <span>
@@ -12,8 +12,8 @@
             </ng-template>
           </span>
         </ng-container>
-      </ng-container>
-    </button>
+      </button>
+    </ng-container>
   </div>
 </header>
 <section>

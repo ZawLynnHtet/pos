@@ -41,7 +41,6 @@ export class OrderDetailsComponent {
     this.employees = await this.api.getAllEmployees();
     this.tables = await this.api.getAllTables();
     this.tableId = this.activatedRoute.snapshot.params['id'];
-    this.getItemsFromLocalStorage();
 
     const orders = await this.getAllUnsubmittedOrdersFromOneTable();
     orders.sort((a, b) => {
@@ -52,20 +51,8 @@ export class OrderDetailsComponent {
 
     this.headers = this.separateOrderHeaderInfos(this.allOrders);
     this.allMenus = await this.api.getAllMenus();
-  }
-
-  getItemsFromLocalStorage() {
-    var extras = localStorage.getItem('extraFoods');
-    this.extraFoods = JSON.parse(extras!);
-    this.extraFoods.sort((a, b) => {
-      return a.extraFood_id - b.extraFood_id;
-    });
-
-    var ingredient = localStorage.getItem('ingredients');
-    this.ingredients = JSON.parse(ingredient!);
-    this.ingredients.sort((a, b) => {
-      return a.ingredient_id - b.ingredient_id;
-    });
+    this.extraFoods = await this.api.getAllExtraFoods();
+    this.ingredients = await this.api.getAllIngredient();
   }
 
   async getAllUnsubmittedOrdersFromOneTable(): Promise<OrderDetails[]> {

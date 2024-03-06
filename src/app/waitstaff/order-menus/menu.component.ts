@@ -136,7 +136,7 @@ export class MenuComponent {
     this.topping = true;
     this.selectedIndex = index;
     this.selectedMenu = menu;
-    // this.checkOrderIdAndCreateOrder();
+    this.checkOrderIdAndCreateOrder();
     const order: DetailsBody = {
       order_id: this.orderId,
       quantity: 0,

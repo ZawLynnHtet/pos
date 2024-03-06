@@ -107,20 +107,10 @@ export class MenuComponent {
     this.topping = false;
   }
 
-  getIngredient() {
-    this.ingredients = this.utils.getSortedLocalStorageArray(
-      'ingredients',
-      'ingredients_id'
-    );
-    this.menuNames = this.utils.getSortedLocalStorageArray(
-      'menuNames',
-      'menu_id'
-    );
+  async getIngredient() {
+    this.ingredients = await this.api.getAllIngredient();
 
-    this.extraFoods = this.utils.getSortedLocalStorageArray(
-      'extraFoods',
-      'extraFood_id'
-    );
+    this.extraFoods = await this.api.getAllExtraFoods();
     console.log(this.ingredients);
     console.log(this.extraFoods);
   }
@@ -146,7 +136,7 @@ export class MenuComponent {
     this.topping = true;
     this.selectedIndex = index;
     this.selectedMenu = menu;
-    this.checkOrderIdAndCreateOrder();
+    // this.checkOrderIdAndCreateOrder();
     const order: DetailsBody = {
       order_id: this.orderId,
       quantity: 0,

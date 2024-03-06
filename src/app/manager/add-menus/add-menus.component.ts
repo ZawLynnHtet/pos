@@ -77,9 +77,10 @@ export class AddMenusComponent implements OnInit {
   ngOnInit(): void {
     this.getItems();
     this.menuForm.patchValue(this.data);
-    this.menuForm.value.meat_choice.push(this.data.meat_choice);
-    this.menuForm.value.ingredient_ids.push(this.data.ingredient_ids);
-    this.menuForm.value.extraFood_ids.push(this.data.extraFood_ids);
+
+    // this.menuForm.value.meat_choice.push(this.data.meat_choice);
+    // this.menuForm.value.ingredient_ids.push(this.data.ingredient_ids);
+    // this.menuForm.value.extraFood_ids.push(this.data.extraFood_ids);
 
     if (this.menuForm.value.img) {
       this.imgUrl = this.menuForm.value.img;
@@ -98,6 +99,7 @@ export class AddMenusComponent implements OnInit {
       this.selectedFile = null;
       this.imgUrl = '..//..//../assets/images/profile.png';
     }
+    this.updateUrl = true;
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
@@ -165,10 +167,15 @@ export class AddMenusComponent implements OnInit {
   async getItems() {
     let ctg = await this.api.getAllCategories();
     this.categories = ctg;
+    console.log(this.categories);
+
     let ing = await this.api.getAllIngredient();
     this.ingredients = ing;
+    console.log(this.ingredients);
+
     let ext = await this.api.getAllExtraFoods();
     this.extras = ext;
+    console.log(this.extras);
   }
 
   onCheckboxChange(evt: any, type: any) {
@@ -209,9 +216,13 @@ export class AddMenusComponent implements OnInit {
   }
 
   async submitted() {
-    if (this.data.img == null && this.updateUrl == true) {
-      this.url = await this.uploadAndGetDownloadUrl(this.menuForm.value.name!);
-    } else this.url = this.data.img;
+    if (!this.data && this.updateUrl == true) {
+      this.url = await this.uploadAndGetDownloadUrl(
+        this.menuForm.value.food_name!
+      );
+    } else {
+      this.url = this.data.img;
+    }
 
     const menu: MenuItem = {
       category_id: this.menuForm.controls['category_id'].value,

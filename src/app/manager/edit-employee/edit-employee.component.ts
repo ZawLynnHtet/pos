@@ -78,11 +78,13 @@ export class EditEmployeeComponent implements OnInit {
     //   this.employeeForm.value.name!
     // );
 
-    if (this.data.img == null && this.updateUrl == true) {
+    if (!this.data && this.updateUrl == true) {
       this.url = await this.uploadAndGetDownloadUrl(
         this.employeeForm.value.name!
       );
-    } else this.url = this.data.img;
+    } else {
+      this.url = this.data.img;
+    }
 
     const employeeData: Employee = {
       name: this.employeeForm.value.name,
@@ -93,6 +95,9 @@ export class EditEmployeeComponent implements OnInit {
       password: this.employeeForm.value.password,
       img: this.url,
     };
+
+    console.log(this.employeeForm.value);
+
     if (this.employeeForm.valid) {
       if (this.data) {
         this.api.updateEmployee(this.data.employee_id, employeeData);

@@ -851,6 +851,51 @@ export class ApiService {
     });
   }
 
+  deleteExtraFood(id: number): Promise<Boolean> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .delete(`${apiUrl}/extra-food/${id}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(true);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+  
+  deleteCategory(id: number): Promise<Boolean> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .delete(`${apiUrl}/categories/${id}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(true);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
+  deleteIngredient(id: number): Promise<Boolean> {
+    return new Promise((resolve, reject) => {
+      this.subs.sink = this.http
+        .delete(`${apiUrl}/ingredients/${id}`)
+        .subscribe({
+          next: (res: any) => {
+            resolve(true);
+          },
+          error: (error: any) => {
+            reject(error);
+          },
+        });
+    });
+  }
+
   unsubscribe() {
     this.subs.unsubscribe;
   }

@@ -56,7 +56,10 @@
             />
             <div class="chip">
               <i class="bi bi-check2"></i>{{ category.category_name
-              }}<i class="fa-solid fa-xmark" (click)="delCategroy(i)"></i>
+              }}<i
+                class="fa-solid fa-xmark"
+                (click)="delCategroy(i, category.category_id)"
+              ></i>
             </div>
           </label>
         </div>
@@ -104,7 +107,10 @@
             />
             <div class="chip">
               <i class="bi bi-check2"></i>{{ ingredient.ingredient_name
-              }}<i class="fa-solid fa-xmark" (click)="delIngredient(i)"></i>
+              }}<i
+                class="fa-solid fa-xmark"
+                (click)="delIngredient(i, ingredient.ingredient_id)"
+              ></i>
             </div>
           </label>
         </div>
@@ -128,7 +134,10 @@
             />
             <div class="chip">
               <i class="bi bi-check2"></i>{{ extra.food_name
-              }}<i class="fa-solid fa-xmark" (click)="delExtra(i)"></i>
+              }}<i
+                class="fa-solid fa-xmark"
+                (click)="delExtra(i, extra.extraFood_id)"
+              ></i>
             </div>
           </label>
         </div>

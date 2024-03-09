@@ -17,17 +17,11 @@ import {
 } from '@angular/forms';
 import { Menu, MenuItem } from 'src/app/models/menu.model';
 import { UtilsService } from 'src/app/services/utils.service';
-import { Category } from 'src/app/models/category.model';
-import { Ingredient } from 'src/app/models/ingredient.model';
-import { ExtraFood } from 'src/app/models/extrafood.model';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from 'src/app/app.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, E, ENTER } from '@angular/cdk/keycodes';
 import { Observable, map, startWith } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-add-menus',
@@ -38,8 +32,8 @@ export class AddMenusComponent implements OnInit {
   categories: any[] = [];
   ingredients: any[] = [];
   extras: any[] = [];
+  meats: any = [];
   matSelected!: number;
-  meatChoices: any[] = ['Chicken', 'Pork', 'Beef', 'Fried Egg'];
   popupBox: any = {
     show: false,
     name: '',
@@ -48,7 +42,6 @@ export class AddMenusComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   meatCtrl = new FormControl('');
   filteredMeats!: Observable<string[]>;
-  meats: any[] = ['Pork', 'Beef', 'Chicken', 'Fried Egg'];
   imgUrl: string = '..//..//../assets/images/loading-image.png';
   selectedFile: any = null;
   menuForm: FormGroup;
@@ -76,6 +69,7 @@ export class AddMenusComponent implements OnInit {
 
   ngOnInit(): void {
     this.getItems();
+    this.getMeats();
     this.menuForm.patchValue(this.data);
 
     // this.menuForm.value.meat_choice.push(this.data.meat_choice);
@@ -119,21 +113,27 @@ export class AddMenusComponent implements OnInit {
     event.target.value = '';
   }
 
-  delCategroy(index: number) {
+  async delCategroy(index: number, id: number) {
     this.categories.splice(index, 1);
+    await this.api.deleteCategory(id);
   }
 
   addMeat(event: any): void {
     const value = (event.target.value || '').trim();
+    console.log(value);
+
     if (value) {
-      let data = { name: value };
-      this.meats.push(data);
+      console.log(this.meats);
+      this.meats.push(value);
+      console.log(this.meats);
+      localStorage.setItem('meats', JSON.stringify(this.meats));
     }
     event.target.value = '';
   }
 
   delMeat(index: number) {
     this.meats.splice(index, 1);
+    localStorage.setItem('meats', JSON.stringify(this.meats));
   }
 
   async addIngredient(event: any) {
@@ -146,8 +146,9 @@ export class AddMenusComponent implements OnInit {
     event.target.value = '';
   }
 
-  delIngredient(index: number) {
+  async delIngredient(index: number, id: number) {
     this.ingredients.splice(index, 1);
+    await this.api.deleteIngredient(id);
   }
 
   async addExtra(event: any) {
@@ -160,8 +161,18 @@ export class AddMenusComponent implements OnInit {
     event.target.value = '';
   }
 
-  delExtra(index: number) {
+  async delExtra(index: number, id: number) {
     this.extras.splice(index, 1);
+    await this.api.deleteExtraFood(id);
+  }
+
+  getMeats() {
+    let meats: any = localStorage.getItem('meats');
+
+    this.meats = JSON.parse(meats);
+    if (this.meats == null) {
+      this.meats = [];
+    }
   }
 
   async getItems() {

@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   message: string = '';
   value: string = 'weekly';
   showYear: boolean = false;
-  yearDate: string = '2024';
+  yearDate = new Date().getFullYear();
 
   takeaway = 0;
   dineIn = 0;
@@ -249,7 +249,7 @@ export class DashboardComponent implements OnInit {
       this.reloadChart();
 
     } else if (params === 'monthly') {
-      await this.betweenYear(this.yearDate)
+      await this.betweenYear(this.yearDate.toString())
       this.showYear = true;
       
 

@@ -130,7 +130,6 @@ export class DashboardComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.orders);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.getIngredient();
     this.allMenus = await this.api.getAllMenus();
   }
 
@@ -152,8 +151,7 @@ export class DashboardComponent implements OnInit {
   async getSearchDate(searchValue: string) {
     this.showYear = false;
     this.search = true;
-    this.totalSale = [];
-    this.label = [];
+    this.restarValue()
     this.days.forEach((value) => {
       this.label.push(value.day);
       value.price = null;
@@ -175,14 +173,63 @@ export class DashboardComponent implements OnInit {
     this.reloadChart();
   }
 
+  restarValue() {
+    this.totalSale = [];
+    this.label = [];
+    this.months = [
+      { month: 'January', price: null },
+      { month: 'February', price: null },
+      { month: 'March', price: null },
+      { month: 'April', price: null },
+      { month: 'May', price: null },
+      { month: 'June', price: null },
+      { month: 'July', price: null },
+      { month: 'August', price: null },
+      { month: 'September', price: null },
+      { month: 'October', price: null },
+      { month: 'November', price: null },
+      { month: 'December', price: null },
+    ];
+   this.days = [
+      { day: 'Sat', price: null },
+      { day: 'Sun', price: null },
+      { day: 'Mon', price: null },
+      { day: 'Tue', price: null },
+      { day: 'Wed', price: null },
+      { day: 'Thu', price: null },
+      { day: 'Fri', price: null },
+    ];
+  }
+
   async betweenYear(value: string) {
-    this.getIncomeByMonthly = await this.api.getIncomeByMonthBetweenYear(value);
+    console.log("filter with year")
+    console.log(value + "_____");
+    this.restarValue()
+    if(value != ""){
+      this.getIncomeByMonthly = await this.api.getIncomeByMonthBetweenYear(value);
+    this.months.forEach((value) => {
+      this.label.push(value.month);
+    });
+    this.getIncomeByMonthly.forEach((value) => {
+      const date = new Date(value.month);
+      const monthName = this.datePipe.transform(date, 'MMMM');
+      const index = this.months.findIndex((day) => day.month === monthName);
+      this.months[index].price = value.totalPrice;
+    });
+
+    this.months.forEach((item) => {
+      console.log(item)
+      this.totalSale.push(item.price);
+    });
+    this.reloadChart()
+    } else {
+      // this.destroyChart()
+    }
   }
 
   async getData(params: string) {
     this.search = false;
-    this.totalSale = [];
-    this.label = [];
+    this.restarValue()
     if (params === 'weekly') {
       this.getIncomeByWeek = await this.api.getIncomeByDate(params);
       this.showYear = false;
@@ -196,30 +243,18 @@ export class DashboardComponent implements OnInit {
         this.days[index].price = value.totalPrice;
       });
 
-      this.days.forEach((item) => {
+       this.days.forEach((item) => {
         this.totalSale.push(item.price);
       });
+      this.reloadChart();
+
     } else if (params === 'monthly') {
-      this.getIncomeByMonthly = await this.api.getIncomeByMonthBetweenYear(
-        this.yearDate
-      );
+      await this.betweenYear(this.yearDate)
       this.showYear = true;
-      this.months.forEach((value) => {
-        this.label.push(value.month);
-      });
-      this.getIncomeByMonthly.forEach((value) => {
-        const date = new Date(value.month);
-        const monthName = this.datePipe.transform(date, 'MMMM');
-        const index = this.months.findIndex((day) => day.month === monthName);
-        this.months[index].price = value.totalPrice;
-      });
+      
 
-      this.months.forEach((item) => {
-        this.totalSale.push(item.price);
-      });
     }
-
-    this.reloadChart();
+    console.log(params)
   }
 
   destroyChart() {
@@ -228,18 +263,11 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  reloadChart() {
-    this.destroyChart();
-    this.createChart();
-  }
-
-  getIngredient() {
-    var extras = localStorage.getItem('extraFoods');
-    this.extraFoods = JSON.parse(extras!);
-    this.extraFoods.sort((a, b) => {
-      return a.extraFood_id - b.extraFood_id;
-    });
-  }
+  async reloadChart() {
+    console.log(">>>")
+     this.destroyChart();
+     this.createChart();
+    }
 
   async openEditFormDialog(data: any) {
     const dialogRef = this.dialog.open(EditEmployeeComponent, {
@@ -304,6 +332,7 @@ export class DashboardComponent implements OnInit {
   }
 
   createChart() {
+    console.log(this.totalSale)
     this.chart = new Chart('MyChart', {
       type: 'bar',
 
@@ -343,6 +372,7 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
+    console.log(">>>2")
   }
 
   goToDetails(tid: number, oid: number) {

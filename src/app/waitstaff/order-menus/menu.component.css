@@ -22,7 +22,7 @@
   font-weight: 500;
 }
 
-.search-box {
+/* .search-box {
   width: 350px;
   height: 45px;
   display: flex;
@@ -43,7 +43,7 @@
 
 .search-box i {
   font-size: 20px;
-}
+} */
 
 .order-page {
   position: relative;
@@ -62,7 +62,7 @@
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  overflow: auto;
+  overflow: scroll;
   padding-bottom: 20px;
 }
 

@@ -23,6 +23,9 @@ export class SettingsComponent implements OnInit {
   name = new FormControl('', [Validators.required]);
   url: string = '';
   restaurantInfo: Restaurant[] = [];
+  restaurantName: string = '';
+  updateUrl: boolean = false;
+  id!: number;
 
   constructor(
     private api: ApiService,
@@ -41,7 +44,14 @@ export class SettingsComponent implements OnInit {
 
   async getInfo() {
     this.restaurantInfo = await this.api.getRestaurantInfo();
-    console.log(this.restaurantInfo);
+    this.restaurantInfo.forEach((value) => {
+      if(value){
+        this.restaurantName = value.restaurant_name;
+        this.imgUrl = value.logoImg;
+        // this.url = value.logoImg;
+        this.id = value.id;
+      }
+    })
   }
   processFile(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -49,6 +59,9 @@ export class SettingsComponent implements OnInit {
       reader.onload = (e: any) => (this.imgUrl = e.target.result);
       reader.readAsDataURL(event.target.files[0]);
       this.selectedFile = event.target.files[0];
+      this.updateUrl = true;
+      console.log(this.updateUrl);
+      
     } else {
       this.selectedFile = null;
       this.imgUrl = '..//..//../assets/images/logo.png';
@@ -56,10 +69,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
-    const reference = ref(
-      storage,
-      `restaurant/${this.infoForm.value.restaurant_name}`
-    );
+    const reference = ref(storage, `restaurant/${this.infoForm.value.restaurant_name}`);
     await uploadBytes(reference, this.selectedFile);
     return await getDownloadURL(ref(storage, `restaurant/${name}`));
   }
@@ -73,26 +83,31 @@ export class SettingsComponent implements OnInit {
   }
 
   async uploadInfo() {
-    if (this.restaurantInfo[0].logoImg == null) {
+    if (this.updateUrl == true) {
+      
       this.url = await this.uploadAndGetDownloadUrl(
         this.infoForm.value.restaurant_name!
       );
-      console.log(this.url);
-    } else {
+    }else {
       this.url = this.restaurantInfo[0].logoImg;
     }
+    
+    
 
     const data = {
       restaurant_name: this.infoForm.value.restaurant_name,
-      logoImg: this.infoForm.value.logoImg,
+      logoImg: this.url,
     };
+
     if (this.infoForm.valid) {
-      if (this.restaurantInfo) {
-        await this.api.updateRestaurantInfo(this.restaurantInfo[0].id, data);
+      if (this.restaurantInfo.length > 0) {
+        await this.api.updateRestaurantInfo(this.id, data);
         this.getInfo();
+        this.snackBar.openSnackBar('Info updated successful!');
       } else {
         await this.api.postRestaurantInfo(data);
         this.getInfo();
+        this.snackBar.openSnackBar('Info created successful!');
       }
     }
   }

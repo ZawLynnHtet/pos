@@ -60,11 +60,13 @@ export class EditEmployeeComponent implements OnInit {
       reader.onload = (e: any) => (this.imgUrl = e.target.result);
       reader.readAsDataURL(event.target.files[0]);
       this.selectedFile = event.target.files[0];
+      this.updateUrl = true;
+      console.log(this.updateUrl);
+      
     } else {
       this.selectedFile = null;
       this.imgUrl = '..//..//../assets/images/profile.png';
     }
-    this.updateUrl = true;
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
@@ -78,7 +80,7 @@ export class EditEmployeeComponent implements OnInit {
     //   this.employeeForm.value.name!
     // );
 
-    if (!this.data && this.updateUrl == true) {
+    if (this.updateUrl == true) {
       this.url = await this.uploadAndGetDownloadUrl(
         this.employeeForm.value.name!
       );

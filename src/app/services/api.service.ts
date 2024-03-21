@@ -641,7 +641,7 @@ export class ApiService {
   getIncomeByMonthBetweenYear(year: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.subs.sink = this.http
-        .get(`${apiUrl}/bills/monthly?createdAt=${year}`)
+        .get(`${apiUrl}/bills/monthly/${year}`)
         .subscribe({
           next: (res: any) => {
             resolve(res.data);

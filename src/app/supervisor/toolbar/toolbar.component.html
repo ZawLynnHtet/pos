@@ -59,18 +59,20 @@
                           />
                         </ng-template>
                       </div>
-                      <div class="txt">{{ waiter.name }}</div>
+                      
+                      <div><div class="txt">{{ waiter.name }}</div>
+                      <div class="txt sub">
+                        Table ID: #{{ msg.table_id }} / Order ID: #{{
+                          msg.order_id
+                        }}
+                      </div>
+                      <div class="txt sub">
+                        {{ msg.createdAt | date : "h:mm a" }}
+                        {{ msg.kitchen == false ? "(Bills)" : "(Kitchen)" }}
+                      </div></div>
                     </ng-container>
                   </ng-container>
-                  <div class="txt sub">
-                    Table ID: #{{ msg.table_id }} / Order ID: #{{
-                      msg.order_id
-                    }}
-                  </div>
-                  <div class="txt sub">
-                    {{ msg.createdAt | date : "h:mm a" }}
-                    {{ msg.kitchen == false ? "(Bills)" : "(Kitchen)" }}
-                  </div>
+                  
                 </a>
               </div>
             </ng-container>

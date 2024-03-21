@@ -254,7 +254,7 @@
               <input
                 type="text"
                 placeholder="Order notes"
-                (change)="onNoteBoxChange($event, orderIndex)"
+                #search (input)="onNoteBoxChange(search.value, orderIndex)"
               />
               <button class="delete" (click)="del(orderIndex)">
                 <i class="fa-solid fa-trash"></i>

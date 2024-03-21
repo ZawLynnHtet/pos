@@ -2,12 +2,12 @@
   <div class="header">
     <div class="logo-container">
       <img
-        src="..//../assets/images/logo.png"
+        [src]="logo"
         alt="msi"
         class="logo"
         (click)="toggleCollapse()"
       />
-      <div class="logo-text" *ngIf="collapsed" @fadeInOut>Shadow Cafe's</div>
+      <div class="logo-text" *ngIf="collapsed" @fadeInOut>{{resName}}</div>
       <div class="close-btn" *ngIf="collapsed" (click)="closeSidenav()" @rotate>
         <i class="fa-solid fa-xmark close"></i>
       </div>

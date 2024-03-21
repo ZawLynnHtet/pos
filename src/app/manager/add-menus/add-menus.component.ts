@@ -89,11 +89,11 @@ export class AddMenusComponent implements OnInit {
       reader.onload = (e: any) => (this.imgUrl = e.target.result);
       reader.readAsDataURL(event.target.files[0]);
       this.selectedFile = event.target.files[0];
+      this.updateUrl = true;
     } else {
       this.selectedFile = null;
       this.imgUrl = '..//..//../assets/images/profile.png';
     }
-    this.updateUrl = true;
   }
 
   async uploadAndGetDownloadUrl(name: string): Promise<string> {
@@ -227,7 +227,7 @@ export class AddMenusComponent implements OnInit {
   }
 
   async submitted() {
-    if (!this.data && this.updateUrl == true) {
+    if (this.updateUrl == true) {
       this.url = await this.uploadAndGetDownloadUrl(
         this.menuForm.value.food_name!
       );

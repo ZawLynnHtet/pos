@@ -290,8 +290,8 @@ export class MenuComponent {
     order.choice_of_meat = meat;
   }
 
-  onNoteBoxChange(evt: any, i: number) {
-    this.orders[i].note = evt.target.value;
+  onNoteBoxChange(notes: string, i: number) {
+    this.orders[i].note = notes;
     console.log(this.orders);
   }
 }

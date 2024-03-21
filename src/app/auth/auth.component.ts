@@ -21,8 +21,10 @@ export class AuthComponent implements OnInit {
   selectedFile: any = null;
   imgUrl: string = '';
   vinylUrl: string = '';
+  id!: number;
   vinylData: Vinyl[] = [];
   vinylForm: FormGroup;
+  updateUrl: boolean = false;
   constructor(
     private router: Router,
     private builder: FormBuilder,
@@ -66,6 +68,12 @@ export class AuthComponent implements OnInit {
 
   async ngOnInit() {
     this.vinylData = await this.api.getVinyl();
+    this.vinylData.forEach((value) => {
+     if(value) {
+      this.imgUrl = value.vinyl;
+      this.id = value.id;
+     }
+    })
   }
 
   registration() {
@@ -160,20 +168,6 @@ export class AuthComponent implements OnInit {
   async callApiAndStoreResponseInLocalStorage() {
     const categories: Category[] = await this.api.getAllCategories();
     localStorage.setItem('categories', JSON.stringify(categories));
-    // const extraFoods: ExtraFood[] = await this.api.getAllExtraFoods();
-    // localStorage.setItem('extraFoods', JSON.stringify(extraFoods));
-    // const menuNames: Menu[] = await this.api.getAllFoodNames();
-    // localStorage.setItem('menuNames', JSON.stringify(menuNames));
-    // const ingredients: Ingredient[] = await this.api.getAllIngredient();
-    // localStorage.setItem('ingredients', JSON.stringify(ingredients));
-    // const waitstaffs: Employee[] = await this.api.getEmployeesWithRole(
-    //   'waiter'
-    // );
-    // localStorage.setItem('waitstaffs', JSON.stringify(waitstaffs));
-    // const supervisors: Employee[] = await this.api.getEmployeesWithRole(
-    //   'supervisor'
-    // );
-    // localStorage.setItem('supervisors', JSON.stringify(supervisors));
   }
   ngOnDestroy() {
     this.api.unsubscribe();
@@ -202,6 +196,9 @@ export class AuthComponent implements OnInit {
       reader.onload = (e: any) => (this.imgUrl = e.target.result);
       reader.readAsDataURL(event.target.files[0]);
       this.selectedFile = event.target.files[0];
+      this.updateUrl = true;
+      console.log(this.updateUrl);
+      this.vinylUpload();
     } else {
       this.selectedFile = null;
       this.imgUrl = '';
@@ -215,14 +212,19 @@ export class AuthComponent implements OnInit {
   }
 
   async vinylUpload() {
-    if (this.vinylData.length > 0) {
-      this.vinylUrl = this.vinylData[0].vinyl;
-      await this.api.postVinyl({ vinyl: this.vinylUrl });
-    } else {
+    if (this.updateUrl == true) {
       this.vinylUrl = await this.uploadAndGetDownloadUrl();
-      await this.api.updateVinyl(this.vinylData[0].id, {
+    } else {
+      this.vinylUrl = this.vinylData[0].vinyl;
+    }
+    if(this.vinylData.length > 0){
+      await this.api.updateVinyl(this.id, {
         vinyl: this.vinylUrl,
-      });
+     });
+     this.snackBar.openSnackBar('Poster updated successful!');
+    }else {
+      await this.api.postVinyl({ vinyl: this.vinylUrl });
+      this.snackBar.openSnackBar('Poster created successful!');
     }
   }
 

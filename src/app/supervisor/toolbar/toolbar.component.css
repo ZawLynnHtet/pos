@@ -291,17 +291,6 @@ a:visited {
   display: none;
 }
 
-.stick {
-  text-align: center;
-  display: block;
-  font-size: 50pt;
-  padding-top: 70px;
-  padding-left: 80px;
-}
-
-.stick:hover {
-  color: black;
-}
 
 .cent {
   text-align: center;
@@ -313,6 +302,13 @@ a:visited {
   background-color: #f4f4f4;
   transition: 0.5s;
   margin-bottom: 5px;
+ 
+}
+
+.msg-list {
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .profCont {
@@ -320,14 +316,16 @@ a:visited {
 }
 
 .profile {
-  -webkit-clip-path: circle(50% at 50% 50%);
-  clip-path: circle(50% at 50% 50%);
+  /* -webkit-clip-path: circle(50% at 50% 50%); */
+  /* clip-path: circle(50% at 50% 50%); */
   width: 75px;
-  float: left;
+  height: 75px;
+  border-radius: 50%;
+  /* float: left; */
 }
 
 .txt {
-  vertical-align: top;
+  /* vertical-align: top; */
   font-size: 1rem;
   padding: 3px 10px 3px 15px;
   text-overflow: ellipsis;

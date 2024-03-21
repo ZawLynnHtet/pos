@@ -8,6 +8,7 @@ import {
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { Employee } from '../models/employee.model';
+import { Restaurant } from '../models/info.model';
 
 @Component({
   selector: 'app-sidenav',
@@ -43,6 +44,9 @@ export class SidenavComponent implements OnInit {
   employeesData: any;
   showMenu: boolean = false;
   sideNav: any[] = [];
+  restaurantInfo: Restaurant[] = [];
+  logo: string = '..//..//../assets/images/logo.png';
+  resName: string = 'Restaurant Name';
 
   constructor(private api: ApiService) {}
   navData = [
@@ -102,7 +106,7 @@ export class SidenavComponent implements OnInit {
     },
   ];
 
-  ngOnInit(): void {
+  async ngOnInit(){
     let data: any = localStorage.getItem('data');
     this.employeesData = JSON.parse(data);
     this.navData.forEach((nav) => {
@@ -110,6 +114,13 @@ export class SidenavComponent implements OnInit {
         this.sideNav.push(nav);
       }
     });
+    this.restaurantInfo = await this.api.getRestaurantInfo();
+    this.restaurantInfo.forEach((value) => {
+      if(value){
+        this.resName = value.restaurant_name;
+        this.logo = value.logoImg;
+      }
+    })
   }
 
   toggleCollapse() {

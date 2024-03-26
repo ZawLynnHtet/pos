@@ -85,12 +85,12 @@
 
       <div class="notes">
         <h3>Notes</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Id repellat
-          consequatur alias neque accusamus illo soluta. Ab, natus nostrum,
-          recusandae aperiam veritatis, magni sapiente velit esse impedit
-          tempore delectus exercitationem.
-        </p>
+        <ul *ngFor="let note of notes">
+          <li *ngIf="notes != null; else note"><p>{{note}}</p></li>
+          <ng-template #note>
+            <p>-------------------</p>
+          </ng-template>
+        </ul>
       </div>
     </div>
   </div>

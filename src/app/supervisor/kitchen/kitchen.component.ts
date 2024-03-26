@@ -24,6 +24,7 @@ export class KitchenComponent {
   order_id!: number;
   table_id!: number;
   msg_id!: number;
+  notes: any = [];
 
   constructor(
     private api: ApiService,
@@ -42,6 +43,9 @@ export class KitchenComponent {
     this.table_id = this.activatedRoute.snapshot.params['id'];
 
     this.orders = await this.api.getAllOrderDetailsWithOrderId(this.order_id);
+    this.orders.forEach((value)=> {
+      this.notes.push(value.note);
+    });
     this.employees = await this.api.getAllEmployees();
     this.allMenus = await this.api.getAllMenus();
     this.extraFoods = await this.api.getAllExtraFoods();

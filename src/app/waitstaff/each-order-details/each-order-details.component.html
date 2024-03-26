@@ -95,10 +95,12 @@
     </table>
     <div class="print-section">
       <h3>Notes</h3>
-      <p *ngIf="notes != null; else note">{{ notes }}</p>
-      <ng-template #note>
-        <p>-------------------</p>
-      </ng-template>
+      <ul *ngFor="let note of notes">
+        <li *ngIf="notes != null; else note">{{note}}</li>
+        <ng-template #note>
+          <p>-------------------</p>
+        </ng-template>
+      </ul>
     </div>
   </div>
 </section>

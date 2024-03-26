@@ -19,6 +19,7 @@ import { Vinyl } from '../models/vinyl.model';
 })
 export class AuthComponent implements OnInit {
   selectedFile: any = null;
+  pdf: any = null;
   imgUrl: string = '';
   vinylUrl: string = '';
   id!: number;
@@ -119,10 +120,10 @@ export class AuthComponent implements OnInit {
 
   login() {
     if (this.loginForm.valid) {
-      // this.loader = true;
+      this.loader = true;
       this.api.loginEmployee(this.loginForm.value).subscribe(
         (res: any) => {
-          this.loader = true;
+          // this.loader = true;
           let data = {
             id: res.user.employee_id,
             role: res.user.role,
@@ -231,4 +232,5 @@ export class AuthComponent implements OnInit {
   back() {
     this.selectedRole = false;
   }
+
 }

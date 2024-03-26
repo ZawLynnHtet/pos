@@ -25,7 +25,7 @@ export class EachOrderDetailsComponent implements OnInit {
   ingredients: Ingredient[] = [];
   extraFoods: ExtraFood[] = [];
   date!: string;
-  notes!: string;
+  notes: any = [];
   status: boolean = false;
 
   constructor(
@@ -38,7 +38,11 @@ export class EachOrderDetailsComponent implements OnInit {
     this.tid = this.activatedRoute.snapshot.params['tid'];
     this.details = await this.api.getAllOrderDetailsWithOrderId(this.oid);
     console.log(this.details);
-    this.notes = this.details.note;
+    this.details.forEach((value: { note: any; }) => {
+      this.notes.push(value.note);
+      console.log(this.notes);
+      
+    })
 
     this.orders = await this.api.getOrderById(this.oid);
     console.log(this.orders.orderDate);
